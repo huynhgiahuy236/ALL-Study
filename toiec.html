@@ -1,900 +1,1408 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ngữ Pháp Tiếng Anh – Slide Ôn Tập</title>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ngữ Pháp Tiếng Anh – Slide Ôn Tập</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
 
-  :root {
-    --beige-50:  #FAF7F2;
-    --beige-100: #F2EDE3;
-    --beige-200: #E5DDD0;
-    --beige-300: #D0C4B0;
-    --brown-400: #A08060;
-    --brown-500: #7A5C3A;
-    --brown-600: #5A3E22;
-    --accent:    #C97B3A;
-    --accent-light: #F2D8B8;
-    --green:     #4A7C59;
-    --green-light: #D6EAD8;
-    --blue:      #3A5F8A;
-    --blue-light: #D0E0F2;
-    --red:       #A04040;
-    --red-light: #F2D8D8;
-    --purple:    #6A4A8A;
-    --purple-light: #E0D4F0;
-    --text:      #3A2E22;
-    --text-muted: #7A6A58;
-    --shadow: 0 4px 24px rgba(90,62,34,0.10);
-  }
+    :root {
+      --beige-50: #FAF7F2;
+      --beige-100: #F2EDE3;
+      --beige-200: #E5DDD0;
+      --beige-300: #D0C4B0;
+      --brown-400: #A08060;
+      --brown-500: #7A5C3A;
+      --brown-600: #5A3E22;
+      --accent: #C97B3A;
+      --accent-light: #F2D8B8;
+      --green: #4A7C59;
+      --green-light: #D6EAD8;
+      --blue: #3A5F8A;
+      --blue-light: #D0E0F2;
+      --red: #A04040;
+      --red-light: #F2D8D8;
+      --purple: #6A4A8A;
+      --purple-light: #E0D4F0;
+      --text: #3A2E22;
+      --text-muted: #7A6A58;
+      --shadow: 0 4px 24px rgba(90, 62, 34, 0.10);
+    }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-  body {
-    background: var(--beige-100);
-    font-family: 'Inter', sans-serif;
-    color: var(--text);
-    min-height: 100vh;
-  }
+    body {
+      background: var(--beige-100);
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+      min-height: 100vh;
+      cursor: pointer;
+    }
 
-  /* ── NAV ── */
-  #nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    background: var(--beige-50);
-    border-bottom: 1.5px solid var(--beige-200);
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 0 28px; height: 56px;
-    box-shadow: 0 2px 12px rgba(90,62,34,0.07);
-  }
-  #nav .logo {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.1rem; color: var(--brown-600); font-weight: 700; letter-spacing: .02em;
-  }
-  #nav .nav-center {
-    display: flex; gap: 6px; align-items: center; flex-wrap: wrap; justify-content: center;
-  }
-  .nav-btn {
-    padding: 4px 12px; border-radius: 20px; border: none;
-    background: transparent; cursor: pointer; font-size: .78rem; font-weight: 500;
-    color: var(--text-muted); transition: all .2s;
-  }
-  .nav-btn:hover, .nav-btn.active {
-    background: var(--accent-light); color: var(--brown-500);
-  }
-  #nav .counter {
-    font-size: .82rem; color: var(--text-muted); white-space: nowrap;
-    font-family: 'JetBrains Mono', monospace;
-  }
+    /* ── NAV ── */
+    #nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: var(--beige-50);
+      border-bottom: 1.5px solid var(--beige-200);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 28px;
+      height: 56px;
+      box-shadow: 0 2px 12px rgba(90, 62, 34, 0.07);
 
-  /* ── SLIDES ── */
-  #slides-wrapper {
-    padding: 80px 20px 80px;
-    max-width: 920px; margin: 0 auto;
-  }
-  .slide {
-    display: none;
-    animation: fadeUp .35s ease;
-  }
-  .slide.active { display: block; }
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(16px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
+    }
 
-  /* ── CARD ── */
-  .card {
-    background: var(--beige-50); border-radius: 18px;
-    box-shadow: var(--shadow);
-    padding: 44px 52px; min-height: 480px;
-    border: 1.5px solid var(--beige-200);
-    position: relative; overflow: hidden;
-  }
-  .card::before {
-    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px;
-    background: linear-gradient(90deg, var(--accent), var(--brown-400));
-    border-radius: 18px 18px 0 0;
-  }
+    #nav .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      color: var(--brown-600);
+      font-weight: 700;
+      letter-spacing: .02em;
+    }
 
-  /* ── SLIDE LABEL ── */
-  .slide-label {
-    font-size: .72rem; font-weight: 600; letter-spacing: .12em;
-    color: var(--accent); text-transform: uppercase; margin-bottom: 8px;
-  }
+    #nav .logo a {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      color: var(--brown-600);
+      font-weight: 700;
+      letter-spacing: .02em;
+      text-decoration: none;
+    }
 
-  /* ── HEADINGS ── */
-  .slide-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 2rem; font-weight: 700; color: var(--brown-600);
-    line-height: 1.25; margin-bottom: 6px;
-  }
-  .slide-subtitle {
-    font-size: .95rem; color: var(--text-muted); margin-bottom: 28px;
-  }
-  .divider {
-    height: 2px; background: var(--beige-200); border-radius: 2px; margin-bottom: 24px;
-  }
+    #nav .nav-center {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
 
-  /* ── SECTION HEADER ── */
-  .sh {
-    font-size: .8rem; font-weight: 700; letter-spacing: .10em; text-transform: uppercase;
-    color: var(--brown-400); margin: 20px 0 10px;
-  }
+    .nav-btn {
+      padding: 4px 12px;
+      border-radius: 20px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      font-size: .78rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      transition: all .2s;
+    }
 
-  /* ── TAGS / CHIPS ── */
-  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
-  .chip {
-    padding: 4px 12px; border-radius: 20px; font-size: .8rem; font-weight: 500;
-    font-family: 'JetBrains Mono', monospace;
-  }
-  .chip-accent { background: var(--accent-light); color: var(--brown-500); }
-  .chip-green  { background: var(--green-light);  color: var(--green); }
-  .chip-blue   { background: var(--blue-light);   color: var(--blue); }
-  .chip-purple { background: var(--purple-light);  color: var(--purple); }
-  .chip-red    { background: var(--red-light);     color: var(--red); }
+    .nav-btn:hover,
+    .nav-btn.active {
+      background: var(--accent-light);
+      color: var(--brown-500);
+    }
 
-  /* ── PILL GROUPS ── */
-  .pill-group { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; }
-  .pill {
-    padding: 3px 10px; border-radius: 12px; font-size: .78rem;
-    background: var(--beige-200); color: var(--text);
-    font-family: 'JetBrains Mono', monospace;
-  }
-  .pill.hl { background: var(--accent-light); color: var(--brown-500); font-weight: 600; }
+    #nav .counter {
+      font-size: .82rem;
+      color: var(--text-muted);
+      white-space: nowrap;
+      font-family: 'JetBrains Mono', monospace;
+    }
 
-  /* ── GRID ── */
-  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+    /* ── SLIDES ── */
+    #slides-wrapper {
+      padding: 80px 20px 80px;
+      max-width: 920px;
+      margin: 0 auto;
+    }
 
-  /* ── BOX ── */
-  .box {
-    border-radius: 12px; padding: 16px 20px;
-    border: 1.5px solid var(--beige-200);
-    background: var(--beige-100);
-  }
-  .box-title {
-    font-size: .78rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
-    margin-bottom: 10px;
-  }
-  .box.accent  { border-color: var(--accent-light); background: #FFF8F0; }
-  .box.green   { border-color: var(--green-light);  background: #F0F8F2; }
-  .box.blue    { border-color: var(--blue-light);   background: #F0F5FF; }
-  .box.purple  { border-color: var(--purple-light); background: #F8F4FF; }
+    .slide {
+      display: none;
+      animation: fadeUp .35s ease;
+    }
 
-  /* ── UL ── */
-  ul.clean { list-style: none; display: flex; flex-direction: column; gap: 8px; }
-  ul.clean li {
-    padding-left: 20px; position: relative; font-size: .9rem; line-height: 1.6;
-    color: var(--text);
-  }
-  ul.clean li::before {
-    content: '▸'; position: absolute; left: 0; color: var(--accent); font-size: .8rem; top: 2px;
-  }
-  ul.clean li .note { color: var(--text-muted); font-size: .82rem; }
+    .slide.active {
+      display: block;
+    }
 
-  /* ── CODE / FORMULA ── */
-  .formula {
-    background: var(--beige-100); border: 1.5px solid var(--beige-200);
-    border-radius: 10px; padding: 12px 18px; font-family: 'JetBrains Mono', monospace;
-    font-size: .85rem; color: var(--brown-600); line-height: 2;
-    margin: 10px 0;
-  }
-  .formula .kw  { color: var(--accent); font-weight: 600; }
-  .formula .vb  { color: var(--blue); font-weight: 500; }
-  .formula .pos { color: var(--green); font-weight: 500; }
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(16px);
+      }
 
-  /* ── TABLE ── */
-  .tbl-wrap { overflow-x: auto; margin: 12px 0; }
-  table {
-    width: 100%; border-collapse: collapse; font-size: .84rem;
-  }
-  th {
-    background: var(--brown-500); color: #FDF8F2;
-    padding: 10px 14px; font-weight: 600; text-align: left; font-size: .8rem;
-    letter-spacing: .04em;
-  }
-  td {
-    padding: 9px 14px; border-bottom: 1px solid var(--beige-200);
-    font-family: 'JetBrains Mono', monospace; font-size: .82rem; vertical-align: top;
-    line-height: 1.6;
-  }
-  tr:nth-child(even) td { background: var(--beige-100); }
-  tr:hover td { background: var(--accent-light); }
-  td.header-col { font-weight: 700; color: var(--brown-500); font-family: 'Inter', sans-serif; font-size: .83rem; }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
 
-  /* ── CALLOUT ── */
-  .callout {
-    border-radius: 10px; padding: 14px 18px; font-size: .87rem;
-    display: flex; gap: 12px; align-items: flex-start; margin: 14px 0;
-  }
-  .callout .icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
-  .callout.tip   { background: var(--green-light); color: var(--green); }
-  .callout.warn  { background: var(--accent-light); color: var(--brown-500); }
-  .callout.info  { background: var(--blue-light);   color: var(--blue); }
-  .callout.note  { background: var(--purple-light);  color: var(--purple); }
+    /* ── CARD ── */
+    .card {
+      background: var(--beige-50);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      padding: 44px 52px;
+      min-height: 480px;
+      border: 1.5px solid var(--beige-200);
+      position: relative;
+      overflow: hidden;
+    }
 
-  /* ── EXAMPLE ── */
-  .example {
-    background: var(--beige-100); border-left: 3px solid var(--accent);
-    border-radius: 0 8px 8px 0; padding: 10px 16px; font-size: .86rem;
-    margin: 8px 0; font-style: italic; color: var(--text-muted);
-  }
-  .example .em { color: var(--brown-500); font-weight: 600; font-style: normal; }
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: linear-gradient(90deg, var(--accent), var(--brown-400));
+      border-radius: 18px 18px 0 0;
+    }
 
-  /* ── COVER ── */
-  .cover-card {
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    min-height: 500px; text-align: center;
-    background: linear-gradient(145deg, #FAF7F2 60%, #F2E8D8);
-  }
-  .cover-badge {
-    background: var(--accent-light); color: var(--brown-500);
-    border-radius: 20px; padding: 6px 20px; font-size: .78rem; font-weight: 700;
-    letter-spacing: .1em; text-transform: uppercase; margin-bottom: 24px;
-  }
-  .cover-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 2.8rem; color: var(--brown-600); line-height: 1.2; font-weight: 700;
-    margin-bottom: 12px;
-  }
-  .cover-desc { font-size: 1rem; color: var(--text-muted); max-width: 440px; line-height: 1.7; margin-bottom: 36px; }
-  .topics-grid { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; max-width: 560px; }
-  .topic-tag {
-    padding: 6px 16px; border-radius: 20px; font-size: .8rem; font-weight: 500;
-    border: 1.5px solid var(--beige-200); color: var(--text-muted);
-    background: var(--beige-50);
-  }
+    /* ── SLIDE LABEL ── */
+    .slide-label {
+      font-size: .72rem;
+      font-weight: 600;
+      letter-spacing: .12em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
 
-  /* ── BOTTOM NAV ── */
-  #bottom-nav {
-    position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
-    background: var(--beige-50); border-top: 1.5px solid var(--beige-200);
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 0 28px; height: 56px;
-    box-shadow: 0 -2px 12px rgba(90,62,34,0.07);
-  }
-  .nav-arrow {
-    display: flex; align-items: center; gap: 8px;
-    background: var(--accent); color: #fff;
-    border: none; border-radius: 28px; padding: 8px 22px;
-    font-size: .88rem; font-weight: 600; cursor: pointer; transition: all .2s;
-  }
-  .nav-arrow:hover { background: var(--brown-500); transform: translateY(-1px); }
-  .nav-arrow.secondary {
-    background: transparent; color: var(--text-muted); border: 1.5px solid var(--beige-200);
-  }
-  .nav-arrow.secondary:hover { background: var(--beige-200); color: var(--text); }
-  .progress-bar {
-    flex: 1; height: 4px; background: var(--beige-200); border-radius: 2px;
-    margin: 0 20px; overflow: hidden;
-  }
-  .progress-fill {
-    height: 100%; background: linear-gradient(90deg, var(--accent), var(--brown-400));
-    border-radius: 2px; transition: width .3s ease;
-  }
+    /* ── HEADINGS ── */
+    .slide-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--brown-600);
+      line-height: 1.25;
+      margin-bottom: 6px;
+    }
 
-  /* ── RESPONSIVE ── */
-  @media(max-width: 640px) {
-    .card { padding: 28px 22px; min-height: auto; }
-    .slide-title { font-size: 1.5rem; }
-    .grid-2, .grid-3 { grid-template-columns: 1fr; }
-    .cover-title { font-size: 2rem; }
-    #nav .nav-center { display: none; }
-  }
-</style>
+    .slide-subtitle {
+      font-size: .95rem;
+      color: var(--text-muted);
+      margin-bottom: 28px;
+    }
+
+    .divider {
+      height: 2px;
+      background: var(--beige-200);
+      border-radius: 2px;
+      margin-bottom: 24px;
+    }
+
+    /* ── SECTION HEADER ── */
+    .sh {
+      font-size: .8rem;
+      font-weight: 700;
+      letter-spacing: .10em;
+      text-transform: uppercase;
+      color: var(--brown-400);
+      margin: 20px 0 10px;
+    }
+
+    /* ── TAGS / CHIPS ── */
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .chip {
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: .8rem;
+      font-weight: 500;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .chip-accent {
+      background: var(--accent-light);
+      color: var(--brown-500);
+    }
+
+    .chip-green {
+      background: var(--green-light);
+      color: var(--green);
+    }
+
+    .chip-blue {
+      background: var(--blue-light);
+      color: var(--blue);
+    }
+
+    .chip-purple {
+      background: var(--purple-light);
+      color: var(--purple);
+    }
+
+    .chip-red {
+      background: var(--red-light);
+      color: var(--red);
+    }
+
+    /* ── PILL GROUPS ── */
+    .pill-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 8px 0;
+    }
+
+    .pill {
+      padding: 3px 10px;
+      border-radius: 12px;
+      font-size: .78rem;
+      background: var(--beige-200);
+      color: var(--text);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .pill.hl {
+      background: var(--accent-light);
+      color: var(--brown-500);
+      font-weight: 600;
+    }
+
+    /* ── GRID ── */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 14px;
+    }
+
+    /* ── BOX ── */
+    .box {
+      border-radius: 12px;
+      padding: 16px 20px;
+      border: 1.5px solid var(--beige-200);
+      background: var(--beige-100);
+    }
+
+    .box-title {
+      font-size: .78rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .box.accent {
+      border-color: var(--accent-light);
+      background: #FFF8F0;
+    }
+
+    .box.green {
+      border-color: var(--green-light);
+      background: #F0F8F2;
+    }
+
+    .box.blue {
+      border-color: var(--blue-light);
+      background: #F0F5FF;
+    }
+
+    .box.purple {
+      border-color: var(--purple-light);
+      background: #F8F4FF;
+    }
+
+    /* ── UL ── */
+    ul.clean {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    ul.clean li {
+      padding-left: 20px;
+      position: relative;
+      font-size: .9rem;
+      line-height: 1.6;
+      color: var(--text);
+    }
+
+    ul.clean li::before {
+      content: '▸';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-size: .8rem;
+      top: 2px;
+    }
+
+    ul.clean li .note {
+      color: var(--text-muted);
+      font-size: .82rem;
+    }
+
+    /* ── CODE / FORMULA ── */
+    .formula {
+      background: var(--beige-100);
+      border: 1.5px solid var(--beige-200);
+      border-radius: 10px;
+      padding: 12px 18px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .85rem;
+      color: var(--brown-600);
+      line-height: 2;
+      margin: 10px 0;
+    }
+
+    .formula .kw {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .formula .vb {
+      color: var(--blue);
+      font-weight: 500;
+    }
+
+    .formula .pos {
+      color: var(--green);
+      font-weight: 500;
+    }
+
+    /* ── TABLE ── */
+    .tbl-wrap {
+      overflow-x: auto;
+      margin: 12px 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: .84rem;
+    }
+
+    th {
+      background: var(--brown-500);
+      color: #FDF8F2;
+      padding: 10px 14px;
+      font-weight: 600;
+      text-align: left;
+      font-size: .8rem;
+      letter-spacing: .04em;
+    }
+
+    td {
+      padding: 9px 14px;
+      border-bottom: 1px solid var(--beige-200);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .82rem;
+      vertical-align: top;
+      line-height: 1.6;
+    }
+
+    tr:nth-child(even) td {
+      background: var(--beige-100);
+    }
+
+    tr:hover td {
+      background: var(--accent-light);
+    }
+
+    td.header-col {
+      font-weight: 700;
+      color: var(--brown-500);
+      font-family: 'Inter', sans-serif;
+      font-size: .83rem;
+    }
+
+    /* ── CALLOUT ── */
+    .callout {
+      border-radius: 10px;
+      padding: 14px 18px;
+      font-size: .87rem;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      margin: 14px 0;
+    }
+
+    .callout .icon {
+      font-size: 1.1rem;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .callout.tip {
+      background: var(--green-light);
+      color: var(--green);
+    }
+
+    .callout.warn {
+      background: var(--accent-light);
+      color: var(--brown-500);
+    }
+
+    .callout.info {
+      background: var(--blue-light);
+      color: var(--blue);
+    }
+
+    .callout.note {
+      background: var(--purple-light);
+      color: var(--purple);
+    }
+
+    /* ── EXAMPLE ── */
+    .example {
+      background: var(--beige-100);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 8px 8px 0;
+      padding: 10px 16px;
+      font-size: .86rem;
+      margin: 8px 0;
+      font-style: italic;
+      color: var(--text-muted);
+    }
+
+    .example .em {
+      color: var(--brown-500);
+      font-weight: 600;
+      font-style: normal;
+    }
+
+    /* ── COVER ── */
+    .cover-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 500px;
+      text-align: center;
+      background: linear-gradient(145deg, #FAF7F2 60%, #F2E8D8);
+    }
+
+    .cover-badge {
+      background: var(--accent-light);
+      color: var(--brown-500);
+      border-radius: 20px;
+      padding: 6px 20px;
+      font-size: .78rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
+    .cover-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.8rem;
+      color: var(--brown-600);
+      line-height: 1.2;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .cover-desc {
+      font-size: 1rem;
+      color: var(--text-muted);
+      max-width: 440px;
+      line-height: 1.7;
+      margin-bottom: 36px;
+    }
+
+    .topics-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      max-width: 560px;
+    }
+
+    .topic-tag {
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: .8rem;
+      font-weight: 500;
+      border: 1.5px solid var(--beige-200);
+      color: var(--text-muted);
+      background: var(--beige-50);
+    }
+
+    /* ── BOTTOM NAV ── */
+    #bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: var(--beige-50);
+      border-top: 1.5px solid var(--beige-200);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 28px;
+      height: 56px;
+      box-shadow: 0 -2px 12px rgba(90, 62, 34, 0.07);
+    }
+
+    .nav-arrow {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 28px;
+      padding: 8px 22px;
+      font-size: .88rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .2s;
+    }
+
+    .nav-arrow:hover {
+      background: var(--brown-500);
+      transform: translateY(-1px);
+    }
+
+    .nav-arrow.secondary {
+      background: transparent;
+      color: var(--text-muted);
+      border: 1.5px solid var(--beige-200);
+    }
+
+    .nav-arrow.secondary:hover {
+      background: var(--beige-200);
+      color: var(--text);
+    }
+
+    .progress-bar {
+      flex: 1;
+      height: 4px;
+      background: var(--beige-200);
+      border-radius: 2px;
+      margin: 0 20px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--brown-400));
+      border-radius: 2px;
+      transition: width .3s ease;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media(max-width: 640px) {
+      .card {
+        padding: 28px 22px;
+        min-height: auto;
+      }
+
+      .slide-title {
+        font-size: 1.5rem;
+      }
+
+      .grid-2,
+      .grid-3 {
+        grid-template-columns: 1fr;
+      }
+
+      .cover-title {
+        font-size: 2rem;
+      }
+
+      #nav .nav-center {
+        display: none;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<!-- TOP NAV -->
-<nav id="nav">
-  <div class="logo">📚 Grammar</div>
-  <div class="nav-center" id="nav-dots"></div>
-  <div class="counter" id="counter">1 / 12</div>
-</nav>
+  <!-- TOP NAV -->
+  <nav id="nav">
+    <div class="logo">📚 Grammar | <a target="_blank" href="https://quizlet.com/latest">Vocabulary</a></div>
+    <div class="nav-center" id="nav-dots"></div>
+    <div class="counter" id="counter">1 / 12</div>
+  </nav>
 
-<!-- SLIDES -->
-<div id="slides-wrapper">
+  <!-- SLIDES -->
+  <div id="slides-wrapper">
 
-  <!-- 0: COVER -->
-  <div class="slide active" data-index="0">
-    <div class="card cover-card">
-      <div class="cover-badge">Ôn Tập Ngữ Pháp Tiếng Anh</div>
-      <div class="cover-title">English Grammar<br>Toàn Tập</div>
-      <div class="cover-desc">Tổng hợp đầy đủ: từ loại, thì, mệnh đề quan hệ, so sánh, câu điều kiện — trình bày theo slide, dễ học dễ nhớ.</div>
-      <div class="topics-grid">
-        <span class="topic-tag">Từ loại (Parts of Speech)</span>
-        <span class="topic-tag">Vị trí từ</span>
-        <span class="topic-tag">Liên từ</span>
-        <span class="topic-tag">12 Thì</span>
-        <span class="topic-tag">Mệnh đề quan hệ</span>
-        <span class="topic-tag">So sánh</span>
-        <span class="topic-tag">Song hành</span>
-        <span class="topic-tag">Câu điều kiện</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- 1: DANH TỪ -->
-  <div class="slide" data-index="1">
-    <div class="card">
-      <div class="slide-label">Từ loại · Slide 1</div>
-      <div class="slide-title">Danh từ (Noun)</div>
-      <div class="slide-subtitle">Nhận biết qua tiền tố & hậu tố</div>
-      <div class="divider"></div>
-
-      <div class="sh">🔡 Tiền tố tạo danh từ</div>
-      <div class="chips">
-        <span class="chip chip-accent">super-</span>
-        <span class="chip chip-accent">under-</span>
-        <span class="chip chip-accent">sur-</span>
-        <span class="chip chip-accent">sub-</span>
-        <span class="chip chip-accent">over-</span>
-        <span class="chip chip-blue">+ Noun</span>
-      </div>
-
-      <div class="sh">🔡 Hậu tố từ Động từ → Danh từ</div>
-      <div class="chips">
-        <span class="chip chip-green">-ment</span><span class="chip chip-green">-ance</span><span class="chip chip-green">-ence</span>
-        <span class="chip chip-green">-age</span><span class="chip chip-green">-ing</span><span class="chip chip-green">-al</span>
-        <span class="chip chip-green">-ion</span>
-      </div>
-
-      <div class="sh">👤 Hậu tố chỉ Người</div>
-      <div class="grid-2">
-        <div>
-          <div class="chips"><span class="chip chip-blue">-or</span><span class="chip chip-blue">-er</span><span class="chip chip-blue">-ant</span><span class="chip chip-blue">-ee</span></div>
-          <div class="note" style="font-size:.8rem;color:var(--text-muted)">Từ động từ → người</div>
-        </div>
-        <div>
-          <div class="chips"><span class="chip chip-purple">-ist</span><span class="chip chip-purple">-an</span><span class="chip chip-purple">-ian</span><span class="chip chip-purple">-ess</span></div>
-          <div class="note" style="font-size:.8rem;color:var(--text-muted)">Từ danh từ → người</div>
+    <!-- 0: COVER -->
+    <div class="slide active" data-index="0">
+      <div class="card cover-card">
+        <div class="cover-badge">Ôn Tập Ngữ Pháp Tiếng Anh</div>
+        <div class="cover-title">English Grammar<br>Toàn Tập</div>
+        <div class="cover-desc">Tổng hợp đầy đủ: từ loại, thì, mệnh đề quan hệ, so sánh, câu điều kiện — trình bày theo
+          slide, dễ học dễ nhớ.</div>
+        <div class="topics-grid">
+          <span class="topic-tag">Từ loại (Parts of Speech)</span>
+          <span class="topic-tag">Vị trí từ</span>
+          <span class="topic-tag">Liên từ</span>
+          <span class="topic-tag">12 Thì</span>
+          <span class="topic-tag">Mệnh đề quan hệ</span>
+          <span class="topic-tag">So sánh</span>
+          <span class="topic-tag">Song hành</span>
+          <span class="topic-tag">Câu điều kiện</span>
         </div>
       </div>
-
-      <div class="sh">🔡 Hậu tố từ Tính từ → Danh từ</div>
-      <div class="chips">
-        <span class="chip chip-accent">-y</span><span class="chip chip-accent">-ity</span><span class="chip chip-accent">-ness</span>
-        <span class="chip chip-accent">-ism</span><span class="chip chip-accent">-dom</span><span class="chip chip-accent">-ship</span>
-      </div>
-
-      <div class="callout tip">
-        <span class="icon">💡</span>
-        <span><strong>Mẹo:</strong> <code>The + Adj</code> cũng có thể dùng như danh từ (chỉ nhóm người). Ví dụ: <em>the poor, the elderly, the rich</em>.</span>
-      </div>
     </div>
-  </div>
 
-  <!-- 2: CÁC TỪ LOẠI KHÁC -->
-  <div class="slide" data-index="2">
-    <div class="card">
-      <div class="slide-label">Từ loại · Slide 2</div>
-      <div class="slide-title">Tính từ, Trạng từ, Động từ</div>
-      <div class="slide-subtitle">Hậu tố & phân loại</div>
-      <div class="divider"></div>
+    <!-- 1: DANH TỪ -->
+    <div class="slide" data-index="1">
+      <div class="card">
+        <div class="slide-label">Từ loại · Slide 1</div>
+        <div class="slide-title">Danh từ (Noun)</div>
+        <div class="slide-subtitle">Nhận biết qua tiền tố & hậu tố</div>
+        <div class="divider"></div>
 
-      <div class="grid-2">
-        <div class="box accent">
-          <div class="box-title" style="color:var(--accent)">Tính từ (Adjective)</div>
-          <div class="chips">
-            <span class="chip chip-accent">-y</span><span class="chip chip-accent">-ic</span><span class="chip chip-accent">-able</span>
-            <span class="chip chip-accent">-al</span><span class="chip chip-accent">-ical</span><span class="chip chip-accent">-ful</span>
-            <span class="chip chip-accent">-less</span><span class="chip chip-accent">-ive</span><span class="chip chip-accent">-ous</span>
+        <div class="sh">🔡 Tiền tố tạo danh từ</div>
+        <div class="chips">
+          <span class="chip chip-accent">super-</span>
+          <span class="chip chip-accent">under-</span>
+          <span class="chip chip-accent">sur-</span>
+          <span class="chip chip-accent">sub-</span>
+          <span class="chip chip-accent">over-</span>
+          <span class="chip chip-blue">+ Noun</span>
+        </div>
+
+        <div class="sh">🔡 Hậu tố từ Động từ → Danh từ</div>
+        <div class="chips">
+          <span class="chip chip-green">-ment</span><span class="chip chip-green">-ance</span><span
+            class="chip chip-green">-ence</span>
+          <span class="chip chip-green">-age</span><span class="chip chip-green">-ing</span><span
+            class="chip chip-green">-al</span>
+          <span class="chip chip-green">-ion</span>
+        </div>
+
+        <div class="sh">👤 Hậu tố chỉ Người</div>
+        <div class="grid-2">
+          <div>
+            <div class="chips"><span class="chip chip-blue">-or</span><span class="chip chip-blue">-er</span><span
+                class="chip chip-blue">-ant</span><span class="chip chip-blue">-ee</span></div>
+            <div class="note" style="font-size:.8rem;color:var(--text-muted)">Từ động từ → người</div>
+          </div>
+          <div>
+            <div class="chips"><span class="chip chip-purple">-ist</span><span class="chip chip-purple">-an</span><span
+                class="chip chip-purple">-ian</span><span class="chip chip-purple">-ess</span></div>
+            <div class="note" style="font-size:.8rem;color:var(--text-muted)">Từ danh từ → người</div>
           </div>
         </div>
-        <div class="box green">
-          <div class="box-title" style="color:var(--green)">Trạng từ (Adverb)</div>
-          <div class="chips"><span class="chip chip-green">-ly</span></div>
-          <ul class="clean" style="margin-top:10px">
-            <li>Chỉ thời gian (when) <span class="note">→ cuối/đầu câu</span></li>
-            <li>Chỉ nơi chốn (where)</li>
-            <li>Chỉ tần suất <span class="note">always, usually, seldom…</span></li>
-            <li>Chỉ cấp độ <span class="note">very, so, fairly, highly, extremely…</span></li>
-          </ul>
-        </div>
-      </div>
 
-      <div class="sh" style="margin-top:20px">⚡ Động từ (Verb) — 5 loại</div>
-      <div class="tbl-wrap">
-        <table>
-          <thead><tr><th>Loại</th><th>Ký hiệu</th><th>Ví dụ</th></tr></thead>
-          <tbody>
-            <tr><td class="header-col">To be</td><td>am/is/are/was/were</td><td>She <em>is</em> a student.</td></tr>
-            <tr><td class="header-col">Action verb</td><td>V₀</td><td>run, go, sing, dance</td></tr>
-            <tr><td class="header-col">Modal verb</td><td>khiếm khuyết</td><td>can, could, would, must, may, should, ought to</td></tr>
-            <tr><td class="header-col">Linking verb</td><td>giác quan</td><td>smell, sound, taste, turn, become, seem, feel</td></tr>
-            <tr><td class="header-col">Auxiliary verb</td><td>trợ động từ</td><td>do/does/did, have/has/had</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="chips" style="margin-top:12px">
-        <span class="chip chip-blue">Hậu tố ĐT: -ize</span><span class="chip chip-blue">-ate</span><span class="chip chip-blue">-en</span>
-        <span class="chip chip-blue">-ify</span><span class="chip chip-blue">-ise</span><span class="chip chip-blue">-ish</span>
+        <div class="sh">🔡 Hậu tố từ Tính từ → Danh từ</div>
+        <div class="chips">
+          <span class="chip chip-accent">-y</span><span class="chip chip-accent">-ity</span><span
+            class="chip chip-accent">-ness</span>
+          <span class="chip chip-accent">-ism</span><span class="chip chip-accent">-dom</span><span
+            class="chip chip-accent">-ship</span>
+        </div>
+
+        <div class="callout tip">
+          <span class="icon">💡</span>
+          <span><strong>Mẹo:</strong> <code>The + Adj</code> cũng có thể dùng như danh từ (chỉ nhóm người). Ví dụ:
+            <em>the poor, the elderly, the rich</em>.</span>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- 3: LƯỢNG TỪ & GIỚI TỪ -->
-  <div class="slide" data-index="3">
-    <div class="card">
-      <div class="slide-label">Từ loại · Slide 3</div>
-      <div class="slide-title">Lượng từ & Giới từ</div>
-      <div class="slide-subtitle">Quantifiers & Prepositions</div>
-      <div class="divider"></div>
+    <!-- 2: CÁC TỪ LOẠI KHÁC -->
+    <div class="slide" data-index="2">
+      <div class="card">
+        <div class="slide-label">Từ loại · Slide 2</div>
+        <div class="slide-title">Tính từ, Trạng từ, Động từ</div>
+        <div class="slide-subtitle">Hậu tố & phân loại</div>
+        <div class="divider"></div>
 
-      <div class="sh">🔢 Lượng từ (Quantifiers)</div>
-      <div class="pill-group">
-        <span class="pill hl">this</span><span class="pill hl">that</span><span class="pill hl">these</span><span class="pill hl">those</span>
-        <span class="pill">each</span><span class="pill">every</span><span class="pill">both</span><span class="pill">no</span>
-        <span class="pill">some</span><span class="pill">any</span><span class="pill">few</span><span class="pill">little</span>
-        <span class="pill">a little</span><span class="pill">a few</span><span class="pill">much</span><span class="pill">many</span>
-      </div>
-
-      <div class="sh" style="margin-top:20px">📍 Giới từ (Prepositions) — theo chức năng</div>
-      <div class="grid-2">
-        <div>
-          <ul class="clean">
-            <li><strong>Vị trí / không gian</strong><br><span class="note">in, on, at, under, above, below, behind, in front of, between, among, next to, near</span></li>
-            <li><strong>Thời gian</strong><br><span class="note">at, on, in, before, after, during, until, since, for</span></li>
-            <li><strong>Hướng / chuyển động</strong><br><span class="note">to, into, onto, out of, from, toward(s), through, across, along</span></li>
-            <li><strong>Nguyên nhân / mục đích</strong><br><span class="note">because of, due to, thanks to, for, to</span></li>
-          </ul>
-        </div>
-        <div>
-          <ul class="clean">
-            <li><strong>Cách thức / phương tiện</strong><br><span class="note">by, with, via, through</span></li>
-            <li><strong>Sở hữu / liên hệ</strong><br><span class="note">of, with, without, about, regarding</span></li>
-            <li><strong>So sánh / phạm vi</strong><br><span class="note">like, unlike, as, than, among, within</span></li>
-          </ul>
-        </div>
-      </div>
-      <div class="callout warn">
-        <span class="icon">⚠️</span>
-        <span>Sau giới từ luôn dùng <strong>V-ing</strong> hoặc <strong>Noun</strong>, không dùng động từ nguyên thể.</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- 4: VỊ TRÍ TỪ -->
-  <div class="slide" data-index="4">
-    <div class="card">
-      <div class="slide-label">Cú pháp · Slide 4</div>
-      <div class="slide-title">Vị trí các từ loại</div>
-      <div class="slide-subtitle">Công thức đứng trong câu</div>
-      <div class="divider"></div>
-
-      <div class="grid-2">
-        <div>
-          <div class="sh">Công thức cơ bản</div>
-          <div class="formula">
-            <span class="pos">Adj</span> + <span class="kw">Noun</span><br>
-            <span class="vb">To be</span> + <span class="pos">Adj</span><br>
-            <span class="vb">To be</span> + <span class="pos">Adv</span> + V3<br>
-            <span class="kw">Modal</span> + <span class="vb">V₀</span> + <span class="pos">Adv</span><br>
-            <span class="kw">Modal</span> + <span class="pos">Adv</span> + V3<br>
-            <span class="vb">Action V</span> + <span class="pos">Adv</span> / <span class="pos">Adv</span> + <span class="vb">Action V</span>
+        <div class="grid-2">
+          <div class="box accent">
+            <div class="box-title" style="color:var(--accent)">Tính từ (Adjective)</div>
+            <div class="chips">
+              <span class="chip chip-accent">-y</span><span class="chip chip-accent">-ic</span><span
+                class="chip chip-accent">-able</span>
+              <span class="chip chip-accent">-al</span><span class="chip chip-accent">-ical</span><span
+                class="chip chip-accent">-ful</span>
+              <span class="chip chip-accent">-less</span><span class="chip chip-accent">-ive</span><span
+                class="chip chip-accent">-ous</span>
+            </div>
+          </div>
+          <div class="box green">
+            <div class="box-title" style="color:var(--green)">Trạng từ (Adverb)</div>
+            <div class="chips"><span class="chip chip-green">-ly</span></div>
+            <ul class="clean" style="margin-top:10px">
+              <li>Chỉ thời gian (when) <span class="note">→ cuối/đầu câu</span></li>
+              <li>Chỉ nơi chốn (where)</li>
+              <li>Chỉ tần suất <span class="note">always, usually, seldom…</span></li>
+              <li>Chỉ cấp độ <span class="note">very, so, fairly, highly, extremely…</span></li>
+            </ul>
           </div>
         </div>
-        <div>
-          <div class="sh">Câu mở rộng</div>
-          <div class="formula">
-            S + V + <span class="pos">Adv</span> + <span class="pos">Adj</span> + <span class="kw">N</span><br>
-            S + V + <span class="pos">Adv</span> + <span class="pos">Adv</span><br>
-            <span class="kw">N</span>'s + <span class="kw">N</span> <span style="color:var(--text-muted);font-size:.8rem">(sở hữu)</span><br>
-            <span class="kw">N</span> + <span class="kw">of</span> + <span class="kw">N</span> <span style="color:var(--text-muted);font-size:.8rem">(sở hữu)</span><br>
-            <span class="pos">Quantifier</span> + <span class="kw">N</span><br>
-            Giới từ + <span class="vb">V-ing</span> / <span class="kw">N</span>
+
+        <div class="sh" style="margin-top:20px">⚡ Động từ (Verb) — 5 loại</div>
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Loại</th>
+                <th>Ký hiệu</th>
+                <th>Ví dụ</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="header-col">To be</td>
+                <td>am/is/are/was/were</td>
+                <td>She <em>is</em> a student.</td>
+              </tr>
+              <tr>
+                <td class="header-col">Action verb</td>
+                <td>V₀</td>
+                <td>run, go, sing, dance</td>
+              </tr>
+              <tr>
+                <td class="header-col">Modal verb</td>
+                <td>khiếm khuyết</td>
+                <td>can, could, would, must, may, should, ought to</td>
+              </tr>
+              <tr>
+                <td class="header-col">Linking verb</td>
+                <td>giác quan</td>
+                <td>smell, sound, taste, turn, become, seem, feel</td>
+              </tr>
+              <tr>
+                <td class="header-col">Auxiliary verb</td>
+                <td>trợ động từ</td>
+                <td>do/does/did, have/has/had</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="chips" style="margin-top:12px">
+          <span class="chip chip-blue">Hậu tố ĐT: -ize</span><span class="chip chip-blue">-ate</span><span
+            class="chip chip-blue">-en</span>
+          <span class="chip chip-blue">-ify</span><span class="chip chip-blue">-ise</span><span
+            class="chip chip-blue">-ish</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3: LƯỢNG TỪ & GIỚI TỪ -->
+    <div class="slide" data-index="3">
+      <div class="card">
+        <div class="slide-label">Từ loại · Slide 3</div>
+        <div class="slide-title">Lượng từ & Giới từ</div>
+        <div class="slide-subtitle">Quantifiers & Prepositions</div>
+        <div class="divider"></div>
+
+        <div class="sh">🔢 Lượng từ (Quantifiers)</div>
+        <div class="pill-group">
+          <span class="pill hl">this</span><span class="pill hl">that</span><span class="pill hl">these</span><span
+            class="pill hl">those</span>
+          <span class="pill">each</span><span class="pill">every</span><span class="pill">both</span><span
+            class="pill">no</span>
+          <span class="pill">some</span><span class="pill">any</span><span class="pill">few</span><span
+            class="pill">little</span>
+          <span class="pill">a little</span><span class="pill">a few</span><span class="pill">much</span><span
+            class="pill">many</span>
+        </div>
+
+        <div class="sh" style="margin-top:20px">📍 Giới từ (Prepositions) — theo chức năng</div>
+        <div class="grid-2">
+          <div>
+            <ul class="clean">
+              <li><strong>Vị trí / không gian</strong><br><span class="note">in, on, at, under, above, below, behind, in
+                  front of, between, among, next to, near</span></li>
+              <li><strong>Thời gian</strong><br><span class="note">at, on, in, before, after, during, until, since,
+                  for</span></li>
+              <li><strong>Hướng / chuyển động</strong><br><span class="note">to, into, onto, out of, from, toward(s),
+                  through, across, along</span></li>
+              <li><strong>Nguyên nhân / mục đích</strong><br><span class="note">because of, due to, thanks to, for,
+                  to</span></li>
+            </ul>
+          </div>
+          <div>
+            <ul class="clean">
+              <li><strong>Cách thức / phương tiện</strong><br><span class="note">by, with, via, through</span></li>
+              <li><strong>Sở hữu / liên hệ</strong><br><span class="note">of, with, without, about, regarding</span>
+              </li>
+              <li><strong>So sánh / phạm vi</strong><br><span class="note">like, unlike, as, than, among, within</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="callout warn">
+          <span class="icon">⚠️</span>
+          <span>Sau giới từ luôn dùng <strong>V-ing</strong> hoặc <strong>Noun</strong>, không dùng động từ nguyên
+            thể.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4: VỊ TRÍ TỪ -->
+    <div class="slide" data-index="4">
+      <div class="card">
+        <div class="slide-label">Cú pháp · Slide 4</div>
+        <div class="slide-title">Vị trí các từ loại</div>
+        <div class="slide-subtitle">Công thức đứng trong câu</div>
+        <div class="divider"></div>
+
+        <div class="grid-2">
+          <div>
+            <div class="sh">Công thức cơ bản</div>
+            <div class="formula">
+              <span class="pos">Adj</span> + <span class="kw">Noun</span><br>
+              <span class="vb">To be</span> + <span class="pos">Adj</span><br>
+              <span class="vb">To be</span> + <span class="pos">Adv</span> + V3<br>
+              <span class="kw">Modal</span> + <span class="vb">V₀</span> + <span class="pos">Adv</span><br>
+              <span class="kw">Modal</span> + <span class="pos">Adv</span> + V3<br>
+              <span class="vb">Action V</span> + <span class="pos">Adv</span> / <span class="pos">Adv</span> + <span
+                class="vb">Action V</span>
+            </div>
+          </div>
+          <div>
+            <div class="sh">Câu mở rộng</div>
+            <div class="formula">
+              S + V + <span class="pos">Adv</span> + <span class="pos">Adj</span> + <span class="kw">N</span><br>
+              S + V + <span class="pos">Adv</span> + <span class="pos">Adv</span><br>
+              <span class="kw">N</span>'s + <span class="kw">N</span> <span
+                style="color:var(--text-muted);font-size:.8rem">(sở hữu)</span><br>
+              <span class="kw">N</span> + <span class="kw">of</span> + <span class="kw">N</span> <span
+                style="color:var(--text-muted);font-size:.8rem">(sở hữu)</span><br>
+              <span class="pos">Quantifier</span> + <span class="kw">N</span><br>
+              Giới từ + <span class="vb">V-ing</span> / <span class="kw">N</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout info">
+          <span class="icon">🎯</span>
+          <div>
+            <strong>Quy tắc chọn Adj / Adv:</strong><br>
+            → Xét động từ gần nhất: nếu là <strong>to be</strong> → chọn <strong>Adj</strong>; nếu là <strong>Action
+              verb</strong> → chọn <strong>Adv</strong>.<br>
+            <span style="margin-top:6px;display:block">Thứ tự trạng từ:
+              <code>Adv – Verb – Adv – Adj – N – Adv</code></span>
+          </div>
+        </div>
+
+        <div class="sh">Cấu trúc đặc biệt</div>
+        <ul class="clean">
+          <li><code>so … that</code> &nbsp;/&nbsp; <code>too … to</code> &nbsp;/&nbsp; <code>enough + to V</code></li>
+        </ul>
+        <div class="example">He sings so <span class="em">beautifully</span> that she loves him. <span
+            class="note">(chọn adv vì sau action verb "sing")</span></div>
+      </div>
+    </div>
+
+    <!-- 5: LIÊN TỪ -->
+    <div class="slide" data-index="5">
+      <div class="card">
+        <div class="slide-label">Ngữ pháp · Slide 5</div>
+        <div class="slide-title">Liên từ (Conjunctions)</div>
+        <div class="slide-subtitle">FANBOYS · Phụ thuộc · Chuyển tiếp · Tương quan</div>
+        <div class="divider"></div>
+
+        <div class="grid-2">
+          <div class="box accent">
+            <div class="box-title" style="color:var(--accent)">FANBOYS — liên từ đẳng lập</div>
+            <div class="chips">
+              <span class="chip chip-accent">For</span><span class="chip chip-accent">And</span><span
+                class="chip chip-accent">Nor</span>
+              <span class="chip chip-accent">But</span><span class="chip chip-accent">Or</span><span
+                class="chip chip-accent">Yet</span><span class="chip chip-accent">So</span>
+            </div>
+            <p style="font-size:.82rem;color:var(--text-muted);margin-top:8px">Phía trước và sau <strong>phải giống
+                nhau</strong> về loại từ/mệnh đề.</p>
+          </div>
+          <div class="box blue">
+            <div class="box-title" style="color:var(--blue)">Liên từ tương quan</div>
+            <ul class="clean">
+              <li><code>both … and</code> / <code>and … both</code></li>
+              <li><code>not only … but also</code></li>
+              <li><code>either … or</code> <span class="note">(chủ động chọn)</span></li>
+              <li><code>neither … nor</code> <span class="note">(không cái nào)</span></li>
+              <li><code>whether … or</code> <span class="note">(bị động, không chọn)</span></li>
+              <li><code>not … but</code> / <code>only …, not</code></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="sh" style="margin-top:16px">🔄 Trạng từ liên kết (Conjunctive Adverbs)</div>
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Chức năng</th>
+                <th>Từ / cụm từ</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="header-col">Bổ sung</td>
+                <td>moreover, furthermore, in addition (to + V-ing/N), besides, additionally</td>
+              </tr>
+              <tr>
+                <td class="header-col">Tương đồng</td>
+                <td>similarly, likewise</td>
+              </tr>
+              <tr>
+                <td class="header-col">Tương phản</td>
+                <td>however, nevertheless, on the other hand, on the contrary, conversely, nonetheless, in/by contrast
+                </td>
+              </tr>
+              <tr>
+                <td class="header-col">Nhượng bộ</td>
+                <td>certainly, even though, even if</td>
+              </tr>
+              <tr>
+                <td class="header-col">Kết quả</td>
+                <td>therefore, thus, hence, as a result, accordingly, as a consequence (+ of + N)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6: LIÊN TỪ PHỤ THUỘC & MỆNH ĐỀ -->
+    <div class="slide" data-index="6">
+      <div class="card">
+        <div class="slide-label">Ngữ pháp · Slide 6</div>
+        <div class="slide-title">Liên từ phụ thuộc & mệnh đề</div>
+        <div class="slide-subtitle">Subordinating Conjunctions</div>
+        <div class="divider"></div>
+
+        <div class="callout note">
+          <span class="icon">📌</span>
+          <span>Liên từ phụ thuộc có thể <strong>đứng đầu câu</strong> (có dấu phẩy) hoặc giữa câu. Mệnh đề phụ không
+            thể đứng độc lập.</span>
+        </div>
+
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Ý nghĩa</th>
+                <th>Liên từ</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="header-col">Thời gian</td>
+                <td>while, during, before, after, when, as soon as, until, for + N, as</td>
+              </tr>
+              <tr>
+                <td class="header-col">Nguyên nhân</td>
+                <td>because, since, as, because of, due to, owing to, on account of</td>
+              </tr>
+              <tr>
+                <td class="header-col">Mặc dù</td>
+                <td>although, even though, even if, despite, in spite of, with all</td>
+              </tr>
+              <tr>
+                <td class="header-col">Điều kiện</td>
+                <td>if, unless, provided that, as long as, in case</td>
+              </tr>
+              <tr>
+                <td class="header-col">Mục đích</td>
+                <td>so that, in order to, so as to</td>
+              </tr>
+              <tr>
+                <td class="header-col">Khác</td>
+                <td>whereas (tuy nhiên), rather than (hơn là), as if + S + V2/V-ing (như thể), otherwise (nếu không)
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="sh">Các cụm đặc biệt</div>
+        <div class="formula">
+          <span class="kw">as soon/much as possible</span><br>
+          <span class="kw">no sooner … than</span> <span style="color:var(--text-muted)">vừa mới … thì (đảo
+            ngữ)</span><br>
+          <span class="kw">rather than</span> / <span class="kw">would rather … than</span> = <span
+            class="kw">prefer</span> <span style="color:var(--text-muted)">thích A hơn B</span><br>
+          <span class="kw">in order to</span> / <span class="kw">in regard to</span> / <span class="kw">as if + S +
+            V₂/V-ing</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7: 12 THÌ - BẢNG -->
+    <div class="slide" data-index="7">
+      <div class="card">
+        <div class="slide-label">Ngữ pháp · Slide 7</div>
+        <div class="slide-title">12 Thì — Bảng tổng hợp</div>
+        <div class="slide-subtitle">Công thức & dấu hiệu nhận biết</div>
+        <div class="divider"></div>
+
+        <div class="callout warn">
+          <span class="icon">⚠️</span>
+          <span>Động từ <strong>tri giác & tri thức</strong> (see, hear, know, like, want, understand, think, smell,
+            forget, love, hate, realize, seem, remember, taste, become…) chỉ dùng ở <strong>hiện tại đơn & quá khứ
+              đơn</strong>, không dùng thì tiếp diễn.</span>
+        </div>
+        <div class="callout tip" style="margin-bottom:14px">
+          <span class="icon">💡</span>
+          <span>Không dùng <strong>will</strong> sau: <code>while, when, after, before, as soon as</code>.</span>
+        </div>
+
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Thì</th>
+                <th>Quá khứ</th>
+                <th>Hiện tại</th>
+                <th>Tương lai</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="header-col">Đơn</td>
+                <td>V2/ed (didn't)</td>
+                <td>V/V-s/es (don't/doesn't)</td>
+                <td>will + V₀ (won't)</td>
+              </tr>
+              <tr>
+                <td class="header-col">Tiếp diễn</td>
+                <td>was/were + V-ing</td>
+                <td>am/is/are + V-ing</td>
+                <td>will be + V-ing</td>
+              </tr>
+              <tr>
+                <td class="header-col">Hoàn thành</td>
+                <td>had + V3/ed</td>
+                <td>have/has + V3/ed</td>
+                <td>will have + V3/ed</td>
+              </tr>
+              <tr>
+                <td class="header-col">HTTD</td>
+                <td>had been + V-ing</td>
+                <td>has/have been + V-ing</td>
+                <td>will have been + V-ing</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- 8: DẤU HIỆU NHẬN BIẾT THÌ -->
+    <div class="slide" data-index="8">
+      <div class="card">
+        <div class="slide-label">Ngữ pháp · Slide 8</div>
+        <div class="slide-title">Dấu hiệu nhận biết các thì</div>
+        <div class="slide-subtitle">Từ khóa thời gian theo từng thì</div>
+        <div class="divider"></div>
+
+        <div class="grid-2">
+          <div>
+            <div class="sh">⏰ Hiện tại</div>
+            <ul class="clean">
+              <li><strong>Hiện tại đơn</strong><br><span class="note">often, usually, frequently, always, constantly,
+                  sometimes, occasionally, seldom, rarely → trước ĐTC, sau tobe<br>everyday, monthly, weekly, once/twice
+                  a day/week → cuối câu</span></li>
+              <li><strong>Hiện tại tiếp diễn</strong><br><span class="note">now, at the moment, at this time, at
+                  present, currently → cuối câu<br>Câu mệnh lệnh: Be + adj</span></li>
+              <li><strong>Hiện tại hoàn thành</strong><br><span class="note">
+                  Sau have/has: just, never, ever<br>
+                  Cuối câu: lately, yet, for, since, so far, until now, up to now<br>
+                  Cả hai vị trí: recently, already<br>
+                  Đầu câu: It is the first/second time…
+                </span></li>
+            </ul>
+          </div>
+          <div>
+            <div class="sh">🕰 Quá khứ & Tương lai</div>
+            <ul class="clean">
+              <li><strong>Quá khứ đơn</strong><br><span class="note">last week/month/year, yesterday, ago, once, before,
+                  once upon a time, in + mốc QK → cuối câu</span></li>
+              <li><strong>Quá khứ tiếp diễn</strong><br><span class="note">when, while, yesterday at 8pm, at [giờ cụ
+                  thể] yesterday</span></li>
+              <li><strong>Quá khứ hoàn thành</strong><br><span class="note">when, before, after, just, already</span>
+              </li>
+              <li><strong>Tương lai đơn / TD</strong><br><span class="note">tomorrow, today, later, in five minutes,
+                  next week/year, soon, someday → cuối câu<br>TL tiếp diễn: at this time tomorrow</span></li>
+              <li><strong>Tương lai hoàn thành / HTTD</strong><br><span class="note">by + mốc TL, by the time, by
+                  then/that time/next year, before</span></li>
+            </ul>
           </div>
         </div>
       </div>
-
-      <div class="callout info">
-        <span class="icon">🎯</span>
-        <div>
-          <strong>Quy tắc chọn Adj / Adv:</strong><br>
-          → Xét động từ gần nhất: nếu là <strong>to be</strong> → chọn <strong>Adj</strong>; nếu là <strong>Action verb</strong> → chọn <strong>Adv</strong>.<br>
-          <span style="margin-top:6px;display:block">Thứ tự trạng từ: <code>Adv – Verb – Adv – Adj – N – Adv</code></span>
-        </div>
-      </div>
-
-      <div class="sh">Cấu trúc đặc biệt</div>
-      <ul class="clean">
-        <li><code>so … that</code> &nbsp;/&nbsp; <code>too … to</code> &nbsp;/&nbsp; <code>enough + to V</code></li>
-      </ul>
-      <div class="example">He sings so <span class="em">beautifully</span> that she loves him. <span class="note">(chọn adv vì sau action verb "sing")</span></div>
     </div>
-  </div>
 
-  <!-- 5: LIÊN TỪ -->
-  <div class="slide" data-index="5">
-    <div class="card">
-      <div class="slide-label">Ngữ pháp · Slide 5</div>
-      <div class="slide-title">Liên từ (Conjunctions)</div>
-      <div class="slide-subtitle">FANBOYS · Phụ thuộc · Chuyển tiếp · Tương quan</div>
-      <div class="divider"></div>
+    <!-- 9: MỆNH ĐỀ QUAN HỆ -->
+    <div class="slide" data-index="9">
+      <div class="card">
+        <div class="slide-label">Ngữ pháp · Slide 9</div>
+        <div class="slide-title">Mệnh đề quan hệ</div>
+        <div class="slide-subtitle">Relative Clauses</div>
+        <div class="divider"></div>
 
-      <div class="grid-2">
-        <div class="box accent">
-          <div class="box-title" style="color:var(--accent)">FANBOYS — liên từ đẳng lập</div>
-          <div class="chips">
-            <span class="chip chip-accent">For</span><span class="chip chip-accent">And</span><span class="chip chip-accent">Nor</span>
-            <span class="chip chip-accent">But</span><span class="chip chip-accent">Or</span><span class="chip chip-accent">Yet</span><span class="chip chip-accent">So</span>
+        <div class="grid-2">
+          <div class="box blue">
+            <div class="box-title" style="color:var(--blue)">Chỉ Người</div>
+            <ul class="clean">
+              <li><code>who + V</code> <span class="note">→ chủ từ</span></li>
+              <li><code>who + S + V</code> <span class="note">→ túc từ</span></li>
+              <li><code>whom + S + V</code> <span class="note">→ túc từ (trang trọng)</span></li>
+              <li><code>whose + Noun</code> <span class="note">→ sở hữu</span></li>
+            </ul>
+            <div class="example" style="margin-top:10px">Tom filed a lawsuit against the neighbor <span class="em">who
+                had hit</span> him.</div>
+            <div class="example">She is the lady <span class="em">whom I met</span> yesterday.</div>
           </div>
-          <p style="font-size:.82rem;color:var(--text-muted);margin-top:8px">Phía trước và sau <strong>phải giống nhau</strong> về loại từ/mệnh đề.</p>
-        </div>
-        <div class="box blue">
-          <div class="box-title" style="color:var(--blue)">Liên từ tương quan</div>
-          <ul class="clean">
-            <li><code>both … and</code> / <code>and … both</code></li>
-            <li><code>not only … but also</code></li>
-            <li><code>either … or</code> <span class="note">(chủ động chọn)</span></li>
-            <li><code>neither … nor</code> <span class="note">(không cái nào)</span></li>
-            <li><code>whether … or</code> <span class="note">(bị động, không chọn)</span></li>
-            <li><code>not … but</code> / <code>only …, not</code></li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="sh" style="margin-top:16px">🔄 Trạng từ liên kết (Conjunctive Adverbs)</div>
-      <div class="tbl-wrap">
-        <table>
-          <thead><tr><th>Chức năng</th><th>Từ / cụm từ</th></tr></thead>
-          <tbody>
-            <tr><td class="header-col">Bổ sung</td><td>moreover, furthermore, in addition (to + V-ing/N), besides, additionally</td></tr>
-            <tr><td class="header-col">Tương đồng</td><td>similarly, likewise</td></tr>
-            <tr><td class="header-col">Tương phản</td><td>however, nevertheless, on the other hand, on the contrary, conversely, nonetheless, in/by contrast</td></tr>
-            <tr><td class="header-col">Nhượng bộ</td><td>certainly, even though, even if</td></tr>
-            <tr><td class="header-col">Kết quả</td><td>therefore, thus, hence, as a result, accordingly, as a consequence (+ of + N)</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-
-  <!-- 6: LIÊN TỪ PHỤ THUỘC & MỆNH ĐỀ -->
-  <div class="slide" data-index="6">
-    <div class="card">
-      <div class="slide-label">Ngữ pháp · Slide 6</div>
-      <div class="slide-title">Liên từ phụ thuộc & mệnh đề</div>
-      <div class="slide-subtitle">Subordinating Conjunctions</div>
-      <div class="divider"></div>
-
-      <div class="callout note">
-        <span class="icon">📌</span>
-        <span>Liên từ phụ thuộc có thể <strong>đứng đầu câu</strong> (có dấu phẩy) hoặc giữa câu. Mệnh đề phụ không thể đứng độc lập.</span>
-      </div>
-
-      <div class="tbl-wrap">
-        <table>
-          <thead><tr><th>Ý nghĩa</th><th>Liên từ</th></tr></thead>
-          <tbody>
-            <tr><td class="header-col">Thời gian</td><td>while, during, before, after, when, as soon as, until, for + N, as</td></tr>
-            <tr><td class="header-col">Nguyên nhân</td><td>because, since, as, because of, due to, owing to, on account of</td></tr>
-            <tr><td class="header-col">Mặc dù</td><td>although, even though, even if, despite, in spite of, with all</td></tr>
-            <tr><td class="header-col">Điều kiện</td><td>if, unless, provided that, as long as, in case</td></tr>
-            <tr><td class="header-col">Mục đích</td><td>so that, in order to, so as to</td></tr>
-            <tr><td class="header-col">Khác</td><td>whereas (tuy nhiên), rather than (hơn là), as if + S + V2/V-ing (như thể), otherwise (nếu không)</td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="sh">Các cụm đặc biệt</div>
-      <div class="formula">
-        <span class="kw">as soon/much as possible</span><br>
-        <span class="kw">no sooner … than</span> <span style="color:var(--text-muted)">vừa mới … thì (đảo ngữ)</span><br>
-        <span class="kw">rather than</span> / <span class="kw">would rather … than</span> = <span class="kw">prefer</span> <span style="color:var(--text-muted)">thích A hơn B</span><br>
-        <span class="kw">in order to</span> / <span class="kw">in regard to</span> / <span class="kw">as if + S + V₂/V-ing</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- 7: 12 THÌ - BẢNG -->
-  <div class="slide" data-index="7">
-    <div class="card">
-      <div class="slide-label">Ngữ pháp · Slide 7</div>
-      <div class="slide-title">12 Thì — Bảng tổng hợp</div>
-      <div class="slide-subtitle">Công thức & dấu hiệu nhận biết</div>
-      <div class="divider"></div>
-
-      <div class="callout warn">
-        <span class="icon">⚠️</span>
-        <span>Động từ <strong>tri giác & tri thức</strong> (see, hear, know, like, want, understand, think, smell, forget, love, hate, realize, seem, remember, taste, become…) chỉ dùng ở <strong>hiện tại đơn & quá khứ đơn</strong>, không dùng thì tiếp diễn.</span>
-      </div>
-      <div class="callout tip" style="margin-bottom:14px">
-        <span class="icon">💡</span>
-        <span>Không dùng <strong>will</strong> sau: <code>while, when, after, before, as soon as</code>.</span>
-      </div>
-
-      <div class="tbl-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Thì</th><th>Quá khứ</th><th>Hiện tại</th><th>Tương lai</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="header-col">Đơn</td>
-              <td>V2/ed (didn't)</td>
-              <td>V/V-s/es (don't/doesn't)</td>
-              <td>will + V₀ (won't)</td>
-            </tr>
-            <tr>
-              <td class="header-col">Tiếp diễn</td>
-              <td>was/were + V-ing</td>
-              <td>am/is/are + V-ing</td>
-              <td>will be + V-ing</td>
-            </tr>
-            <tr>
-              <td class="header-col">Hoàn thành</td>
-              <td>had + V3/ed</td>
-              <td>have/has + V3/ed</td>
-              <td>will have + V3/ed</td>
-            </tr>
-            <tr>
-              <td class="header-col">HTTD</td>
-              <td>had been + V-ing</td>
-              <td>has/have been + V-ing</td>
-              <td>will have been + V-ing</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-
-  <!-- 8: DẤU HIỆU NHẬN BIẾT THÌ -->
-  <div class="slide" data-index="8">
-    <div class="card">
-      <div class="slide-label">Ngữ pháp · Slide 8</div>
-      <div class="slide-title">Dấu hiệu nhận biết các thì</div>
-      <div class="slide-subtitle">Từ khóa thời gian theo từng thì</div>
-      <div class="divider"></div>
-
-      <div class="grid-2">
-        <div>
-          <div class="sh">⏰ Hiện tại</div>
-          <ul class="clean">
-            <li><strong>Hiện tại đơn</strong><br><span class="note">often, usually, frequently, always, constantly, sometimes, occasionally, seldom, rarely → trước ĐTC, sau tobe<br>everyday, monthly, weekly, once/twice a day/week → cuối câu</span></li>
-            <li><strong>Hiện tại tiếp diễn</strong><br><span class="note">now, at the moment, at this time, at present, currently → cuối câu<br>Câu mệnh lệnh: Be + adj</span></li>
-            <li><strong>Hiện tại hoàn thành</strong><br><span class="note">
-              Sau have/has: just, never, ever<br>
-              Cuối câu: lately, yet, for, since, so far, until now, up to now<br>
-              Cả hai vị trí: recently, already<br>
-              Đầu câu: It is the first/second time…
-            </span></li>
-          </ul>
-        </div>
-        <div>
-          <div class="sh">🕰 Quá khứ & Tương lai</div>
-          <ul class="clean">
-            <li><strong>Quá khứ đơn</strong><br><span class="note">last week/month/year, yesterday, ago, once, before, once upon a time, in + mốc QK → cuối câu</span></li>
-            <li><strong>Quá khứ tiếp diễn</strong><br><span class="note">when, while, yesterday at 8pm, at [giờ cụ thể] yesterday</span></li>
-            <li><strong>Quá khứ hoàn thành</strong><br><span class="note">when, before, after, just, already</span></li>
-            <li><strong>Tương lai đơn / TD</strong><br><span class="note">tomorrow, today, later, in five minutes, next week/year, soon, someday → cuối câu<br>TL tiếp diễn: at this time tomorrow</span></li>
-            <li><strong>Tương lai hoàn thành / HTTD</strong><br><span class="note">by + mốc TL, by the time, by then/that time/next year, before</span></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 9: MỆNH ĐỀ QUAN HỆ -->
-  <div class="slide" data-index="9">
-    <div class="card">
-      <div class="slide-label">Ngữ pháp · Slide 9</div>
-      <div class="slide-title">Mệnh đề quan hệ</div>
-      <div class="slide-subtitle">Relative Clauses</div>
-      <div class="divider"></div>
-
-      <div class="grid-2">
-        <div class="box blue">
-          <div class="box-title" style="color:var(--blue)">Chỉ Người</div>
-          <ul class="clean">
-            <li><code>who + V</code> <span class="note">→ chủ từ</span></li>
-            <li><code>who + S + V</code> <span class="note">→ túc từ</span></li>
-            <li><code>whom + S + V</code> <span class="note">→ túc từ (trang trọng)</span></li>
-            <li><code>whose + Noun</code> <span class="note">→ sở hữu</span></li>
-          </ul>
-          <div class="example" style="margin-top:10px">Tom filed a lawsuit against the neighbor <span class="em">who had hit</span> him.</div>
-          <div class="example">She is the lady <span class="em">whom I met</span> yesterday.</div>
-        </div>
-        <div class="box green">
-          <div class="box-title" style="color:var(--green)">Chỉ Vật</div>
-          <ul class="clean">
-            <li><code>which + V</code> <span class="note">→ chủ từ</span></li>
-            <li><code>which + S + V</code> <span class="note">→ túc từ</span></li>
-            <li><code>of which</code> <span class="note">→ sở hữu chỉ vật</span></li>
-          </ul>
-          <div class="example" style="margin-top:10px">I like <span class="em">the dog which is</span> barking.</div>
-        </div>
-      </div>
-
-      <div class="sh" style="margin-top:16px">📌 Quy đổi đặc biệt</div>
-      <div class="tbl-wrap">
-        <table>
-          <thead><tr><th>Thay thế</th><th>Nghĩa</th><th>Ví dụ</th></tr></thead>
-          <tbody>
-            <tr><td><code>that</code></td><td>Thay who/whom/which khi không có 3 đại từ trên</td><td>—</td></tr>
-            <tr><td><code>on/at which = when</code></td><td>Chỉ thời gian</td><td>the day <em>on which</em> / <em>when</em> she arrived</td></tr>
-            <tr><td><code>in which = where</code></td><td>Chỉ nơi chốn</td><td>a drawer <em>in which</em> / <em>where</em> I keep savings</td></tr>
-            <tr><td><code>for which = why</code></td><td>Chỉ lý do</td><td>the reason <em>for which</em> / <em>why</em> she left</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-
-  <!-- 10: SO SÁNH -->
-  <div class="slide" data-index="10">
-    <div class="card">
-      <div class="slide-label">Ngữ pháp · Slide 10</div>
-      <div class="slide-title">So sánh (Comparison)</div>
-      <div class="slide-subtitle">Bằng · Hơn · Nhất · Càng ngày càng</div>
-      <div class="divider"></div>
-
-      <div class="grid-2">
-        <div>
-          <div class="sh">= So sánh bằng / không bằng</div>
-          <div class="formula">
-            S + V + <span class="kw">as</span> + adj/adv + <span class="kw">as</span> + S<br>
-            S + V + <span class="kw">not so</span> + adj/adv + <span class="kw">as</span> + S<br>
-            <span class="kw">as many/much/few/little</span> + N + as<br>
-            <span class="kw">the same (N) + as</span>
-          </div>
-
-          <div class="sh">▲ So sánh hơn</div>
-          <div class="formula">
-            <span class="kw">short</span>-er + than<br>
-            <span class="kw">more</span> + long adj/adv + than<br>
-            <span class="kw">less</span> + adj/adv + than<br>
-            <span class="kw">more/less than</span> + noun
+          <div class="box green">
+            <div class="box-title" style="color:var(--green)">Chỉ Vật</div>
+            <ul class="clean">
+              <li><code>which + V</code> <span class="note">→ chủ từ</span></li>
+              <li><code>which + S + V</code> <span class="note">→ túc từ</span></li>
+              <li><code>of which</code> <span class="note">→ sở hữu chỉ vật</span></li>
+            </ul>
+            <div class="example" style="margin-top:10px">I like <span class="em">the dog which is</span> barking.</div>
           </div>
         </div>
-        <div>
-          <div class="sh">★ So sánh nhất</div>
-          <div class="formula">
-            the + <span class="kw">short</span>-est<br>
-            the + <span class="kw">most</span> + long adj/adv<br>
-            the + <span class="kw">least</span> + adj/adv
-          </div>
 
-          <div class="sh">📈 Càng ngày càng</div>
-          <div class="formula">
-            ...<span class="kw">-er and -er</span> (short adj)<br>
-            <span class="kw">more and more</span> + adj/adv<br>
-            <span class="kw">less and less</span> + adj/adv<br>
-            <span class="kw">The</span> + [comp] + S+V, <span class="kw">the</span> + [comp] + S+V
-          </div>
-          <div class="example">The older he is, the <span class="em">more handsome</span> he becomes.</div>
+        <div class="sh" style="margin-top:16px">📌 Quy đổi đặc biệt</div>
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Thay thế</th>
+                <th>Nghĩa</th>
+                <th>Ví dụ</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>that</code></td>
+                <td>Thay who/whom/which khi không có 3 đại từ trên</td>
+                <td>—</td>
+              </tr>
+              <tr>
+                <td><code>on/at which = when</code></td>
+                <td>Chỉ thời gian</td>
+                <td>the day <em>on which</em> / <em>when</em> she arrived</td>
+              </tr>
+              <tr>
+                <td><code>in which = where</code></td>
+                <td>Chỉ nơi chốn</td>
+                <td>a drawer <em>in which</em> / <em>where</em> I keep savings</td>
+              </tr>
+              <tr>
+                <td><code>for which = why</code></td>
+                <td>Chỉ lý do</td>
+                <td>the reason <em>for which</em> / <em>why</em> she left</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
-
-      <div class="sh">Cụm đặc biệt</div>
-      <div class="chips">
-        <span class="chip chip-accent">no later than</span><span class="note" style="font-size:.78rem;align-self:center">không trễ hơn (trước thời gian)</span>
-        <span class="chip chip-blue">no longer</span><span class="note" style="font-size:.78rem;align-self:center">không còn nữa</span>
-        <span class="chip chip-green">other than</span><span class="note" style="font-size:.78rem;align-self:center">ngoại trừ</span>
-        <span class="chip chip-purple">would rather … than</span><span class="note" style="font-size:.78rem;align-self:center">thích A hơn B</span>
-      </div>
-      <div class="callout tip" style="margin-top:10px">
-        <span class="icon">💡</span>
-        <span><strong>Note:</strong> Sau to be → adj, không dùng adv. &nbsp;|&nbsp; <code>just / nearly / not quite / half / twice / three times + as … as</code></span>
-      </div>
     </div>
-  </div>
 
-  <!-- 11: CÂU ĐIỀU KIỆN & SONG HÀNH -->
-  <div class="slide" data-index="11">
-    <div class="card">
-      <div class="slide-label">Ngữ pháp · Slide 11</div>
-      <div class="slide-title">Câu điều kiện & Song hành</div>
-      <div class="slide-subtitle">Conditionals · Parallelism</div>
-      <div class="divider"></div>
+    <!-- 10: SO SÁNH -->
+    <div class="slide" data-index="10">
+      <div class="card">
+        <div class="slide-label">Ngữ pháp · Slide 10</div>
+        <div class="slide-title">So sánh (Comparison)</div>
+        <div class="slide-subtitle">Bằng · Hơn · Nhất · Càng ngày càng</div>
+        <div class="divider"></div>
 
-      <div class="tbl-wrap">
-        <table>
-          <thead>
-            <tr><th>Loại</th><th>Mệnh đề IF</th><th>Mệnh đề chính</th><th>Đảo ngữ</th></tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="header-col">Loại 1<br><span style="font-size:.75rem;color:var(--text-muted)">Sự thật HT/QK</span></td>
-              <td>If + S + V₀/Vs/es</td>
-              <td>S + will/can/may + V₀</td>
-              <td><code>Should + S …</code></td>
-            </tr>
-            <tr>
-              <td class="header-col">Loại 2<br><span style="font-size:.75rem;color:var(--text-muted)">Không có thật HT</span></td>
-              <td>If + S + V2/ed<br><em>(tobe → were)</em></td>
-              <td>S + would/could/should + V₀</td>
-              <td><code>Were + S …</code></td>
-            </tr>
-            <tr>
-              <td class="header-col">Loại 3<br><span style="font-size:.75rem;color:var(--text-muted)">Không có thật QK</span></td>
-              <td>If + S + had + V3/ed</td>
-              <td>S + would/could/should + have + V3/ed</td>
-              <td><code>Had + S …</code></td>
-            </tr>
-            <tr>
-              <td class="header-col">Loại 4<br><span style="font-size:.75rem;color:var(--text-muted)">Hỗn hợp 2+3</span></td>
-              <td>If + S + had + V3/ed</td>
-              <td>S + would/could/should + V₁</td>
-              <td>—</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+        <div class="grid-2">
+          <div>
+            <div class="sh">= So sánh bằng / không bằng</div>
+            <div class="formula">
+              S + V + <span class="kw">as</span> + adj/adv + <span class="kw">as</span> + S<br>
+              S + V + <span class="kw">not so</span> + adj/adv + <span class="kw">as</span> + S<br>
+              <span class="kw">as many/much/few/little</span> + N + as<br>
+              <span class="kw">the same (N) + as</span>
+            </div>
 
-      <div class="sh" style="margin-top:20px">⚖️ Song hành (Parallelism)</div>
-      <div class="callout note">
-        <span class="icon">📐</span>
-        <div>
-          Phía trước và sau <code>and / or / but</code> luôn phải <strong>cùng loại từ / cùng cấu trúc</strong>.<br>
-          <span style="margin-top:6px;display:block">Ví dụ: She likes <span style="color:var(--accent)">swimming</span>, <span style="color:var(--accent)">running</span>, and <span style="color:var(--accent)">dancing</span>. ✅</span>
-          <span>She likes <span style="color:var(--red)">swim</span>, <span style="color:var(--red)">running</span>, and <span style="color:var(--red)">to dance</span>. ❌</span>
+            <div class="sh">▲ So sánh hơn</div>
+            <div class="formula">
+              <span class="kw">short</span>-er + than<br>
+              <span class="kw">more</span> + long adj/adv + than<br>
+              <span class="kw">less</span> + adj/adv + than<br>
+              <span class="kw">more/less than</span> + noun
+            </div>
+          </div>
+          <div>
+            <div class="sh">★ So sánh nhất</div>
+            <div class="formula">
+              the + <span class="kw">short</span>-est<br>
+              the + <span class="kw">most</span> + long adj/adv<br>
+              the + <span class="kw">least</span> + adj/adv
+            </div>
+
+            <div class="sh">📈 Càng ngày càng</div>
+            <div class="formula">
+              ...<span class="kw">-er and -er</span> (short adj)<br>
+              <span class="kw">more and more</span> + adj/adv<br>
+              <span class="kw">less and less</span> + adj/adv<br>
+              <span class="kw">The</span> + [comp] + S+V, <span class="kw">the</span> + [comp] + S+V
+            </div>
+            <div class="example">The older he is, the <span class="em">more handsome</span> he becomes.</div>
+          </div>
+        </div>
+
+        <div class="sh">Cụm đặc biệt</div>
+        <div class="chips">
+          <span class="chip chip-accent">no later than</span><span class="note"
+            style="font-size:.78rem;align-self:center">không trễ hơn (trước thời gian)</span>
+          <span class="chip chip-blue">no longer</span><span class="note"
+            style="font-size:.78rem;align-self:center">không còn nữa</span>
+          <span class="chip chip-green">other than</span><span class="note"
+            style="font-size:.78rem;align-self:center">ngoại trừ</span>
+          <span class="chip chip-purple">would rather … than</span><span class="note"
+            style="font-size:.78rem;align-self:center">thích A hơn B</span>
+        </div>
+        <div class="callout tip" style="margin-top:10px">
+          <span class="icon">💡</span>
+          <span><strong>Note:</strong> Sau to be → adj, không dùng adv. &nbsp;|&nbsp;
+            <code>just / nearly / not quite / half / twice / three times + as … as</code></span>
         </div>
       </div>
-
-      <div class="sh">Cấu trúc điều kiện phó từ khác</div>
-      <ul class="clean">
-        <li><code>while / during / for + N</code> → chỉ thời gian</li>
-        <li><code>because of / due to / owing to / on account of</code> → nguyên nhân</li>
-        <li><code>despite / in spite of / with all</code> → mặc dù</li>
-        <li><code>although / even though / even if</code> → mặc dù (dùng S+V)</li>
-      </ul>
     </div>
+
+    <!-- 11: CÂU ĐIỀU KIỆN & SONG HÀNH -->
+    <div class="slide" data-index="11">
+      <div class="card">
+        <div class="slide-label">Ngữ pháp · Slide 11</div>
+        <div class="slide-title">Câu điều kiện & Song hành</div>
+        <div class="slide-subtitle">Conditionals · Parallelism</div>
+        <div class="divider"></div>
+
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Loại</th>
+                <th>Mệnh đề IF</th>
+                <th>Mệnh đề chính</th>
+                <th>Đảo ngữ</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="header-col">Loại 1<br><span style="font-size:.75rem;color:var(--text-muted)">Sự thật
+                    HT/QK</span></td>
+                <td>If + S + V₀/Vs/es</td>
+                <td>S + will/can/may + V₀</td>
+                <td><code>Should + S …</code></td>
+              </tr>
+              <tr>
+                <td class="header-col">Loại 2<br><span style="font-size:.75rem;color:var(--text-muted)">Không có thật
+                    HT</span></td>
+                <td>If + S + V2/ed<br><em>(tobe → were)</em></td>
+                <td>S + would/could/should + V₀</td>
+                <td><code>Were + S …</code></td>
+              </tr>
+              <tr>
+                <td class="header-col">Loại 3<br><span style="font-size:.75rem;color:var(--text-muted)">Không có thật
+                    QK</span></td>
+                <td>If + S + had + V3/ed</td>
+                <td>S + would/could/should + have + V3/ed</td>
+                <td><code>Had + S …</code></td>
+              </tr>
+              <tr>
+                <td class="header-col">Loại 4<br><span style="font-size:.75rem;color:var(--text-muted)">Hỗn hợp
+                    2+3</span></td>
+                <td>If + S + had + V3/ed</td>
+                <td>S + would/could/should + V₁</td>
+                <td>—</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="sh" style="margin-top:20px">⚖️ Song hành (Parallelism)</div>
+        <div class="callout note">
+          <span class="icon">📐</span>
+          <div>
+            Phía trước và sau <code>and / or / but</code> luôn phải <strong>cùng loại từ / cùng cấu trúc</strong>.<br>
+            <span style="margin-top:6px;display:block">Ví dụ: She likes <span
+                style="color:var(--accent)">swimming</span>, <span style="color:var(--accent)">running</span>, and <span
+                style="color:var(--accent)">dancing</span>. ✅</span>
+            <span>She likes <span style="color:var(--red)">swim</span>, <span style="color:var(--red)">running</span>,
+              and <span style="color:var(--red)">to dance</span>. ❌</span>
+          </div>
+        </div>
+
+        <div class="sh">Cấu trúc điều kiện phó từ khác</div>
+        <ul class="clean">
+          <li><code>while / during / for + N</code> → chỉ thời gian</li>
+          <li><code>because of / due to / owing to / on account of</code> → nguyên nhân</li>
+          <li><code>despite / in spite of / with all</code> → mặc dù</li>
+          <li><code>although / even though / even if</code> → mặc dù (dùng S+V)</li>
+        </ul>
+      </div>
+    </div>
+
+  </div><!-- /slides-wrapper -->
+
+  <!-- BOTTOM NAV -->
+  <div id="bottom-nav">
+    <button class="nav-arrow secondary" id="btn-prev">← Trước</button>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progress-fill"></div>
+    </div>
+    <button class="nav-arrow" id="btn-next">Tiếp →</button>
   </div>
 
-</div><!-- /slides-wrapper -->
+  <script>
+    const slides = document.querySelectorAll('.slide');
+    const total = slides.length;
+    let current = 0;
 
-<!-- BOTTOM NAV -->
-<div id="bottom-nav">
-  <button class="nav-arrow secondary" id="btn-prev">← Trước</button>
-  <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
-  <button class="nav-arrow" id="btn-next">Tiếp →</button>
-</div>
+    const navDots = document.getElementById('nav-dots');
+    const counter = document.getElementById('counter');
+    const progressFill = document.getElementById('progress-fill');
 
-<script>
-  const slides = document.querySelectorAll('.slide');
-  const total = slides.length;
-  let current = 0;
+    const labels = ['Cover', 'Danh từ', 'Tính/Trạng/ĐT', 'Lượng & Giới từ', 'Vị trí từ', 'Liên từ', 'Liên từ PH', '12 Thì', 'Dấu hiệu', 'M.đề QH', 'So sánh', 'Điều kiện'];
 
-  const navDots = document.getElementById('nav-dots');
-  const counter = document.getElementById('counter');
-  const progressFill = document.getElementById('progress-fill');
+    labels.forEach((l, i) => {
+      const b = document.createElement('button');
+      b.className = 'nav-btn' + (i === 0 ? ' active' : '');
+      b.textContent = l;
+      b.addEventListener('click', () => goTo(i));
+      navDots.appendChild(b);
+    });
 
-  const labels = ['Cover','Danh từ','Tính/Trạng/ĐT','Lượng & Giới từ','Vị trí từ','Liên từ','Liên từ PH','12 Thì','Dấu hiệu','M.đề QH','So sánh','Điều kiện'];
+    function goTo(idx) {
+      slides[current].classList.remove('active');
+      navDots.children[current].classList.remove('active');
+      current = Math.max(0, Math.min(total - 1, idx));
+      slides[current].classList.add('active');
+      navDots.children[current].classList.add('active');
+      counter.textContent = `${current + 1} / ${total}`;
+      progressFill.style.width = ((current + 1) / total * 100) + '%';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
 
-  labels.forEach((l, i) => {
-    const b = document.createElement('button');
-    b.className = 'nav-btn' + (i === 0 ? ' active' : '');
-    b.textContent = l;
-    b.addEventListener('click', () => goTo(i));
-    navDots.appendChild(b);
-  });
+    document.getElementById('btn-prev').addEventListener('click', () => goTo(current - 1));
+    document.getElementById('btn-next').addEventListener('click', () => goTo(current + 1));
 
-  function goTo(idx) {
-    slides[current].classList.remove('active');
-    navDots.children[current].classList.remove('active');
-    current = Math.max(0, Math.min(total - 1, idx));
-    slides[current].classList.add('active');
-    navDots.children[current].classList.add('active');
-    counter.textContent = `${current + 1} / ${total}`;
-    progressFill.style.width = ((current + 1) / total * 100) + '%';
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') goTo(current + 1);
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') goTo(current - 1);
+    });
 
-  document.getElementById('btn-prev').addEventListener('click', () => goTo(current - 1));
-  document.getElementById('btn-next').addEventListener('click', () => goTo(current + 1));
-
-  document.addEventListener('keydown', e => {
-    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') goTo(current + 1);
-    if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   goTo(current - 1);
-  });
-
-  // init
-  goTo(0);
-</script>
+    // init
+    goTo(0);
+  </script>
 </body>
+
 </html>
