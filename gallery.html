@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StayZ — Gallery màn hình</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #F5F0E8;
+      font-family: 'Georgia', serif;
+      color: #2C2319;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 260px;
+      height: 100vh;
+      background: #1E1813;
+      padding: 36px 28px;
+      z-index: 100;
+      overflow-y: auto;
+    }
+
+    .sidebar-brand {
+      margin-bottom: 6px;
+    }
+
+    .sidebar-brand a {
+      display: inline-block;
+      text-decoration: none;
+    }
+
+    .sidebar-sub {
+      font-size: 12px;
+      color: #6B5E4E;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      font-family: 'Arial', sans-serif;
+      margin-bottom: 40px;
+    }
+
+    .sidebar-section {
+      font-size: 20px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: white;
+      margin: 24px 0 10px;
+    }
+
+    .sidebar a {
+      display: block;
+      font-size: 20px;
+      color: #A89880;
+      text-decoration: none;
+      padding: 20px 0;
+      font-family: 'Arial', sans-serif;
+      transition: color 0.2s;
+    }
+
+    .sidebar a:hover,
+    .sidebar a.active {
+      color: #8B3A3A;
+    }
+
+    .main {
+      margin-left: 260px;
+      padding: 60px 60px 100px;
+    }
+
+    .page-header {
+      margin-bottom: 60px;
+      padding-bottom: 40px;
+      border-bottom: 1px solid #DDD5C8;
+    }
+
+    .page-eyebrow {
+      font-size: 13px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: #8B3A3A;
+      margin-bottom: 16px;
+      font-family: 'Arial', sans-serif;
+    }
+
+    .page-title {
+      font-size: 52px;
+      font-weight: 400;
+      color: #1E1813;
+      line-height: 1.15;
+      margin-bottom: 14px;
+    }
+
+    .page-desc {
+      font-size: 18px;
+      color: #6B5E4E;
+      font-family: 'Arial', sans-serif;
+      font-weight: 300;
+    }
+
+    .section {
+      margin-bottom: 80px;
+    }
+
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .section-num {
+      font-size: 13px;
+      letter-spacing: 2px;
+      color: #8B3A3A;
+      font-family: 'Arial', sans-serif;
+    }
+
+    .section-title {
+      font-size: 24px;
+      font-weight: 400;
+      color: #1E1813;
+    }
+
+    .section-line {
+      flex: 1;
+      height: 0.5px;
+      background: #DDD5C8;
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 11px;
+      background: #8B3A3A22;
+      color: #8B3A3A;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-family: 'Arial', sans-serif;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 28px;
+    }
+
+    .card {
+      background: #FDFAF6;
+      border: 0.5px solid #DDD5C8;
+      border-radius: 16px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(30, 24, 19, 0.10);
+    }
+
+    .card-img {
+      width: 100%;
+      aspect-ratio: 9/19;
+      object-fit: cover;
+      object-position: top;
+      display: block;
+      background: #EDE8DF;
+    }
+
+    .card-body {
+      padding: 18px 20px;
+      border-top: 0.5px solid #EDE8DF;
+    }
+
+    .card-name {
+      font-size: 16px;
+      font-weight: 500;
+      color: #2C2319;
+      font-family: 'Arial', sans-serif;
+      margin-bottom: 4px;
+    }
+
+    .card-tag {
+      display: inline-block;
+      font-size: 12px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #8B3A3A;
+      font-family: 'Arial', sans-serif;
+    }
+
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(20, 15, 10, 0.88);
+      z-index: 999;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+    }
+
+    .lightbox.open {
+      display: flex;
+    }
+
+    .lightbox-content {
+      position: relative;
+      max-height: 92vh;
+      max-width: 480px;
+      width: 100%;
+    }
+
+    .lightbox-content img {
+      width: 100%;
+      max-height: 86vh;
+      object-fit: contain;
+      border-radius: 10px;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: -44px;
+      right: 0;
+      background: none;
+      border: none;
+      color: #F5F0E8;
+      font-size: 28px;
+      cursor: pointer;
+      font-family: 'Arial', sans-serif;
+      opacity: 0.7;
+      transition: opacity 0.2s;
+    }
+
+    .lightbox-close:hover {
+      opacity: 1;
+    }
+
+    .lightbox-label {
+      text-align: center;
+      margin-top: 16px;
+      font-size: 15px;
+      color: #A89880;
+      font-family: 'Arial', sans-serif;
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav class="sidebar">
+    <div class="sidebar-brand">
+      <div onclick="window.location.href='./StayZ-Design-System.html'" style="display:inline-block;cursor:pointer;">
+        <svg width="80" height="80" viewBox="-88 -88 176 176" xmlns="http://www.w3.org/2000/svg" style="display:block;">
+          <circle cx="0" cy="0" r="88" fill="#F5F0E8" />
+          <circle cx="0" cy="0" r="82" fill="none" stroke="#1E1813" stroke-width="1" />
+          <circle cx="0" cy="0" r="74" fill="none" stroke="#1E1813" stroke-width="0.5" stroke-dasharray="3,4" />
+          <text x="0" y="-28" text-anchor="middle" font-family="Georgia,serif" font-size="44" font-weight="700"
+            fill="#1E1813" letter-spacing="-1">S</text>
+          <text x="20" y="-28" text-anchor="middle" font-family="Georgia,serif" font-size="44" font-weight="700"
+            fill="#8B3A3A" letter-spacing="-1">Z</text>
+          <text x="0" y="6" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#6B5E4E"
+            letter-spacing="6">ステイ</text>
+          <line x1="-36" y1="18" x2="36" y2="18" stroke="#1E1813" stroke-width="0.5" />
+          <text x="0" y="34" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" fill="#6B5E4E"
+            letter-spacing="3">DESIGN SYSTEM</text>
+        </svg>
+      </div>
+    </div>
+    <div class="sidebar-section">Màn hình</div>
+    <a href="#onboarding" class="active">Giới thiệu</a>
+    <a href="#auth">Đăng nhập / Ký</a>
+    <a href="#home">Trang chủ</a>
+    <a href="#search">Tìm kiếm</a>
+    <a href="#filter">Bộ lọc</a>
+    <a href="#rooms">Danh sách phòng</a>
+    <a href="#booking">Đặt phòng</a>
+    <a href="#payment">Thanh toán</a>
+    <a href="#profile">Cá nhân</a>
+  </nav>
+
+  <main class="main">
+
+    <div class="page-header">
+      <div class="page-eyebrow">App Design · Japanese Aesthetic</div>
+      <h1 class="page-title">StayZ — Màn hình</h1>
+      <p class="page-desc">Gallery tất cả màn hình thiết kế · Flutter / Dart · Tiếng Việt</p>
+    </div>
+
+    <section class="section" id="onboarding">
+      <div class="section-label">
+        <span class="section-num">01</span>
+        <h2 class="section-title">Giới thiệu</h2>
+        <div class="section-line"></div>
+        <span class="badge">3 màn</span>
+      </div>
+      <div class="grid">
+        <div class="card" onclick="openLightbox('img/man gioi thieu 1.png', 'Giới thiệu 1')">
+          <img class="card-img" src="img/man gioi thieu 1.png" alt="Màn giới thiệu 1" loading="lazy">
+          <div class="card-body">
+            <div class="card-name">Giới thiệu 1</div><span class="card-tag">Onboarding</span>
+          </div>
+        </div>
+        <div class="card" onclick="openLightbox('img/man gioi thieu 2.png', 'Giới thiệu 2')">
+          <img class="card-img" src="img/man gioi thieu 2.png" alt="Màn giới thiệu 2" loading="lazy">
+          <div class="card-body">
+            <div class="card-name">Giới thiệu 2</div><span class="card-tag">Onboarding</span>
+          </div>
+        </div>
+        <div class="card" onclick="openLightbox('img/man gioi thieu 3.png', 'Giới thiệu 3')">
+          <img class="card-img" src="img/man gioi thieu 3.png" alt="Màn giới thiệu 3" loading="lazy">
+          <div class="card-body">
+            <div class="card-name">Giới thiệu 3</div><span class="card-tag">Onboarding</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="auth">
+      <div class="section-label">
+        <span class="section-num">02</span>
+        <h2 class="section-title">Xác thực</h2>
+        <div class="section-line"></div>
+        <span class="badge">3 màn</span>
+      </div>
+      <div class="grid">
+        <div class="card" onclick="openLightbox('img/màn hình chào ban đầu.png', 'Màn chào ban đầu')">
+          <img class="card-img" src="img/màn hình chào ban đầu.png" alt="Màn chào" loading="lazy">
+          <div class="card-body">
+            <div class="card-name">Màn chào ban đầu</div><span class="card-tag">Splash</span>
+          </div>
+        </div>
+        <div class="card" onclick="openLightbox('img/man hinh dang nhap.png', 'Đăng nhập')">
+          <img class="card-img" src="img/man hinh dang nhap.png" alt="Đăng nhập" loading="lazy">
+          <div class="card-body">
+            <div class="card-name">Đăng nhập</div><span class="card-tag">Auth</span>
+          </div>
+        </div>
+        <div class="card" onclick="openLightbox('img/màn hình đăng ký.png', 'Đăng ký')">
+          <img class="card-img" src="img/màn hình đăng ký.png" alt="Đăng ký" loading="lazy">
+          <div class="card-body">
+            <div class="card-name">Đăng ký</div><span class="card-tag">Auth</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="home">
+      <div class="section-label">
+        <span class="section-num">03</span>
+        <h2 class="section-title">Trang chủ</h2>
+        <div class="section-line"></div>
+        <span class="badge">2 màn</span>
+      </div>
+      <div class="grid">
+        <div class="card" onclick="openLightbox('img/home page.png', 'Home page')">
+          <img class="card-img" src="img/home page.png" alt="Home page" loading="lazy">
+          <div class="card-body">
+            <div class="card-name">Home page</div><span class="card-tag">Home</span>
+          </div>
+        </div>
+        <div class="card" onclick="openLightbox('img/home page v2.png', 'Home page v2')">
+          <img class="card-img" src="img/home page v2.png" alt="Home page v2" loading="lazy">
+          <div class="card-body">
+            <div class="card-name">Home page v2</div><span class="card-tag">Home</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="search">
+      <div class="section-label">
+        <span class="section-num">04</span>
+        <h2 class="section-title">Tìm kiếm</h2>
+        <div class="section-line"></div>
+        <span class="badge">1 màn</span>
+      </div>
+      <div class="grid">
+        <div class="card" onclick="openLightbox('img/tim kiem.png', 'Tìm kiếm')">
+          <img class="card-img" src="img/tim kiem.png" alt="Tìm kiếm" loading="lazy">
+          <div class="card-body">
+            <div class="card-name">Tìm kiếm</div><span class="card-tag">Search</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="filter">
+      <div class="section-label">
+        <span class="section-num">05</span>
+        <h2 class="section-title">Bộ lọc</h2>
+        <div class="section-line"></div>
+        <span class="badge">2 màn</span>
+      </div>
+      <div class="grid">
+        <div class="card" onclick="openLightbox('img/screen-bộ-lọc.png', 'Bộ lọc')">
+          <img class="card-img" src="img/screen-bộ-lọc.png" alt="Bộ lọc" loading="lazy">
+          <div class="card-body">
+            <div class="card-name">Bộ lọc</div><span class="card-tag">Filter</span>
+          </div>
+        </div>
+        <div class="card" onclick="openLightbox('img/screen-bộ-lọc_v2.png', 'Bộ lọc v2')">
+          <img class="card-img" src="img/screen-bộ-lọc_v2.png" alt="Bộ lọc v2" loading="lazy">
+          <div class="card-body">
+            <div class="card-name">Bộ lọc v2</div><span class="card-tag">Filter</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="rooms">
+      <div class="section-label">
+        <span class="section-num">06</span>
+        <h2 class="section-title">Danh sách phòng</h2>
+        <div class="section-line"></div>
+        <span class="badge">2 màn</span>
+      </div>
+      <div class="grid">
+        <div class="card" onclick="openLightbox('img/danh sach phong da dat v2.png', 'Danh sách phòng v2')">
+          <img class="card-img" src="img/danh sach phong da dat v2.png" alt="Danh sách phòng v2" loading="lazy">
+          <div class="card-body">
+            <div class="card-name">Danh sách phòng v2</div><span class="card-tag">Rooms</span>
+          </div>
+        </div>
+        <div class="card" onclick="openLightbox('img/danh sách phòng đã đặt.png', 'Phòng đã đặt')">
+          <img class="card-img" src="img/danh sách phòng đã đặt.png" alt="Danh sách đã đặt" loading="lazy">
+          <div class="card-body">
+            <div class="card-name">Phòng đã đặt</div><span class="card-tag">Rooms</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="booking">
+      <div class="section-label">
+        <span class="section-num">07</span>
+        <h2 class="section-title">Chọn phòng</h2>
+        <div class="section-line"></div>
+        <span class="badge">1 màn</span>
+      </div>
+      <div class="grid">
+        <div class="card" onclick="openLightbox('img/chọn phòng.png', 'Chọn phòng')">
+          <img class="card-img" src="img/chọn phòng.png" alt="Chọn phòng" loading="lazy">
+          <div class="card-body">
+            <div class="card-name">Chọn phòng</div><span class="card-tag">Booking</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="payment">
+      <div class="section-label">
+        <span class="section-num">08</span>
+        <h2 class="section-title">Thanh toán</h2>
+        <div class="section-line"></div>
+        <span class="badge">1 màn</span>
+      </div>
+      <div class="grid">
+        <div class="card" onclick="openLightbox('img/thanh toan .png', 'Thanh toán')">
+          <img class="card-img" src="img/thanh toan .png" alt="Thanh toán" loading="lazy">
+          <div class="card-body">
+            <div class="card-name">Thanh toán</div><span class="card-tag">Payment</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="profile">
+      <div class="section-label">
+        <span class="section-num">09</span>
+        <h2 class="section-title">Thông tin cá nhân</h2>
+        <div class="section-line"></div>
+        <span class="badge">1 màn</span>
+      </div>
+      <div class="grid">
+        <div class="card" onclick="openLightbox('img/thong tin ca nhan.png', 'Thông tin cá nhân')">
+          <img class="card-img" src="img/thong tin cá nhan.png" alt="Thông tin cá nhân" loading="lazy">
+          <div class="card-body">
+            <div class="card-name">Thông tin cá nhân</div><span class="card-tag">Profile</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+    <div class="lightbox-content">
+      <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+      <img id="lightbox-img" src="" alt="">
+      <div class="lightbox-label" id="lightbox-label"></div>
+    </div>
+  </div>
+
+  <script>
+    function openLightbox(src, label) {
+      document.getElementById('lightbox-img').src = src;
+      document.getElementById('lightbox-label').textContent = label;
+      document.getElementById('lightbox').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox(e) {
+      if (!e || e.target === document.getElementById('lightbox') || e.target.classList.contains('lightbox-close')) {
+        document.getElementById('lightbox').classList.remove('open');
+        document.body.style.overflow = '';
+      }
+    }
+
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+    document.querySelectorAll('.sidebar a').forEach(link => {
+      link.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active'));
+        this.classList.add('active');
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+
+    const sections = document.querySelectorAll('section[id]');
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(s => { if (window.scrollY >= s.offsetTop - 120) current = s.id; });
+      document.querySelectorAll('.sidebar a').forEach(a => {
+        a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+      });
+    });
+  </script>
+
+</body>
+
+</html>
