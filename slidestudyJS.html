@@ -1,0 +1,3103 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>JavaScript — Học Từ Đầu</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&display=swap"
+        rel="stylesheet" />
+    <style>
+        /* ═══════════════════════════════════════
+   DESIGN TOKENS
+═══════════════════════════════════════ */
+        :root {
+            --bg: #080810;
+            --sur: #0f0f1a;
+            --pan: #13131e;
+            --pan2: #1a1a28;
+            --bdr: rgba(255, 255, 255, .06);
+            --bdr2: rgba(255, 255, 255, .1);
+            --js: #f7df1e;
+            /* JS brand yellow — signature */
+            --pur: #7c3aed;
+            --pur-l: #a78bfa;
+            --cyn: #22d3ee;
+            --cyn-l: #67e8f9;
+            --grn: #34d399;
+            --grn-l: #6ee7b7;
+            --red: #f87171;
+            --gold: #fbbf24;
+            --txt: #e2e8f0;
+            --dim: #94a3b8;
+            --muted: #475569;
+            --g1: linear-gradient(135deg, #7c3aed, #22d3ee);
+            --g2: linear-gradient(135deg, #34d399, #22d3ee);
+            --g3: linear-gradient(135deg, #f7df1e, #f59e0b);
+            --g4: linear-gradient(135deg, #7c3aed, #ec4899);
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
+        html,
+        body {
+            height: 100%;
+            overflow: hidden;
+            background: var(--bg);
+            color: var(--txt);
+            font-family: 'Inter', sans-serif;
+            font-size: 15px;
+            line-height: 1.6
+        }
+
+        /* ═══════════════════════════════════════
+   SLIDE ENGINE
+═══════════════════════════════════════ */
+        .deck {
+            width: 100vw;
+            height: 100vh;
+            position: relative
+        }
+
+        .slide {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .38s cubic-bezier(.4, 0, .2, 1), transform .38s cubic-bezier(.4, 0, .2, 1);
+            transform: translateX(40px);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .slide.active {
+            opacity: 1;
+            pointer-events: all;
+            transform: translateX(0)
+        }
+
+        .slide.exit {
+            opacity: 0;
+            transform: translateX(-40px)
+        }
+
+        /* Background orbs */
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(110px);
+            opacity: .13;
+            pointer-events: none;
+            z-index: 0
+        }
+
+        /* ═══════════════════════════════════════
+   CHAPTER SIDEBAR — signature element
+═══════════════════════════════════════ */
+        .chapter-bar {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: var(--js);
+            box-shadow: 0 0 20px rgba(247, 223, 30, .4);
+        }
+
+        /* ═══════════════════════════════════════
+   NAVIGATION
+═══════════════════════════════════════ */
+        .nav {
+            position: fixed;
+            bottom: 1.8rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: .8rem;
+            background: rgba(13, 13, 22, .9);
+            border: 1px solid var(--bdr2);
+            border-radius: 3rem;
+            padding: .55rem 1.2rem;
+            backdrop-filter: blur(24px);
+            z-index: 9999;
+            box-shadow: 0 0 40px rgba(124, 58, 237, .15), 0 8px 32px rgba(0, 0, 0, .4);
+        }
+
+        .nav-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--muted);
+            font-size: 1rem;
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            transition: color .18s, background .18s;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .nav-btn:hover {
+            color: var(--txt);
+            background: rgba(255, 255, 255, .06)
+        }
+
+        .dot-row {
+            display: flex;
+            gap: .35rem;
+            align-items: center
+        }
+
+        .dot {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: var(--muted);
+            cursor: pointer;
+            transition: background .2s, transform .2s, width .2s;
+        }
+
+        .dot.on {
+            background: var(--js);
+            transform: scale(1.5);
+            width: 12px;
+            border-radius: 3px;
+        }
+
+        .slide-ctr {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .65rem;
+            color: var(--muted);
+            min-width: 3.5rem;
+            text-align: center;
+        }
+
+        .progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 2px;
+            background: var(--g3);
+            z-index: 9999;
+            transition: width .35s
+        }
+
+        /* ═══════════════════════════════════════
+   MODULE TAG — top-left label
+═══════════════════════════════════════ */
+        .mod-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: .4rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .62rem;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: .55rem;
+        }
+
+        .mod-tag .pip {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: var(--js)
+        }
+
+        /* ═══════════════════════════════════════
+   SLIDE INNER / LAYOUT
+═══════════════════════════════════════ */
+        .si {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 2.8rem 4rem 5rem 4.5rem;
+            max-width: 1120px;
+            margin: 0 auto;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+        }
+
+        .si.centered {
+            justify-content: center
+        }
+
+        .slide-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(1.6rem, 3vw, 2.3rem);
+            font-weight: 800;
+            letter-spacing: -.03em;
+            line-height: 1.1;
+            margin-bottom: .35rem;
+        }
+
+        .slide-title .hi {
+            background: var(--g3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .slide-title .hi2 {
+            background: var(--g1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .slide-subtitle {
+            font-size: .9rem;
+            color: var(--dim);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            max-width: 660px;
+        }
+
+        /* ═══════════════════════════════════════
+   CODE BLOCKS
+═══════════════════════════════════════ */
+        .code-wrap {
+            background: var(--sur);
+            border: 1px solid var(--bdr2);
+            border-radius: .6rem;
+            overflow: hidden;
+        }
+
+        .code-top {
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+            padding: .55rem .9rem;
+            border-bottom: 1px solid var(--bdr);
+        }
+
+        .code-dots {
+            display: flex;
+            gap: .3rem
+        }
+
+        .code-dots span {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%
+        }
+
+        .c-r {
+            background: #ff5f57
+        }
+
+        .c-a {
+            background: #febc2e
+        }
+
+        .c-g {
+            background: #28c840
+        }
+
+        .code-fname {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .65rem;
+            color: var(--muted);
+            margin-left: .3rem;
+        }
+
+        .code-lang {
+            margin-left: auto;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .6rem;
+            color: var(--muted);
+            background: rgba(247, 223, 30, .08);
+            border: 1px solid rgba(247, 223, 30, .15);
+            border-radius: .25rem;
+            padding: .1rem .45rem;
+            color: rgba(247, 223, 30, .6);
+        }
+
+        pre {
+            padding: .9rem 1.1rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .75rem;
+            line-height: 1.85;
+            overflow: auto;
+            tab-size: 2;
+        }
+
+        /* Syntax colors */
+        .kw {
+            color: #c084fc
+        }
+
+        /* keyword */
+        .fn {
+            color: #67e8f9
+        }
+
+        /* function */
+        .str {
+            color: #86efac
+        }
+
+        /* string */
+        .num {
+            color: #fb923c
+        }
+
+        /* number */
+        .cm {
+            color: #475569;
+            font-style: italic
+        }
+
+        /* comment */
+        .op {
+            color: #94a3b8
+        }
+
+        /* operator */
+        .cls {
+            color: #fde68a
+        }
+
+        /* class */
+        .prop {
+            color: #7dd3fc
+        }
+
+        /* property */
+        .bool {
+            color: #fb923c
+        }
+
+        /* boolean */
+        .tag-c {
+            color: #f87171
+        }
+
+        /* html tag */
+        .attr {
+            color: #fbbf24
+        }
+
+        /* attribute */
+
+        /* Output box */
+        .output-box {
+            background: rgba(52, 211, 153, .04);
+            border: 1px solid rgba(52, 211, 153, .15);
+            border-radius: .5rem;
+            padding: .7rem 1rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .72rem;
+            line-height: 1.85;
+        }
+
+        .output-label {
+            font-size: .58rem;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            color: var(--grn);
+            margin-bottom: .35rem;
+            opacity: .7;
+        }
+
+        /* Key takeaway bar */
+        .takeaway {
+            margin-top: auto;
+            padding-top: 1rem;
+            display: flex;
+            align-items: flex-start;
+            gap: .75rem;
+            border-top: 1px solid var(--bdr);
+        }
+
+        .takeaway-icon {
+            font-size: 1.1rem;
+            flex-shrink: 0;
+            margin-top: .05rem
+        }
+
+        .takeaway-text {
+            font-size: .78rem;
+            color: var(--dim);
+            line-height: 1.6
+        }
+
+        .takeaway-text strong {
+            color: var(--js);
+            font-weight: 600
+        }
+
+        /* ═══════════════════════════════════════
+   LAYOUT HELPERS
+═══════════════════════════════════════ */
+        .cols {
+            display: grid;
+            gap: 1.1rem;
+            flex: 1
+        }
+
+        .cols-2 {
+            grid-template-columns: 1fr 1fr
+        }
+
+        .cols-3 {
+            grid-template-columns: 1fr 1fr 1fr
+        }
+
+        .cols-1-2 {
+            grid-template-columns: 1fr 1.5fr
+        }
+
+        .cols-2-1 {
+            grid-template-columns: 1.5fr 1fr
+        }
+
+        .cols-1-1-1 {
+            grid-template-columns: 1fr 1fr 1fr
+        }
+
+        .card {
+            background: var(--pan);
+            border: 1px solid var(--bdr);
+            border-radius: .6rem;
+            padding: 1.1rem 1.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: .5rem;
+        }
+
+        .card:hover {
+            border-color: rgba(247, 223, 30, .2)
+        }
+
+        .card-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: .9rem
+        }
+
+        .card-body {
+            font-size: .76rem;
+            color: var(--dim);
+            line-height: 1.65
+        }
+
+        .badge {
+            display: inline-block;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .6rem;
+            font-weight: 600;
+            letter-spacing: .04em;
+            padding: .15rem .5rem;
+            border-radius: .25rem;
+        }
+
+        .b-js {
+            background: rgba(247, 223, 30, .12);
+            color: #f7df1e;
+            border: 1px solid rgba(247, 223, 30, .25)
+        }
+
+        .b-pu {
+            background: rgba(124, 58, 237, .15);
+            color: #c084fc;
+            border: 1px solid rgba(124, 58, 237, .3)
+        }
+
+        .b-cy {
+            background: rgba(34, 211, 238, .12);
+            color: #67e8f9;
+            border: 1px solid rgba(34, 211, 238, .25)
+        }
+
+        .b-gr {
+            background: rgba(52, 211, 153, .12);
+            color: #6ee7b7;
+            border: 1px solid rgba(52, 211, 153, .25)
+        }
+
+        .b-rd {
+            background: rgba(248, 113, 113, .12);
+            color: #fca5a5;
+            border: 1px solid rgba(248, 113, 113, .25)
+        }
+
+        .b-gd {
+            background: rgba(251, 191, 36, .12);
+            color: #fcd34d;
+            border: 1px solid rgba(251, 191, 36, .25)
+        }
+
+        .divider {
+            height: 1px;
+            background: var(--bdr);
+            margin: .8rem 0
+        }
+
+        .tip-box {
+            background: rgba(247, 223, 30, .05);
+            border: 1px solid rgba(247, 223, 30, .18);
+            border-left: 3px solid var(--js);
+            border-radius: 0 .5rem .5rem 0;
+            padding: .7rem 1rem;
+            font-size: .76rem;
+            color: var(--dim);
+            line-height: 1.6;
+        }
+
+        .tip-box strong {
+            color: var(--js)
+        }
+
+        .warn-box {
+            background: rgba(248, 113, 113, .05);
+            border: 1px solid rgba(248, 113, 113, .18);
+            border-left: 3px solid var(--red);
+            border-radius: 0 .5rem .5rem 0;
+            padding: .7rem 1rem;
+            font-size: .76rem;
+            color: var(--dim);
+            line-height: 1.6;
+        }
+
+        .warn-box strong {
+            color: var(--red)
+        }
+
+        .good-box {
+            background: rgba(52, 211, 153, .05);
+            border: 1px solid rgba(52, 211, 153, .18);
+            border-left: 3px solid var(--grn);
+            border-radius: 0 .5rem .5rem 0;
+            padding: .7rem 1rem;
+            font-size: .76rem;
+            color: var(--dim);
+            line-height: 1.6;
+        }
+
+        .col-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .6rem;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: .5rem;
+        }
+
+        .flex-col {
+            display: flex;
+            flex-direction: column;
+            gap: .7rem
+        }
+
+        /* ═══════════════════════════════════════
+   COVER SLIDE
+═══════════════════════════════════════ */
+        #s0 {
+            justify-content: center;
+            align-items: center;
+            text-align: center
+        }
+
+        .cover-badge {
+            display: inline-block;
+            background: rgba(247, 223, 30, .1);
+            border: 1px solid rgba(247, 223, 30, .3);
+            border-radius: 2rem;
+            padding: .35rem 1rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .7rem;
+            color: var(--js);
+            letter-spacing: .08em;
+            margin-bottom: 1.5rem;
+        }
+
+        .cover-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(3.5rem, 9vw, 7rem);
+            font-weight: 800;
+            letter-spacing: -.05em;
+            line-height: .95;
+            color: var(--js);
+            text-shadow: 0 0 80px rgba(247, 223, 30, .3);
+            margin-bottom: .6rem;
+        }
+
+        .cover-sub {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: var(--dim);
+            font-weight: 300;
+            margin-bottom: 2.5rem;
+            letter-spacing: .01em;
+        }
+
+        .cover-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .5rem;
+            justify-content: center;
+            margin-bottom: 2.5rem
+        }
+
+        .cover-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: .35rem;
+            font-size: .72rem;
+            padding: .3rem .8rem;
+            border-radius: 2rem;
+            border: 1px solid var(--bdr2);
+            background: var(--pan);
+            color: var(--dim);
+        }
+
+        /* ═══════════════════════════════════════
+   COMPARISON TABLE
+═══════════════════════════════════════ */
+        .cmp-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: .76rem
+        }
+
+        .cmp-table th {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            font-size: .7rem;
+            padding: .55rem .9rem;
+            text-align: left;
+            color: var(--muted);
+            border-bottom: 1px solid var(--bdr2);
+            letter-spacing: .06em;
+            text-transform: uppercase;
+        }
+
+        .cmp-table td {
+            padding: .55rem .9rem;
+            border-bottom: 1px solid var(--bdr);
+            color: var(--dim);
+            line-height: 1.55;
+        }
+
+        .cmp-table tr:last-child td {
+            border-bottom: none
+        }
+
+        .cmp-table td:first-child {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            color: var(--pur-l);
+        }
+
+        .cmp-table tr:hover td {
+            background: rgba(255, 255, 255, .02)
+        }
+
+        /* ═══════════════════════════════════════
+   CHAPTER TITLE SLIDES
+═══════════════════════════════════════ */
+        .chapter-cover {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .ch-num {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(4rem, 10vw, 8rem);
+            font-weight: 900;
+            letter-spacing: -.06em;
+            line-height: 1;
+            background: var(--g3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            opacity: .15;
+            margin-bottom: -1rem;
+        }
+
+        .ch-name {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(1.8rem, 4vw, 3rem);
+            font-weight: 800;
+            letter-spacing: -.04em;
+            line-height: 1.1;
+            margin-bottom: .8rem;
+        }
+
+        .ch-desc {
+            font-size: .95rem;
+            color: var(--dim);
+            max-width: 500px;
+            line-height: 1.7
+        }
+
+        /* FLOW DIAGRAM */
+        .flow {
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+            flex-wrap: wrap
+        }
+
+        .flow-box {
+            background: var(--pan);
+            border: 1px solid var(--bdr2);
+            border-radius: .4rem;
+            padding: .45rem .8rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .72rem;
+            color: var(--txt);
+        }
+
+        .flow-arrow {
+            color: var(--muted);
+            font-size: .9rem
+        }
+
+        /* VISUAL scope diagram */
+        .scope-box {
+            border: 1px solid var(--bdr2);
+            border-radius: .5rem;
+            padding: .8rem;
+            position: relative;
+        }
+
+        .scope-label {
+            position: absolute;
+            top: -.55rem;
+            left: .8rem;
+            background: var(--pan);
+            padding: 0 .4rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .6rem;
+            color: var(--muted);
+        }
+
+        /* PROMISE chain visual */
+        .promise-chain {
+            display: flex;
+            flex-direction: column;
+            gap: .4rem
+        }
+
+        .p-step {
+            display: flex;
+            align-items: center;
+            gap: .6rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .72rem;
+        }
+
+        .p-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            box-shadow: 0 0 8px currentColor;
+        }
+
+        /* MINIMAX tree */
+        .tree {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .7rem;
+            line-height: 2;
+            color: var(--dim)
+        }
+
+        .tree .max-n {
+            color: var(--cyn-l)
+        }
+
+        .tree .min-n {
+            color: var(--red)
+        }
+
+        .tree .leaf {
+            color: var(--grn)
+        }
+
+        .tree .pruned {
+            color: var(--muted);
+            text-decoration: line-through;
+            opacity: .5
+        }
+    </style>
+</head>
+
+<body>
+    <div class="progress" id="prog"></div>
+
+    <div class="deck" id="deck">
+
+        <!-- ════════════════════════════════════════════════════
+  S0 — COVER
+════════════════════════════════════════════════════ -->
+        <div class="slide active" id="s0">
+            <div class="orb"
+                style="width:700px;height:700px;background:#f7df1e;top:-300px;left:-200px;filter:blur(140px);opacity:.08">
+            </div>
+            <div class="orb"
+                style="width:500px;height:500px;background:#7c3aed;bottom:-200px;right:-100px;filter:blur(120px);opacity:.1">
+            </div>
+            <div
+                style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:2rem;position:relative;z-index:1">
+                <div class="cover-badge">📘 Khóa Học · 5_JS Workspace</div>
+                <div class="cover-title">JavaScript</div>
+                <div class="cover-sub">Từ console.log() đến ứng dụng hoàn chỉnh — dành cho người mới bắt đầu</div>
+                <div class="cover-pills">
+                    <span class="cover-pill">🟨 ES6+</span>
+                    <span class="cover-pill">🌐 DOM & Events</span>
+                    <span class="cover-pill">⚡ Async / Await</span>
+                    <span class="cover-pill">📦 Modules</span>
+                    <span class="cover-pill">📡 axios & API</span>
+                    <span class="cover-pill">🤖 Minimax AI</span>
+                    <span class="cover-pill">🏗️ App Architecture</span>
+                </div>
+                <div style="display:flex;gap:3rem;text-align:center">
+                    <div>
+                        <div
+                            style="font-size:2rem;font-weight:900;color:var(--js);font-family:'Space Grotesk',sans-serif">
+                            30+</div>
+                        <div style="font-size:.7rem;color:var(--muted)">Slides</div>
+                    </div>
+                    <div>
+                        <div
+                            style="font-size:2rem;font-weight:900;color:var(--js);font-family:'Space Grotesk',sans-serif">
+                            10</div>
+                        <div style="font-size:.7rem;color:var(--muted)">Modules</div>
+                    </div>
+                    <div>
+                        <div
+                            style="font-size:2rem;font-weight:900;color:var(--js);font-family:'Space Grotesk',sans-serif">
+                            6W</div>
+                        <div style="font-size:.7rem;color:var(--muted)">Lộ trình</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════
+  S1 — MỤC TIÊU & CẤU TRÚC KHÓA HỌC
+════════════════════════════════════════════════════ -->
+        <div class="slide" id="s1">
+            <div class="chapter-bar"></div>
+            <div class="si">
+                <div class="mod-tag"><span class="pip"></span>Giới Thiệu</div>
+                <div class="slide-title">Bạn Sẽ Học Được Gì?</div>
+                <div class="slide-subtitle">Mục tiêu cụ thể sau khi hoàn thành toàn bộ khóa học này.</div>
+
+                <div class="cols cols-3" style="flex:1;align-content:start">
+                    <div class="card">
+                        <div style="font-size:1.4rem">🧱</div>
+                        <div class="card-title">Nền Tảng Vững Chắc</div>
+                        <div class="card-body">Hiểu cách JS hoạt động trong browser: variables, functions, scope,
+                            closure, type system.</div>
+                        <div style="display:flex;flex-wrap:wrap;gap:.25rem;margin-top:.3rem">
+                            <span class="badge b-js">Syntax</span><span class="badge b-js">Functions</span><span
+                                class="badge b-js">Scope</span>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div style="font-size:1.4rem">🌐</div>
+                        <div class="card-title">Xây Dựng UI Tương Tác</div>
+                        <div class="card-body">Thao tác DOM, xử lý sự kiện, validate form và cập nhật giao diện theo dữ
+                            liệu thực.</div>
+                        <div style="display:flex;flex-wrap:wrap;gap:.25rem;margin-top:.3rem">
+                            <span class="badge b-cy">DOM</span><span class="badge b-cy">Events</span><span
+                                class="badge b-cy">Forms</span>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div style="font-size:1.4rem">📡</div>
+                        <div class="card-title">Kết Nối Backend & API</div>
+                        <div class="card-body">Gọi API bằng axios, xử lý async/await, quản lý lỗi chuyên nghiệp với
+                            try/catch.</div>
+                        <div style="display:flex;flex-wrap:wrap;gap:.25rem;margin-top:.3rem">
+                            <span class="badge b-pu">Async</span><span class="badge b-pu">axios</span><span
+                                class="badge b-pu">API</span>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div style="font-size:1.4rem">🏗️</div>
+                        <div class="card-title">Kiến Trúc Ứng Dụng</div>
+                        <div class="card-body">Tổ chức code theo module, quản lý state, CRUD và xây dựng app đầy đủ tính
+                            năng.</div>
+                        <div style="display:flex;flex-wrap:wrap;gap:.25rem;margin-top:.3rem">
+                            <span class="badge b-gr">Modules</span><span class="badge b-gr">State</span><span
+                                class="badge b-gr">CRUD</span>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div style="font-size:1.4rem">🔍</div>
+                        <div class="card-title">Debug Như Senior</div>
+                        <div class="card-body">Đọc stack trace, dùng DevTools, tránh các lỗi phổ biến nhất mà junior
+                            thường mắc phải.</div>
+                        <div style="display:flex;flex-wrap:wrap;gap:.25rem;margin-top:.3rem">
+                            <span class="badge b-gd">DevTools</span><span class="badge b-gd">Errors</span>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div style="font-size:1.4rem">🤖</div>
+                        <div class="card-title">Thuật Toán Thực Tế</div>
+                        <div class="card-body">Áp dụng Minimax + Alpha-Beta pruning vào game AI — cầu nối sang tư duy
+                            Computer Science.</div>
+                        <div style="display:flex;flex-wrap:wrap;gap:.25rem;margin-top:.3rem">
+                            <span class="badge b-rd">Minimax</span><span class="badge b-rd">Recursion</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="takeaway">
+                    <div class="takeaway-icon">🎯</div>
+                    <div class="takeaway-text">Sau khóa học: bạn có thể <strong>tự xây dựng một mini web app hoàn
+                            chỉnh</strong> và hiểu đủ để tiếp tục với React, Vue hoặc Node.js.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════
+  S2 — JS LÀ GÌ? TẠI SAO HỌC?
+════════════════════════════════════════════════════ -->
+        <div class="slide" id="s2">
+            <div class="chapter-bar"></div>
+            <div class="orb" style="width:400px;height:400px;background:#f7df1e;top:-100px;right:-80px;opacity:.07">
+            </div>
+            <div class="si">
+                <div class="mod-tag"><span class="pip"></span>Module 01 — Giới Thiệu</div>
+                <div class="slide-title">JavaScript là gì & <span class="hi">Tại Sao Quan Trọng?</span></div>
+                <div class="slide-subtitle">Ngôn ngữ duy nhất chạy tự nhiên trên mọi trình duyệt — không cần cài đặt
+                    thêm gì.</div>
+
+                <div class="cols cols-2" style="flex:1;align-content:start">
+                    <div class="flex-col">
+                        <div class="card">
+                            <div class="card-title">🌐 Ngôn Ngữ Của Web</div>
+                            <div class="card-body">HTML = cấu trúc &nbsp;·&nbsp; CSS = giao diện &nbsp;·&nbsp; <strong
+                                    style="color:var(--js)">JavaScript = hành động</strong>. JS làm cho trang web "sống"
+                                — scroll animation, form validation, chat realtime, checkout flow...</div>
+                        </div>
+                        <div class="card">
+                            <div class="card-title">🚀 Dùng Được Ở Đâu?</div>
+                            <div class="card-body">
+                                <div style="display:flex;flex-direction:column;gap:.4rem">
+                                    <div><span class="badge b-cy">Frontend</span> <span
+                                            style="font-size:.75rem;color:var(--dim);margin-left:.3rem">React, Vue,
+                                            Angular, Vanilla</span></div>
+                                    <div><span class="badge b-gr">Backend</span> <span
+                                            style="font-size:.75rem;color:var(--dim);margin-left:.3rem">Node.js,
+                                            Express, NestJS</span></div>
+                                    <div><span class="badge b-pu">Mobile</span> <span
+                                            style="font-size:.75rem;color:var(--dim);margin-left:.3rem">React Native,
+                                            Ionic, Capacitor</span></div>
+                                    <div><span class="badge b-gd">Desktop</span> <span
+                                            style="font-size:.75rem;color:var(--dim);margin-left:.3rem">Electron,
+                                            Tauri</span></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tip-box">💡 <strong>2024:</strong> JavaScript liên tục top 1 ngôn ngữ phổ biến nhất
+                            theo Stack Overflow Survey. Học một lần, dùng được khắp nơi.</div>
+                    </div>
+                    <div class="flex-col">
+                        <div class="col-label">Cách JS Chạy Trong Trình Duyệt</div>
+                        <div class="code-wrap">
+                            <div class="code-top">
+                                <div class="code-dots"><span class="c-r"></span><span class="c-a"></span><span
+                                        class="c-g"></span></div><span class="code-fname">index.html</span><span
+                                    class="code-lang">HTML</span>
+                            </div>
+                            <pre><span class="tag-c">&lt;!DOCTYPE html&gt;</span>
+<span class="tag-c">&lt;html&gt;</span>
+  <span class="tag-c">&lt;head&gt;</span>
+    <span class="tag-c">&lt;title&gt;</span>My Page<span class="tag-c">&lt;/title&gt;</span>
+  <span class="tag-c">&lt;/head&gt;</span>
+  <span class="tag-c">&lt;body&gt;</span>
+    <span class="tag-c">&lt;h1&gt;</span>Hello!<span class="tag-c">&lt;/h1&gt;</span>
+
+    <span class="cm">&lt;!-- JS chạy sau khi HTML load xong --&gt;</span>
+    <span class="tag-c">&lt;script <span class="attr">src</span>=<span class="str">"index.js"</span>&gt;&lt;/script&gt;</span>
+  <span class="tag-c">&lt;/body&gt;</span>
+<span class="tag-c">&lt;/html&gt;</span></pre>
+                        </div>
+                        <div class="flow" style="justify-content:center;padding:.5rem 0">
+                            <div class="flow-box">HTML load</div>
+                            <span class="flow-arrow">→</span>
+                            <div class="flow-box">JS engine parse</div>
+                            <span class="flow-arrow">→</span>
+                            <div class="flow-box">Execute code</div>
+                            <span class="flow-arrow">→</span>
+                            <div class="flow-box">Update DOM</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="takeaway">
+                    <div class="takeaway-icon">💡</div>
+                    <div class="takeaway-text">JS file nên đặt ở <strong>cuối &lt;body&gt;</strong> (hoặc dùng
+                        <strong>defer</strong>) để HTML render trước, tránh lỗi khi JS cố truy cập phần tử chưa tồn tại.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════
+  S3 — VARIABLES: var / let / const
+════════════════════════════════════════════════════ -->
+        <div class="slide" id="s3">
+            <div class="chapter-bar"></div>
+            <div class="si">
+                <div class="mod-tag"><span class="pip"></span>Module 02 — Cú Pháp Cơ Bản</div>
+                <div class="slide-title">Biến: <span class="hi">var · let · const</span></div>
+                <div class="slide-subtitle">Cách JavaScript lưu trữ và quản lý dữ liệu — hiểu rõ sự khác biệt là bước
+                    đầu quan trọng nhất.</div>
+
+                <div class="cols cols-2" style="flex:1">
+                    <div class="flex-col">
+                        <div class="code-wrap">
+                            <div class="code-top">
+                                <div class="code-dots"><span class="c-r"></span><span class="c-a"></span><span
+                                        class="c-g"></span></div><span class="code-fname">variables.js</span><span
+                                    class="code-lang">JS</span>
+                            </div>
+                            <pre><span class="cm">// ✅ const — không thể gán lại (dùng mặc định)</span>
+<span class="kw">const</span> appName = <span class="str">"StayZ"</span>;
+<span class="kw">const</span> maxRooms = <span class="num">100</span>;
+<span class="cm">// appName = "other"; ← ❌ TypeError!</span>
+
+<span class="cm">// ✅ let — có thể thay đổi giá trị</span>
+<span class="kw">let</span> currentPage = <span class="num">1</span>;
+currentPage = <span class="num">2</span>; <span class="cm">// ← ✅ OK</span>
+
+<span class="cm">// ⚠️  var — tránh dùng (vấn đề về scope)</span>
+<span class="kw">var</span> oldStyle = <span class="str">"avoid this"</span>;
+
+<span class="cm">// Khai báo nhiều biến cùng lúc</span>
+<span class="kw">const</span> { name, price, rating } = hotel;
+<span class="kw">let</span> [first, ...rest] = rooms;</pre>
+                        </div>
+                        <div class="warn-box"><strong>⚠️ var hoisting:</strong> var được "kéo lên đầu" scope, có thể
+                            dùng trước khi khai báo — gây bug khó tìm. Hãy dùng <code style="color:var(--js)">let</code>
+                            và <code style="color:var(--js)">const</code> thay thế.</div>
+                    </div>
+
+                    <div class="flex-col">
+                        <div class="col-label">So sánh var · let · const</div>
+                        <div class="code-wrap">
+                            <table class="cmp-table">
+                                <tr>
+                                    <th>Từ khóa</th>
+                                    <th>Gán lại</th>
+                                    <th>Block Scope</th>
+                                    <th>Hoisting</th>
+                                </tr>
+                                <tr>
+                                    <td>var</td>
+                                    <td>✅</td>
+                                    <td>❌ (function)</td>
+                                    <td>⚠️ undefined</td>
+                                </tr>
+                                <tr>
+                                    <td>let</td>
+                                    <td>✅</td>
+                                    <td>✅</td>
+                                    <td>❌ TDZ error</td>
+                                </tr>
+                                <tr>
+                                    <td>const</td>
+                                    <td>❌</td>
+                                    <td>✅</td>
+                                    <td>❌ TDZ error</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="tip-box"><strong>Quy tắc ngón tay cái:</strong> Luôn dùng <code
+                                style="color:var(--js)">const</code>. Chỉ chuyển sang <code
+                                style="color:var(--js)">let</code> khi bạn biết rõ giá trị cần thay đổi. Không dùng
+                            <code style="color:var(--red)">var</code>.</div>
+                        <div class="output-box">
+                            <div class="output-label">📌 TDZ — Temporal Dead Zone</div>
+                            <div style="color:var(--dim)">console.<span style="color:var(--cyn-l)">log</span>(x); <span
+                                    style="color:var(--red)">// ReferenceError</span></div>
+                            <div style="color:var(--dim)"><span style="color:var(--pur-l)">let</span> x = <span
+                                    style="color:var(--num)">5</span>;</div>
+                            <div style="color:var(--muted);font-size:.68rem;margin-top:.35rem">let/const tồn tại trong
+                                TDZ trước dòng khai báo — truy cập sẽ throw lỗi ngay lập tức, tốt hơn var.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="takeaway">
+                    <div class="takeaway-icon">📏</div>
+                    <div class="takeaway-text">Quy tắc <strong>95% trường hợp</strong>: dùng <strong>const</strong>. Cần
+                        thay đổi → <strong>let</strong>. Không bao giờ dùng <strong
+                            style="color:var(--red)">var</strong> trong code mới.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════
+  S4 — DATA TYPES
+════════════════════════════════════════════════════ -->
+        <div class="slide" id="s4">
+            <div class="chapter-bar"></div>
+            <div class="si">
+                <div class="mod-tag"><span class="pip"></span>Module 02 — Cú Pháp Cơ Bản</div>
+                <div class="slide-title">Kiểu Dữ Liệu & <span class="hi">Type Coercion</span></div>
+                <div class="slide-subtitle">JS có 8 kiểu dữ liệu — và hành vi "ép kiểu tự động" là nguồn gốc của nhiều
+                    bug bí ẩn.</div>
+
+                <div class="cols cols-2" style="flex:1">
+                    <div class="flex-col">
+                        <div class="code-wrap">
+                            <div class="code-top">
+                                <div class="code-dots"><span class="c-r"></span><span class="c-a"></span><span
+                                        class="c-g"></span></div><span class="code-fname">types.js</span><span
+                                    class="code-lang">JS</span>
+                            </div>
+                            <pre><span class="cm">// Primitive types</span>
+<span class="kw">const</span> name  = <span class="str">"Huy"</span>;          <span class="cm">// string</span>
+<span class="kw">const</span> age   = <span class="num">22</span>;             <span class="cm">// number</span>
+<span class="kw">const</span> score = <span class="num">9.5</span>;            <span class="cm">// number (float)</span>
+<span class="kw">const</span> isAdm = <span class="bool">true</span>;          <span class="cm">// boolean</span>
+<span class="kw">const</span> phone = <span class="bool">null</span>;          <span class="cm">// null (có chủ ý)</span>
+<span class="kw">let</span>   draft;                  <span class="cm">// undefined (chưa gán)</span>
+
+<span class="cm">// Reference types</span>
+<span class="kw">const</span> user    = { name, age }; <span class="cm">// object</span>
+<span class="kw">const</span> rooms   = [<span class="num">101</span>, <span class="num">102</span>];   <span class="cm">// array</span>
+<span class="kw">const</span> greet   = () => <span class="str">"hi"</span>;  <span class="cm">// function</span>
+
+<span class="cm">// Kiểm tra kiểu</span>
+<span class="kw">typeof</span> name    <span class="cm">// "string"</span>
+<span class="kw">typeof</span> rooms   <span class="cm">// "object" ⚠️ (not "array"!)</span>
+Array.<span class="fn">isArray</span>(rooms) <span class="cm">// true ✅</span></pre>
+                        </div>
+                    </div>
+                    <div class="flex-col">
+                        <div class="col-label">⚠️ Type Coercion — Bẫy Phổ Biến</div>
+                        <div class="code-wrap">
+                            <div class="code-top">
+                                <div class="code-dots"><span class="c-r"></span><span class="c-a"></span><span
+                                        class="c-g"></span></div><span class="code-fname">coercion.js</span><span
+                                    class="code-lang">JS</span>
+                            </div>
+                            <pre><span class="cm">// == (loose equality) — TỰ ÉP KIỂU</span>
+<span class="num">0</span>  <span class="op">==</span>  <span class="str">""</span>      <span class="cm">// true  😱</span>
+<span class="bool">null</span> <span class="op">==</span> <span class="bool">undefined</span> <span class="cm">// true  😱</span>
+<span class="str">"5"</span> <span class="op">==</span>  <span class="num">5</span>      <span class="cm">// true  😱</span>
+
+<span class="cm">// === (strict equality) — KHÔNG ÉP KIỂU ✅</span>
+<span class="str">"5"</span> <span class="op">===</span> <span class="num">5</span>      <span class="cm">// false ✅</span>
+<span class="bool">null</span> <span class="op">===</span> <span class="bool">undefined</span> <span class="cm">// false ✅</span>
+
+<span class="cm">// Cộng string + number</span>
+<span class="str">"10"</span> <span class="op">+</span> <span class="num">5</span>    <span class="cm">// "105" 😱 (concatenation!)</span>
+<span class="num">10</span>   <span class="op">-</span> <span class="str">"5"</span>  <span class="cm">// 5   ✅ (subtraction forced)</span>
+
+<span class="cm">// Chuyển kiểu đúng cách</span>
+<span class="fn">Number</span>(<span class="str">"42"</span>)   <span class="cm">// 42</span>
+<span class="fn">String</span>(<span class="num">42</span>)    <span class="cm">// "42"</span>
+<span class="fn">Boolean</span>(<span class="num">0</span>)    <span class="cm">// false</span></pre>
+                        </div>
+                        <div class="warn-box"><strong>Quy tắc:</strong> Luôn dùng <code
+                                style="color:var(--js)">===</code> thay vì <code style="color:var(--red)">==</code>.
+                            Tránh phụ thuộc vào type coercion ngầm định.</div>
+                    </div>
+                </div>
+                <div class="takeaway">
+                    <div class="takeaway-icon">⚠️</div>
+                    <div class="takeaway-text">Dùng <strong>===</strong> (strict) thay <strong
+                            style="color:var(--red)">&nbsp;==&nbsp;</strong> (loose). Khi cộng số từ input HTML, luôn
+                        <strong>Number(value)</strong> trước — input trả về string!</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════
+  S5 — FUNCTIONS
+════════════════════════════════════════════════════ -->
+        <div class="slide" id="s5">
+            <div class="chapter-bar"></div>
+            <div class="si">
+                <div class="mod-tag"><span class="pip"></span>Module 03 — Functions</div>
+                <div class="slide-title">Functions: <span class="hi">3 Cách Viết</span></div>
+                <div class="slide-subtitle">Function là khối xây dựng cơ bản của mọi chương trình JS. Hiểu sự khác biệt
+                    giúp viết code sạch hơn.</div>
+
+                <div class="cols cols-2" style="flex:1">
+                    <div class="flex-col">
+                        <div class="code-wrap">
+                            <div class="code-top">
+                                <div class="code-dots"><span class="c-r"></span><span class="c-a"></span><span
+                                        class="c-g"></span></div><span class="code-fname">functions.js</span><span
+                                    class="code-lang">JS</span>
+                            </div>
+                            <pre><span class="cm">// 1️⃣ Function Declaration — có hoisting</span>
+<span class="kw">function</span> <span class="fn">greet</span>(name) {
+  <span class="kw">return</span> <span class="str">`Xin chào, <span class="kw">${</span>name<span class="kw">}</span>!`</span>;
+}
+
+<span class="cm">// 2️⃣ Function Expression — không có hoisting</span>
+<span class="kw">const</span> <span class="fn">add</span> = <span class="kw">function</span>(a, b) {
+  <span class="kw">return</span> a + b;
+};
+
+<span class="cm">// 3️⃣ Arrow Function — cú pháp ngắn gọn ✅</span>
+<span class="kw">const</span> <span class="fn">multiply</span> = (a, b) => a * b;
+
+<span class="kw">const</span> <span class="fn">square</span> = n => n * n; <span class="cm">// 1 tham số → bỏ ()</span>
+
+<span class="kw">const</span> <span class="fn">getUser</span> = id => ({    <span class="cm">// return object</span>
+  id,
+  url: <span class="str">`/users/<span class="kw">${</span>id<span class="kw">}</span>`</span>
+});
+
+<span class="cm">// Default parameters</span>
+<span class="kw">const</span> <span class="fn">createRoom</span> = (num, type = <span class="str">"standard"</span>) => ({
+  num, type
+});</pre>
+                        </div>
+                    </div>
+                    <div class="flex-col">
+                        <div class="col-label">So Sánh — Khi Nào Dùng Gì?</div>
+                        <div class="code-wrap">
+                            <table class="cmp-table">
+                                <tr>
+                                    <th>Loại</th>
+                                    <th>Hoisting</th>
+                                    <th>this</th>
+                                    <th>Dùng cho</th>
+                                </tr>
+                                <tr>
+                                    <td>Declaration</td>
+                                    <td>✅ Có</td>
+                                    <td>Dynamic</td>
+                                    <td>Hàm chính, utilities</td>
+                                </tr>
+                                <tr>
+                                    <td>Expression</td>
+                                    <td>❌</td>
+                                    <td>Dynamic</td>
+                                    <td>Callback, module</td>
+                                </tr>
+                                <tr>
+                                    <td>Arrow</td>
+                                    <td>❌</td>
+                                    <td>Lexical ✅</td>
+                                    <td>Callback, array methods</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="tip-box"><strong>Arrow function và <code>this</code>:</strong> Arrow không tạo
+                            <code>this</code> riêng — kế thừa từ scope bên ngoài. Cực kỳ hữu ích khi dùng trong event
+                            listener hoặc callback.</div>
+                        <div class="output-box">
+                            <div class="output-label">Kết quả</div>
+                            <div>greet(<span class="str">"Huy"</span>) <span class="op">→</span> <span class="str">"Xin
+                                    chào, Huy!"</span></div>
+                            <div>multiply(<span class="num">3</span>, <span class="num">4</span>) <span
+                                    class="op">→</span> <span class="num">12</span></div>
+                            <div>square(<span class="num">5</span>) <span class="op">→</span> <span
+                                    class="num">25</span></div>
+                            <div>getUser(<span class="num">1</span>) <span class="op">→</span> <span class="str">{ id:
+                                    1, url: "/users/1" }</span></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="takeaway">
+                    <div class="takeaway-icon">✨</div>
+                    <div class="takeaway-text">Trong code hiện đại: dùng <strong>arrow function</strong> cho callbacks
+                        và array methods. Dùng <strong>function declaration</strong> cho hàm chính của module.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════
+  S6 — SCOPE & CLOSURE
+════════════════════════════════════════════════════ -->
+        <div class="slide" id="s6">
+            <div class="chapter-bar"></div>
+            <div class="si">
+                <div class="mod-tag"><span class="pip"></span>Module 03 — Functions</div>
+                <div class="slide-title">Scope & <span class="hi">Closure</span></div>
+                <div class="slide-subtitle">Scope quyết định biến nào "nhìn thấy" được ở đâu. Closure là superpower của
+                    JavaScript.</div>
+
+                <div class="cols cols-2" style="flex:1">
+                    <div class="flex-col">
+                        <div class="code-wrap">
+                            <div class="code-top">
+                                <div class="code-dots"><span class="c-r"></span><span class="c-a"></span><span
+                                        class="c-g"></span></div><span class="code-fname">scope.js</span><span
+                                    class="code-lang">JS</span>
+                            </div>
+                            <pre><span class="cm">// Global scope — dùng được mọi nơi</span>
+<span class="kw">const</span> API_URL = <span class="str">"https://api.stayz.vn"</span>;
+
+<span class="kw">function</span> <span class="fn">fetchRooms</span>() {
+  <span class="cm">// Function scope</span>
+  <span class="kw">const</span> endpoint = <span class="str">"/rooms"</span>;
+
+  <span class="kw">if</span> (<span class="bool">true</span>) {
+    <span class="cm">// Block scope (let/const)</span>
+    <span class="kw">let</span> temp = <span class="str">"chỉ trong if này"</span>;
+    console.<span class="fn">log</span>(API_URL);  <span class="cm">// ✅ global ok</span>
+    console.<span class="fn">log</span>(endpoint);  <span class="cm">// ✅ outer ok</span>
+  }
+  <span class="cm">// console.log(temp); ← ❌ ReferenceError</span>
+}</pre>
+                        </div>
+                        <div class="code-wrap" style="margin-top:.1rem">
+                            <div class="code-top">
+                                <div class="code-dots"><span class="c-r"></span><span class="c-a"></span><span
+                                        class="c-g"></span></div><span class="code-fname">closure.js</span><span
+                                    class="code-lang">JS</span>
+                            </div>
+                            <pre><span class="cm">// Closure — hàm nhớ scope nơi nó được tạo</span>
+<span class="kw">function</span> <span class="fn">makeCounter</span>() {
+  <span class="kw">let</span> count = <span class="num">0</span>; <span class="cm">// biến private!</span>
+
+  <span class="kw">return</span> {
+    inc: () => ++count,
+    dec: () => --count,
+    get: () => count
+  };
+}
+
+<span class="kw">const</span> counter = <span class="fn">makeCounter</span>();
+counter.<span class="fn">inc</span>(); <span class="cm">// 1</span>
+counter.<span class="fn">inc</span>(); <span class="cm">// 2</span>
+counter.<span class="fn">get</span>(); <span class="cm">// 2 ← count không bị reset!</span></pre>
+                        </div>
+                    </div>
+                    <div class="flex-col">
+                        <div class="col-label">Scope Chain — Visual</div>
+                        <div class="scope-box">
+                            <div class="scope-label">🌐 Global Scope</div>
+                            <div style="font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--cyn-l)">
+                                API_URL, fetchRooms</div>
+                            <div class="scope-box" style="margin-top:.7rem;border-color:rgba(124,58,237,.3)">
+                                <div class="scope-label" style="color:var(--pur-l)">📦 Function Scope (fetchRooms)</div>
+                                <div style="font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--pur-l)">
+                                    endpoint</div>
+                                <div class="scope-box" style="margin-top:.7rem;border-color:rgba(52,211,153,.3)">
+                                    <div class="scope-label" style="color:var(--grn)">🔒 Block Scope (if)</div>
+                                    <div
+                                        style="font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--grn)">
+                                        temp</div>
+                                    <div style="font-size:.65rem;color:var(--muted);margin-top:.3rem">Thấy được: temp,
+                                        endpoint, API_URL</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tip-box" style="margin-top:.3rem">
+                            <strong>Closure trong thực tế:</strong> Event handlers, module pattern, React hooks — tất cả
+                            đều dựa trên closure. Đây là concept quan trọng nhất của JS.
+                        </div>
+                        <div class="output-box">
+                            <div class="output-label">Closure giúp tạo private state</div>
+                            <div>count chỉ truy cập được qua <span style="color:var(--cyn-l)">inc/dec/get</span></div>
+                            <div>Không ai có thể <span style="color:var(--red)">counter.count = 999</span> từ ngoài
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="takeaway">
+                    <div class="takeaway-icon">🔒</div>
+                    <div class="takeaway-text">Closure cho phép hàm <strong>"nhớ" biến từ scope nơi nó được tạo</strong>
+                        — ngay cả sau khi hàm cha đã chạy xong. Dùng để tạo private state và factory functions.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════
+  S7 — CONTROL FLOW
+════════════════════════════════════════════════════ -->
+        <div class="slide" id="s7">
+            <div class="chapter-bar"></div>
+            <div class="si">
+                <div class="mod-tag"><span class="pip"></span>Module 04 — Control Flow</div>
+                <div class="slide-title">if / else · switch · <span class="hi">Ternary</span></div>
+                <div class="slide-subtitle">Kiểm soát luồng thực thi — biết khi nào dùng cái gì giúp code ngắn gọn và dễ
+                    đọc hơn.</div>
+
+                <div class="cols cols-2" style="flex:1">
+                    <div class="flex-col">
+                        <div class="code-wrap">
+                            <div class="code-top">
+                                <div class="code-dots"><span class="c-r"></span><span class="c-a"></span><span
+                                        class="c-g"></span></div><span class="code-fname">conditions.js</span><span
+                                    class="code-lang">JS</span>
+                            </div>
+                            <pre><span class="cm">// if / else if / else</span>
+<span class="kw">function</span> <span class="fn">getRoomType</span>(price) {
+  <span class="kw">if</span> (price >= <span class="num">500</span>) <span class="kw">return</span> <span class="str">"Suite"</span>;
+  <span class="kw">else if</span> (price >= <span class="num">200</span>) <span class="kw">return</span> <span class="str">"Deluxe"</span>;
+  <span class="kw">else if</span> (price >= <span class="num">100</span>) <span class="kw">return</span> <span class="str">"Standard"</span>;
+  <span class="kw">else return</span> <span class="str">"Budget"</span>;
+}
+
+<span class="cm">// switch — khi so sánh 1 giá trị nhiều case</span>
+<span class="kw">switch</span> (status) {
+  <span class="kw">case</span> <span class="str">"pending"</span>:  label = <span class="str">"⏳ Chờ"</span>; <span class="kw">break</span>;
+  <span class="kw">case</span> <span class="str">"confirmed"</span>:<span class="str">"✅ Xác nhận"</span>; <span class="kw">break</span>;
+  <span class="kw">case</span> <span class="str">"cancelled"</span>:<span class="str">"❌ Huỷ"</span>;     <span class="kw">break</span>;
+  <span class="kw">default</span>: label = <span class="str">"❓ Không rõ"</span>;
+}
+
+<span class="cm">// Ternary — rút gọn if/else 1 dòng</span>
+<span class="kw">const</span> label = isLoggedIn
+  ? <span class="str">"Đăng xuất"</span>
+  : <span class="str">"Đăng nhập"</span>;
+
+<span class="cm">// Nullish coalescing ?? — thay thế || an toàn hơn</span>
+<span class="kw">const</span> name = user.name ?? <span class="str">"Khách"</span>;
+
+<span class="cm">// Optional chaining ?. — tránh TypeError</span>
+<span class="kw">const</span> city = user?.address?.city ?? <span class="str">"N/A"</span>;</pre>
+                        </div>
+                    </div>
+                    <div class="flex-col">
+                        <div class="col-label">Logical Operators nâng cao</div>
+                        <div class="code-wrap">
+                            <div class="code-top">
+                                <div class="code-dots"><span class="c-r"></span><span class="c-a"></span><span
+                                        class="c-g"></span></div><span class="code-fname">logical.js</span><span
+                                    class="code-lang">JS</span>
+                            </div>
+                            <pre><span class="cm">// Short-circuit evaluation</span>
+<span class="kw">const</span> user = <span class="bool">null</span>;
+
+<span class="cm">// || → trả về giá trị TRUTHY đầu tiên</span>
+<span class="kw">const</span> a = user || <span class="str">"Khách"</span>;  <span class="cm">// "Khách"</span>
+<span class="cm">// ⚠️ 0, "", false cũng bị coi là falsy!</span>
+
+<span class="cm">// ?? → chỉ fallback khi null / undefined</span>
+<span class="kw">const</span> count = <span class="num">0</span> ?? <span class="str">"N/A"</span>;  <span class="cm">// 0 ✅</span>
+<span class="kw">const</span> count2 = <span class="num">0</span> || <span class="str">"N/A"</span>;  <span class="cm">// "N/A" 😱</span>
+
+<span class="cm">// &&  → render điều kiện (React pattern)</span>
+isAdmin && <span class="fn">showAdminPanel</span>();
+
+<span class="cm">// Falsy values trong JS</span>
+<span class="cm">// false, 0, "", null, undefined, NaN</span></pre>
+                        </div>
+                        <div class="tip-box"><strong>?? vs ||:</strong> Dùng <code style="color:var(--js)">??</code> khi
+                            giá trị <code>0</code> hoặc <code>""</code> có ý nghĩa thực sự (ví dụ: số lượng, giá tiền).
+                            Dùng <code>||</code> khi cần fallback cho mọi falsy value.</div>
+                        <div class="good-box"><strong>?. Optional chaining:</strong> <code>user?.profile?.avatar</code>
+                            không throw lỗi nếu <code>user</code> hoặc <code>profile</code> là null/undefined — trả về
+                            undefined thay vì crash.</div>
+                    </div>
+                </div>
+                <div class="takeaway">
+                    <div class="takeaway-icon">🧠</div>
+                    <div class="takeaway-text">ES2020 thêm <strong>??</strong> (nullish coalescing) và
+                        <strong>?.</strong> (optional chaining) — hai operator này giúp code an toàn hơn rất nhiều. Học
+                        thuộc ngay.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════
+  S8 — LOOPS & ITERATION
+════════════════════════════════════════════════════ -->
+        <div class="slide" id="s8">
+            <div class="chapter-bar"></div>
+            <div class="si">
+                <div class="mod-tag"><span class="pip"></span>Module 04 — Control Flow</div>
+                <div class="slide-title">Vòng Lặp: <span class="hi">for · while · for...of</span></div>
+                <div class="slide-subtitle">Biết chọn đúng loại vòng lặp giúp code ngắn hơn, nhanh hơn và dễ đọc hơn.
+                </div>
+
+                <div class="cols cols-2" style="flex:1">
+                    <div class="flex-col">
+                        <div class="code-wrap">
+                            <div class="code-top">
+                                <div class="code-dots"><span class="c-r"></span><span class="c-a"></span><span
+                                        class="c-g"></span></div><span class="code-fname">loops.js</span><span
+                                    class="code-lang">JS</span>
+                            </div>
+                            <pre><span class="kw">const</span> rooms = [<span class="str">"101"</span>, <span class="str">"102"</span>, <span class="str">"103"</span>];
+
+<span class="cm">// for — khi cần index hoặc đếm ngược</span>
+<span class="kw">for</span> (<span class="kw">let</span> i = <span class="num">0</span>; i < rooms.length; i++) {
+  console.<span class="fn">log</span>(<span class="str">`Room <span class="kw">${</span>rooms[i]<span class="kw">}</span>`</span>);
+}
+
+<span class="cm">// for...of — duyệt array sạch nhất ✅</span>
+<span class="kw">for</span> (<span class="kw">const</span> room <span class="kw">of</span> rooms) {
+  console.<span class="fn">log</span>(room);
+}
+
+<span class="cm">// for...in — duyệt keys của object</span>
+<span class="kw">const</span> user = { name: <span class="str">"Huy"</span>, age: <span class="num">22</span> };
+<span class="kw">for</span> (<span class="kw">const</span> key <span class="kw">in</span> user) {
+  console.<span class="fn">log</span>(<span class="str">`<span class="kw">${</span>key<span class="kw">}</span>: <span class="kw">${</span>user[key]<span class="kw">}</span>`</span>);
+}
+
+<span class="cm">// while — khi điều kiện dừng chưa biết trước</span>
+<span class="kw">let</span> attempts = <span class="num">0</span>;
+<span class="kw">while</span> (attempts < <span class="num">3</span>) {
+  <span class="fn">tryLogin</span>(); attempts++;
+}
+
+<span class="cm">// break / continue</span>
+<span class="kw">for</span> (<span class="kw">const</span> room <span class="kw">of</span> rooms) {
+  <span class="kw">if</span> (room === <span class="str">"102"</span>) <span class="kw">continue</span>; <span class="cm">// bỏ qua</span>
+  <span class="kw">if</span> (room === <span class="str">"103"</span>) <span class="kw">break</span>;    <span class="cm">// dừng</span>
+}</pre>
+                        </div>
+                    </div>
+                    <div class="flex-col">
+                        <div class="col-label">Khi Nào Dùng Gì?</div>
+                        <div class="code-wrap">
+                            <table class="cmp-table">
+                                <tr>
+                                    <th>Loại</th>
+                                    <th>Dùng khi</th>
+                                </tr>
+                                <tr>
+                                    <td>for (i)</td>
+                                    <td>Cần index, đếm ngược, bước nhảy ≠ 1</td>
+                                </tr>
+                                <tr>
+                                    <td>for...of</td>
+                                    <td>Duyệt array, string, Set, Map</td>
+                                </tr>
+                                <tr>
+                                    <td>for...in</td>
+                                    <td>Duyệt keys của plain object</td>
+                                </tr>
+                                <tr>
+                                    <td>while</td>
+                                    <td>Lặp đến khi điều kiện đổi (pagination...)</td>
+                                </tr>
+                                <tr>
+                                    <td>forEach</td>
+                                    <td>Side effects (log, update DOM)</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="warn-box"><strong>⚠️ forEach không thể break/return sớm.</strong> Nếu cần dừng giữa
+                            chừng, dùng <code style="color:var(--js)">for...of</code> hoặc <code
+                                style="color:var(--js)">for</code> thay thế.</div>
+                        <div class="tip-box"><strong>Performance:</strong> Với mảng lớn, <code
+                                style="color:var(--js)">for</code> truyền thống nhanh nhất. <code
+                                style="color:var(--js)">for...of</code> sạch và đủ nhanh cho hầu hết trường hợp thực tế.
+                        </div>
+                    </div>
+                </div>
+                <div class="takeaway">
+                    <div class="takeaway-icon">🔄</div>
+                    <div class="takeaway-text">Trong thực tế 80% dùng <strong>for...of</strong> hoặc <strong>array
+                            methods</strong> (map/filter/reduce). Dùng <strong>for(i)</strong> khi thực sự cần index.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════
+  S9 — ARRAY METHODS I
+════════════════════════════════════════════════════ -->
+        <div class="slide" id="s9">
+            <div class="chapter-bar"></div>
+            <div class="si">
+                <div class="mod-tag"><span class="pip"></span>Module 05 — Arrays</div>
+                <div class="slide-title">Array Methods: <span class="hi">Biến Đổi Dữ Liệu</span></div>
+                <div class="slide-subtitle">map · filter · reduce — ba method quan trọng nhất trong JavaScript hiện đại.
+                    Thành thạo ba cái này là đủ cho 90% công việc.</div>
+
+                <div class="cols cols-2" style="flex:1">
+                    <div class="flex-col">
+                        <div class="code-wrap">
+                            <div class="code-top">
+                                <div class="code-dots"><span class="c-r"></span><span class="c-a"></span><span
+                                        class="c-g"></span></div><span class="code-fname">array-methods.js</span><span
+                                    class="code-lang">JS</span>
+                            </div>
+                            <pre><span class="kw">const</span> products = [
+  { name: <span class="str">"iPhone"</span>,  price: <span class="num">25000000</span>, inStock: <span class="bool">true</span> },
+  { name: <span class="str">"Samsung"</span>, price: <span class="num">18000000</span>, inStock: <span class="bool">false</span>},
+  { name: <span class="str">"Pixel"</span>,   price: <span class="num">22000000</span>, inStock: <span class="bool">true</span> },
+];
+
+<span class="cm">// MAP → transform mỗi phần tử, trả về array mới</span>
+<span class="kw">const</span> names = products.<span class="fn">map</span>(p => p.name);
+<span class="cm">// ["iPhone", "Samsung", "Pixel"]</span>
+
+<span class="kw">const</span> withVAT = products.<span class="fn">map</span>(p => ({
+  ...p,
+  priceWithVAT: p.price * <span class="num">1.1</span>
+}));
+
+<span class="cm">// FILTER → lọc, trả về array con</span>
+<span class="kw">const</span> available = products.<span class="fn">filter</span>(p => p.inStock);
+<span class="cm">// [iPhone, Pixel]</span>
+
+<span class="kw">const</span> under20M = products.<span class="fn">filter</span>(p => p.price < <span class="num">20000000</span>);
+
+<span class="cm">// REDUCE → gộp thành 1 giá trị</span>
+<span class="kw">const</span> total = products.<span class="fn">reduce</span>(
+  (acc, p) => acc + p.price, <span class="num">0</span>
+);
+<span class="cm">// 65000000</span>
+
+<span class="cm">// CHAIN — kết hợp</span>
+<span class="kw">const</span> totalAvail = products
+  .<span class="fn">filter</span>(p => p.inStock)
+  .<span class="fn">reduce</span>((acc, p) => acc + p.price, <span class="num">0</span>);</pre>
+                        </div>
+                    </div>
+                    <div class="flex-col">
+                        <div class="col-label">Thêm Methods Quan Trọng</div>
+                        <div class="code-wrap">
+                            <div class="code-top">
+                                <div class="code-dots"><span class="c-r"></span><span class="c-a"></span><span
+                                        class="c-g"></span></div><span class="code-fname">more-methods.js</span><span
+                                    class="code-lang">JS</span>
+                            </div>
+                            <pre><span class="kw">const</span> arr = [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>, <span class="num">5</span>];
+
+<span class="cm">// find → phần tử đầu tiên thỏa điều kiện</span>
+arr.<span class="fn">find</span>(x => x > <span class="num">3</span>)      <span class="cm">// 4</span>
+
+<span class="cm">// findIndex → index của phần tử</span>
+arr.<span class="fn">findIndex</span>(x => x > <span class="num">3</span>)  <span class="cm">// 3</span>
+
+<span class="cm">// some → có ít nhất 1 phần tử thỏa?</span>
+arr.<span class="fn">some</span>(x => x > <span class="num">4</span>)       <span class="cm">// true</span>
+
+<span class="cm">// every → tất cả đều thỏa?</span>
+arr.<span class="fn">every</span>(x => x > <span class="num">0</span>)      <span class="cm">// true</span>
+
+<span class="cm">// includes → có tồn tại phần tử này?</span>
+arr.<span class="fn">includes</span>(<span class="num">3</span>)           <span class="cm">// true</span>
+
+<span class="cm">// flat → làm phẳng mảng lồng nhau</span>
+[<span class="num">1</span>, [<span class="num">2</span>, <span class="num">3</span>], [<span class="num">4</span>]].<span class="fn">flat</span>()  <span class="cm">// [1,2,3,4]</span>
+
+<span class="cm">// sort — LƯU Ý: mutates original!</span>
+[...<span class="num">arr</span>].<span class="fn">sort</span>((a, b) => a - b)  <span class="cm">// copy trước!</span></pre>
+                        </div>
+                        <div class="tip-box"><strong>map, filter, reduce không thay đổi array gốc</strong> — luôn trả về
+                            array mới. Đây gọi là immutability, là pattern quan trọng trong React và code hiện đại.
+                        </div>
+                    </div>
+                </div>
+                <div class="takeaway">
+                    <div class="takeaway-icon">🔗</div>
+                    <div class="takeaway-text"><strong>Chain methods</strong> để xử lý dữ liệu rõ ràng:
+                        <strong>.filter(...).map(...).reduce(...)</strong> — đọc như câu lệnh tiếng Anh, dễ debug và
+                        test hơn vòng lặp lồng nhau.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════
+  S10 — OBJECTS & DESTRUCTURING
+════════════════════════════════════════════════════ -->
+        <div class="slide" id="s10">
+            <div class="chapter-bar"></div>
+            <div class="si">
+                <div class="mod-tag"><span class="pip"></span>Module 05 — Objects & ES6+</div>
+                <div class="slide-title">Objects, <span class="hi">Destructuring</span> & Spread</div>
+                <div class="slide-subtitle">Destructuring và Spread là hai cú pháp ES6 xuất hiện nhiều nhất trong code
+                    React và Node.js thực tế.</div>
+
+                <div class="cols cols-2" style="flex:1">
+                    <div class="flex-col">
+                        <div class="code-wrap">
+                            <div class="code-top">
+                                <div class="code-dots"><span class="c-r"></span><span class="c-a"></span><span
+                                        class="c-g"></span></div><span class="code-fname">destructuring.js</span><span
+                                    class="code-lang">JS</span>
+                            </div>
+                            <pre><span class="kw">const</span> hotel = {
+  id: <span class="num">1</span>, name: <span class="str">"Caravelle"</span>, stars: <span class="num">5</span>,
+  address: { city: <span class="str">"HCMC"</span>, district: <span class="str">"Q1"</span> }
+};
+
+<span class="cm">// Object destructuring</span>
+<span class="kw">const</span> { name, stars } = hotel;
+console.<span class="fn">log</span>(name);   <span class="cm">// "Caravelle"</span>
+
+<span class="cm">// Rename khi destructure</span>
+<span class="kw">const</span> { name: hotelName, stars: rating } = hotel;
+
+<span class="cm">// Nested destructuring</span>
+<span class="kw">const</span> { address: { city } } = hotel;
+
+<span class="cm">// Default value</span>
+<span class="kw">const</span> { pool = <span class="bool">false</span> } = hotel; <span class="cm">// false</span>
+
+<span class="cm">// Array destructuring</span>
+<span class="kw">const</span> [first, second, ...rest] = [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>];
+<span class="cm">// first=1, second=2, rest=[3,4]</span>
+
+<span class="cm">// Swap variables</span>
+<span class="kw">let</span> a = <span class="num">1</span>, b = <span class="num">2</span>;
+[a, b] = [b, a]; <span class="cm">// a=2, b=1</span>
+
+<span class="cm">// Function params destructuring</span>
+<span class="kw">const</span> <span class="fn">displayHotel</span> = ({ name, stars, address: { city } }) =>
+  <span class="str">`<span class="kw">${</span>name<span class="kw">}</span> (<span class="kw">${</span>stars<span class="kw">}</span>★) - <span class="kw">${</span>city<span class="kw">}</span>`</span>;</pre>
+                        </div>
+                    </div>
+                    <div class="flex-col">
+                        <div class="code-wrap">
+                            <div class="code-top">
+                                <div class="code-dots"><span class="c-r"></span><span class="c-a"></span><span
+                                        class="c-g"></span></div><span class="code-fname">spread-rest.js</span><span
+                                    class="code-lang">JS</span>
+                            </div>
+                            <pre><span class="cm">// Spread — mở rộng</span>
+<span class="kw">const</span> base = { a: <span class="num">1</span>, b: <span class="num">2</span> };
+<span class="kw">const</span> ext  = { ...base, c: <span class="num">3</span> }; <span class="cm">// {a,b,c}</span>
+
+<span class="cm">// Update object (immutable pattern)</span>
+<span class="kw">const</span> updated = { ...hotel, stars: <span class="num">4</span> };
+<span class="cm">// hotel vẫn giữ nguyên, updated có stars=4</span>
+
+<span class="cm">// Clone array</span>
+<span class="kw">const</span> copy = [...original];
+
+<span class="cm">// Merge arrays</span>
+<span class="kw">const</span> all = [...arr1, ...arr2, <span class="num">999</span>];
+
+<span class="cm">// Rest params — gom phần còn lại</span>
+<span class="kw">const</span> <span class="fn">sum</span> = (...nums) =>
+  nums.<span class="fn">reduce</span>((a, b) => a + b, <span class="num">0</span>);
+
+<span class="fn">sum</span>(<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>); <span class="cm">// 10</span>
+
+<span class="cm">// Object shorthand (ES6)</span>
+<span class="kw">const</span> name = <span class="str">"Huy"</span>;
+<span class="kw">const</span> age  = <span class="num">22</span>;
+<span class="kw">const</span> user = { name, age }; <span class="cm">// {name:"Huy",age:22}</span></pre>
+                        </div>
+                        <div class="tip-box"><strong>Spread để copy, không phải reference:</strong> <code
+                                style="color:var(--js)">{...obj}</code> tạo shallow copy. Thay đổi
+                            <code>obj.nested</code> vẫn ảnh hưởng copy. Dùng <code>structuredClone(obj)</code> cho deep
+                            copy.</div>
+                    </div>
+                </div>
+                <div class="takeaway">
+                    <div class="takeaway-icon">✨</div>
+                    <div class="takeaway-text">Destructuring + Spread là cú pháp xuất hiện nhiều nhất trong React props,
+                        Redux reducers và API responses. <strong>Thuộc lòng pattern này.</strong></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════
+  S11 — DOM SELECTION & MANIPULATION
+════════════════════════════════════════════════════ -->
+        <div class="slide" id="s11">
+            <div class="chapter-bar"></div>
+            <div class="si">
+                <div class="mod-tag"><span class="pip"></span>Module 06 — DOM</div>
+                <div class="slide-title">DOM: <span class="hi">Chọn &amp; Thay Đổi</span> Phần Tử</div>
+                <div class="slide-subtitle">DOM là cầu nối giữa JavaScript và giao diện HTML. Thành thạo DOM = có thể
+                    xây bất kỳ UI nào.</div>
+
+                <div class="cols cols-2" style="flex:1">
+                    <div class="flex-col">
+                        <div class="code-wrap">
+                            <div class="code-top">
+                                <div class="code-dots"><span class="c-r"></span><span class="c-a"></span><span
+                                        class="c-g"></span></div><span class="code-fname">dom-select.js</span><span
+                                    class="code-lang">JS</span>
+                            </div>
+                            <pre><span class="cm">// ✅ querySelector — linh hoạt nhất</span>
+<span class="kw">const</span> btn   = document.<span class="fn">querySelector</span>(<span class="str">'#loginBtn'</span>);
+<span class="kw">const</span> form  = document.<span class="fn">querySelector</span>(<span class="str">'.login-form'</span>);
+<span class="kw">const</span> input = document.<span class="fn">querySelector</span>(<span class="str">'input[type="email"]'</span>);
+
+<span class="cm">// querySelectorAll → NodeList (nhiều phần tử)</span>
+<span class="kw">const</span> cards = document.<span class="fn">querySelectorAll</span>(<span class="str">'.product-card'</span>);
+cards.<span class="fn">forEach</span>(card => card.classList.<span class="fn">add</span>(<span class="str">'loaded'</span>));
+
+<span class="cm">// Cập nhật nội dung</span>
+<span class="kw">const</span> title = document.<span class="fn">querySelector</span>(<span class="str">'#title'</span>);
+title.textContent = <span class="str">"Phòng Trống"</span>;      <span class="cm">// plain text</span>
+title.innerHTML   = <span class="str">"&lt;b&gt;Phòng Trống&lt;/b&gt;"</span>;<span class="cm">// HTML</span>
+
+<span class="cm">// Thay đổi style</span>
+btn.style.backgroundColor = <span class="str">"#7c3aed"</span>;
+btn.style.display = <span class="str">"none"</span>;
+
+<span class="cm">// classList — cách tốt hơn để thao tác class</span>
+el.<span class="prop">classList</span>.<span class="fn">add</span>(<span class="str">'active'</span>);
+el.<span class="prop">classList</span>.<span class="fn">remove</span>(<span class="str">'hidden'</span>);
+el.<span class="prop">classList</span>.<span class="fn">toggle</span>(<span class="str">'open'</span>);
+el.<span class="prop">classList</span>.<span class="fn">contains</span>(<span class="str">'active'</span>); <span class="cm">// true/false</span></pre>
+                        </div>
+                    </div>
+                    <div class="flex-col">
+                        <div class="code-wrap">
+                            <div class="code-top">
+                                <div class="code-dots"><span class="c-r"></span><span class="c-a"></span><span
+                                        class="c-g"></span></div><span class="code-fname">dom-create.js</span><span
+                                    class="code-lang">JS</span>
+                            </div>
+                            <pre><span class="cm">// Tạo và thêm phần tử</span>
+<span class="kw">function</span> <span class="fn">createProductCard</span>(product) {
+  <span class="kw">const</span> card = document.<span class="fn">createElement</span>(<span class="str">'div'</span>);
+  card.<span class="prop">className</span> = <span class="str">'product-card'</span>;
+  card.<span class="prop">innerHTML</span> = <span class="str">`
+    &lt;img src="<span class="kw">${</span>product.image<span class="kw">}</span>" alt="<span class="kw">${</span>product.name<span class="kw">}</span>"&gt;
+    &lt;h3&gt;<span class="kw">${</span>product.name<span class="kw">}</span>&lt;/h3&gt;
+    &lt;p class="price"&gt;<span class="kw">${</span>product.price<span class="kw">}</span>đ&lt;/p&gt;
+    &lt;button data-id="<span class="kw">${</span>product.id<span class="kw">}</span>"&gt;Thêm giỏ&lt;/button&gt;
+  `</span>;
+  <span class="kw">return</span> card;
+}
+
+<span class="cm">// ✅ Render list hiệu quả (1 lần DOM update)</span>
+<span class="kw">function</span> <span class="fn">renderProducts</span>(list) {
+  <span class="kw">const</span> container = document.<span class="fn">querySelector</span>(<span class="str">'#products'</span>);
+  container.<span class="prop">innerHTML</span> = list
+    .<span class="fn">map</span>(p => <span class="str">`&lt;div class="card"&gt;
+      &lt;h3&gt;<span class="kw">${</span>p.name<span class="kw">}</span>&lt;/h3&gt;&lt;p&gt;<span class="kw">${</span>p.price<span class="kw">}</span>đ&lt;/p&gt;
+    &lt;/div&gt;`</span>)
+    .<span class="fn">join</span>(<span class="str">""</span>);
+}</pre>
+                        </div>
+                        <div class="warn-box"><strong>innerHTML vs textContent:</strong> Không bao giờ inject user input
+                            qua <code>innerHTML</code> — dễ bị XSS. Dùng <code
+                                style="color:var(--js)">textContent</code> cho plain text, <code
+                                style="color:var(--js)">innerHTML</code> chỉ cho HTML template của bạn.</div>
+                    </div>
+                </div>
+                <div class="takeaway">
+                    <div class="takeaway-icon">⚡</div>
+                    <div class="takeaway-text">Render list: build HTML string bằng <strong>.map().join("")</strong> rồi
+                        gán vào <strong>innerHTML</strong> một lần — nhanh hơn nhiều so với append từng phần tử.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════
+  S12 — EVENTS
+════════════════════════════════════════════════════ -->
+        <div class="slide" id="s12">
+            <div class="chapter-bar"></div>
+            <div class="si">
+                <div class="mod-tag"><span class="pip"></span>Module 06 — DOM</div>
+                <div class="slide-title">Events & <span class="hi">Event Delegation</span></div>
+                <div class="slide-subtitle">Event handling là trái tim của mọi web app tương tác. Event delegation là
+                    pattern không thể thiếu.</div>
+
+                <div class="cols cols-2" style="flex:1">
+                    <div class="flex-col">
+                        <div class="code-wrap">
+                            <div class="code-top">
+                                <div class="code-dots"><span class="c-r"></span><span class="c-a"></span><span
+                                        class="c-g"></span></div><span class="code-fname">events.js</span><span
+                                    class="code-lang">JS</span>
+                            </div>
+                            <pre><span class="cm">// addEventListener — cách duy nhất nên dùng</span>
+<span class="kw">const</span> btn = document.<span class="fn">querySelector</span>(<span class="str">'#addToCart'</span>);
+
+btn.<span class="fn">addEventListener</span>(<span class="str">'click'</span>, <span class="kw">function</span>(event) {
+  event.<span class="fn">preventDefault</span>(); <span class="cm">// ngăn hành vi mặc định</span>
+  event.<span class="fn">stopPropagation</span>(); <span class="cm">// ngăn bubble lên cha</span>
+  console.<span class="fn">log</span>(<span class="str">"Clicked!"</span>, event.target);
+});
+
+<span class="cm">// Các events phổ biến</span>
+el.<span class="fn">addEventListener</span>(<span class="str">'click'</span>, fn);      <span class="cm">// chuột</span>
+el.<span class="fn">addEventListener</span>(<span class="str">'input'</span>, fn);      <span class="cm">// gõ phím</span>
+el.<span class="fn">addEventListener</span>(<span class="str">'change'</span>, fn);     <span class="cm">// select/checkbox</span>
+el.<span class="fn">addEventListener</span>(<span class="str">'submit'</span>, fn);     <span class="cm">// form submit</span>
+el.<span class="fn">addEventListener</span>(<span class="str">'keydown'</span>, fn);    <span class="cm">// keyboard</span>
+el.<span class="fn">addEventListener</span>(<span class="str">'mouseenter'</span>, fn); <span class="cm">// hover in</span>
+el.<span class="fn">addEventListener</span>(<span class="str">'scroll'</span>, fn);     <span class="cm">// scroll</span>
+
+<span class="cm">// Xoá event listener (cần giữ reference hàm)</span>
+<span class="kw">const</span> <span class="fn">handler</span> = () => console.<span class="fn">log</span>(<span class="str">'hi'</span>);
+btn.<span class="fn">addEventListener</span>(<span class="str">'click'</span>, handler);
+btn.<span class="fn">removeEventListener</span>(<span class="str">'click'</span>, handler);</pre>
+                        </div>
+                    </div>
+                    <div class="flex-col">
+                        <div class="code-wrap">
+                            <div class="code-top">
+                                <div class="code-dots"><span class="c-r"></span><span class="c-a"></span><span
+                                        class="c-g"></span></div><span
+                                    class="code-fname">event-delegation.js</span><span class="code-lang">JS</span>
+                            </div>
+                            <pre><span class="cm">// ❌ Sai: gắn listener vào TỪNG phần tử</span>
+<span class="cm">// (tốn memory, không hoạt động với phần tử mới)</span>
+document.<span class="fn">querySelectorAll</span>(<span class="str">'.del-btn'</span>)
+  .<span class="fn">forEach</span>(btn => btn.<span class="fn">addEventListener</span>(<span class="str">'click'</span>, del));
+
+<span class="cm">// ✅ Đúng: Event Delegation</span>
+<span class="cm">// Gắn 1 listener vào phần tử cha</span>
+<span class="kw">const</span> list = document.<span class="fn">querySelector</span>(<span class="str">'#product-list'</span>);
+
+list.<span class="fn">addEventListener</span>(<span class="str">'click'</span>, (e) => {
+  <span class="cm">// Kiểm tra phần tử nào được click</span>
+  <span class="kw">if</span> (e.target.<span class="fn">matches</span>(<span class="str">'.del-btn'</span>)) {
+    <span class="kw">const</span> id = e.target.dataset.id;
+    <span class="fn">deleteProduct</span>(id);
+  }
+  <span class="kw">if</span> (e.target.<span class="fn">matches</span>(<span class="str">'.add-cart'</span>)) {
+    <span class="kw">const</span> id = e.target.dataset.id;
+    <span class="fn">addToCart</span>(id);
+  }
+});</pre>
+                        </div>
+                        <div class="tip-box"><strong>Event Delegation hoạt động nhờ Event Bubbling:</strong> Click trên
+                            phần tử con sẽ "nổi bọt" lên cha, ông... Listener ở cha bắt được tất cả. Pattern này quan
+                            trọng khi render danh sách động.</div>
+                    </div>
+                </div>
+                <div class="takeaway">
+                    <div class="takeaway-icon">🫧</div>
+                    <div class="takeaway-text">Event Delegation: gắn <strong>1 listener trên phần tử cha</strong>, dùng
+                        <strong>e.target.matches()</strong> để phân biệt. Hiệu quả hơn nhiều so với gắn listener vào
+                        từng item trong list.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════
+  S13 — FORMS & VALIDATION
+════════════════════════════════════════════════════ -->
+        <div class="slide" id="s13">
+            <div class="chapter-bar"></div>
+            <div class="si">
+                <div class="mod-tag"><span class="pip"></span>Module 06 — DOM</div>
+                <div class="slide-title">Forms: <span class="hi">Thu Thập &amp; Validate</span> Dữ Liệu</div>
+                <div class="slide-subtitle">Form validation phía client là lớp bảo vệ đầu tiên và UX quan trọng nhất —
+                    không phải thay thế validation phía server.</div>
+
+                <div class="cols cols-2" style="flex:1">
+                    <div class="flex-col">
+                        <div class="code-wrap">
+                            <div class="code-top">
+                                <div class="code-dots"><span class="c-r"></span><span class="c-a"></span><span
+                                        class="c-g"></span></div><span class="code-fname">form-handler.js</span><span
+                                    class="code-lang">JS</span>
+                            </div>
+                            <pre><span class="kw">const</span> form = document.<span class="fn">querySelector</span>(<span class="str">'#bookingForm'</span>);
+
+form.<span class="fn">addEventListener</span>(<span class="str">'submit'</span>, async (e) => {
+  e.<span class="fn">preventDefault</span>(); <span class="cm">// ngăn reload trang</span>
+
+  <span class="cm">// Thu thập dữ liệu</span>
+  <span class="kw">const</span> data = {
+    name:    form.<span class="fn">querySelector</span>(<span class="str">'[name="name"]'</span>).value.<span class="fn">trim</span>(),
+    email:   form.<span class="fn">querySelector</span>(<span class="str">'[name="email"]'</span>).value.<span class="fn">trim</span>(),
+    checkin: form.<span class="fn">querySelector</span>(<span class="str">'[name="checkin"]'</span>).value,
+    rooms:   <span class="fn">Number</span>(form.<span class="fn">querySelector</span>(<span class="str">'[name="rooms"]'</span>).value),
+  };
+
+  <span class="cm">// Validate</span>
+  <span class="kw">const</span> errors = <span class="fn">validate</span>(data);
+  <span class="kw">if</span> (errors.length) {
+    <span class="fn">showErrors</span>(errors); <span class="kw">return</span>;
+  }
+
+  <span class="cm">// Submit</span>
+  <span class="kw">try</span> {
+    <span class="kw">await</span> <span class="fn">submitBooking</span>(data);
+    <span class="fn">showSuccess</span>(<span class="str">"Đặt phòng thành công!"</span>);
+  } <span class="kw">catch</span> (err) {
+    <span class="fn">showError</span>(err.message);
+  }
+});</pre>
+                        </div>
+                    </div>
+                    <div class="flex-col">
+                        <div class="code-wrap">
+                            <div class="code-top">
+                                <div class="code-dots"><span class="c-r"></span><span class="c-a"></span><span
+                                        class="c-g"></span></div><span class="code-fname">validate.js</span><span
+                                    class="code-lang">JS</span>
+                            </div>
+                            <pre><span class="kw">function</span> <span class="fn">validate</span>(data) {
+  <span class="kw">const</span> errors = [];
+  <span class="kw">const</span> emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  <span class="kw">if</span> (!data.name)
+    errors.<span class="fn">push</span>(<span class="str">"Họ tên không được để trống"</span>);
+
+  <span class="kw">if</span> (!emailRegex.<span class="fn">test</span>(data.email))
+    errors.<span class="fn">push</span>(<span class="str">"Email không hợp lệ"</span>);
+
+  <span class="kw">if</span> (!data.checkin)
+    errors.<span class="fn">push</span>(<span class="str">"Vui lòng chọn ngày"</span>);
+
+  <span class="kw">if</span> (data.rooms < <span class="num">1</span> || data.rooms > <span class="num">10</span>)
+    errors.<span class="fn">push</span>(<span class="str">"Số phòng từ 1–10"</span>);
+
+  <span class="kw">return</span> errors;
+}
+
+<span class="kw">function</span> <span class="fn">showErrors</span>(errors) {
+  <span class="kw">const</span> el = document.<span class="fn">querySelector</span>(<span class="str">'#errors'</span>);
+  el.<span class="prop">innerHTML</span> = errors
+    .<span class="fn">map</span>(e => <span class="str">`&lt;p class="error"&gt;❌ <span class="kw">${</span>e<span class="kw">}</span>&lt;/p&gt;`</span>)
+    .<span class="fn">join</span>(<span class="str">""</span>);
+}</pre>
+                        </div>
+                        <div class="warn-box"><strong>Không bao giờ</strong> chỉ validate ở client. Server phải validate
+                            lại — người dùng có thể bypass JavaScript hoàn toàn bằng cách gọi API trực tiếp.</div>
+                    </div>
+                </div>
+                <div class="takeaway">
+                    <div class="takeaway-icon">📋</div>
+                    <div class="takeaway-text">Pattern chuẩn: <strong>preventDefault → collect data → validate → show
+                            errors hoặc submit</strong>. Tách hàm validate riêng để dễ test và tái sử dụng.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════
+  S14 — ERROR HANDLING
+════════════════════════════════════════════════════ -->
+        <div class="slide" id="s14">
+            <div class="chapter-bar"></div>
+            <div class="si">
+                <div class="mod-tag"><span class="pip"></span>Module 07 — Async</div>
+                <div class="slide-title">Error Handling: <span class="hi">try · catch · finally</span></div>
+                <div class="slide-subtitle">Code tốt không phải không có lỗi — mà là xử lý lỗi một cách có kiểm soát và
+                    thông báo rõ ràng cho người dùng.</div>
+
+                <div class="cols cols-2" style="flex:1">
+                    <div class="flex-col">
+                        <div class="code-wrap">
+                            <div class="code-top">
+                                <div class="code-dots"><span class="c-r"></span><span class="c-a"></span><span
+                                        class="c-g"></span></div><span class="code-fname">error-handling.js</span><span
+                                    class="code-lang">JS</span>
+                            </div>
+                            <pre><span class="cm">// Cơ bản</span>
+<span class="kw">try</span> {
+  <span class="kw">const</span> data = JSON.<span class="fn">parse</span>(badJSON); <span class="cm">// có thể throw</span>
+  <span class="fn">processData</span>(data);
+} <span class="kw">catch</span> (error) {
+  <span class="cm">// error.name    → "SyntaxError"</span>
+  <span class="cm">// error.message → mô tả lỗi</span>
+  <span class="cm">// error.stack   → stack trace</span>
+  console.<span class="fn">error</span>(<span class="str">"Lỗi parse:"</span>, error.message);
+} <span class="kw">finally</span> {
+  <span class="cm">// Luôn chạy dù có lỗi hay không</span>
+  <span class="fn">hideLoadingSpinner</span>();
+}
+
+<span class="cm">// Tự throw error</span>
+<span class="kw">function</span> <span class="fn">getUser</span>(id) {
+  <span class="kw">if</span> (!id) <span class="kw">throw new</span> <span class="cls">Error</span>(<span class="str">"ID là bắt buộc"</span>);
+  <span class="kw">if</span> (<span class="kw">typeof</span> id !== <span class="str">"number"</span>)
+    <span class="kw">throw new</span> <span class="cls">TypeError</span>(<span class="str">"ID phải là number"</span>);
+  <span class="kw">return</span> db.<span class="fn">find</span>(id);
+}
+
+<span class="cm">// Custom Error class</span>
+<span class="kw">class</span> <span class="cls">ApiError</span> <span class="kw">extends</span> <span class="cls">Error</span> {
+  <span class="fn">constructor</span>(message, statusCode) {
+    <span class="kw">super</span>(message);
+    <span class="prop">this</span>.name = <span class="str">"ApiError"</span>;
+    <span class="prop">this</span>.statusCode = statusCode;
+  }
+}</pre>
+                        </div>
+                    </div>
+                    <div class="flex-col">
+                        <div class="code-wrap">
+                            <div class="code-top">
+                                <div class="code-dots"><span class="c-r"></span><span class="c-a"></span><span
+                                        class="c-g"></span></div><span
+                                    class="code-fname">api-error-handling.js</span><span class="code-lang">JS</span>
+                            </div>
+                            <pre><span class="cm">// Error handling chuẩn cho API calls</span>
+<span class="kw">async function</span> <span class="fn">fetchData</span>(url) {
+  <span class="kw">try</span> {
+    <span class="fn">showLoading</span>(<span class="bool">true</span>);
+    <span class="kw">const</span> res = <span class="kw">await</span> axios.<span class="fn">get</span>(url);
+    <span class="kw">return</span> res.data;
+
+  } <span class="kw">catch</span> (err) {
+    <span class="cm">// Axios error có response từ server</span>
+    <span class="kw">if</span> (err.response) {
+      <span class="kw">const</span> { status, data } = err.response;
+      <span class="kw">if</span> (status === <span class="num">401</span>) <span class="fn">redirectToLogin</span>();
+      <span class="kw">if</span> (status === <span class="num">404</span>) <span class="fn">showNotFound</span>();
+      <span class="kw">if</span> (status === <span class="num">500</span>) <span class="fn">showServerError</span>();
+    } <span class="kw">else if</span> (err.request) {
+      <span class="cm">// Request đã gửi nhưng không có response</span>
+      <span class="fn">showNetworkError</span>(<span class="str">"Không có mạng"</span>);
+    } <span class="kw">else</span> {
+      console.<span class="fn">error</span>(<span class="str">"Lỗi:"</span>, err.message);
+    }
+    <span class="kw">throw</span> err; <span class="cm">// re-throw để caller biết</span>
+
+  } <span class="kw">finally</span> {
+    <span class="fn">showLoading</span>(<span class="bool">false</span>);
+  }
+}</pre>
+                        </div>
+                        <div class="tip-box"><strong>finally</strong> là nơi dọn dẹp: tắt loading spinner, đóng
+                            connection. Chạy dù thành công hay lỗi — không cần lặp lại trong cả try lẫn catch.</div>
+                    </div>
+                </div>
+                <div class="takeaway">
+                    <div class="takeaway-icon">🛡️</div>
+                    <div class="takeaway-text">Mỗi async call nên có <strong>try/catch</strong>. Dùng
+                        <strong>finally</strong> để dọn dẹp. Phân biệt loại lỗi (network, 4xx, 5xx) để hiển thị thông
+                        báo phù hợp cho người dùng.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════
+  S15 — PROMISES
+════════════════════════════════════════════════════ -->
+        <div class="slide" id="s15">
+            <div class="chapter-bar"></div>
+            <div class="si">
+                <div class="mod-tag"><span class="pip"></span>Module 07 — Async</div>
+                <div class="slide-title">Promises: <span class="hi">Bất Đồng Bộ Có Kiểm Soát</span></div>
+                <div class="slide-subtitle">Promise là nền tảng của async JavaScript. Dù async/await phổ biến hơn, hiểu
+                    Promise giúp debug và dùng các API cũ tốt hơn.</div>
+
+                <div class="cols cols-2" style="flex:1">
+                    <div class="flex-col">
+                        <div class="code-wrap">
+                            <div class="code-top">
+                                <div class="code-dots"><span class="c-r"></span><span class="c-a"></span><span
+                                        class="c-g"></span></div><span class="code-fname">promises.js</span><span
+                                    class="code-lang">JS</span>
+                            </div>
+                            <pre><span class="cm">// Promise có 3 trạng thái: pending → fulfilled | rejected</span>
+<span class="kw">const</span> p = <span class="kw">new</span> <span class="cls">Promise</span>((resolve, reject) => {
+  setTimeout(() => {
+    <span class="kw">if</span> (Math.<span class="fn">random</span>() > <span class="num">0.5</span>) {
+      <span class="fn">resolve</span>(<span class="str">"Thành công!"</span>);
+    } <span class="kw">else</span> {
+      <span class="fn">reject</span>(<span class="kw">new</span> <span class="cls">Error</span>(<span class="str">"Thất bại!"</span>));
+    }
+  }, <span class="num">1000</span>);
+});
+
+<span class="cm">// .then .catch .finally chain</span>
+p
+  .<span class="fn">then</span>(result => console.<span class="fn">log</span>(result))
+  .<span class="fn">catch</span>(err => console.<span class="fn">error</span>(err))
+  .<span class="fn">finally</span>(() => console.<span class="fn">log</span>(<span class="str">"Done"</span>));
+
+<span class="cm">// Promise.all — chạy song song, chờ tất cả</span>
+<span class="kw">const</span> [hotels, rooms, reviews] = <span class="kw">await</span> Promise.<span class="fn">all</span>([
+  axios.<span class="fn">get</span>(<span class="str">'/hotels'</span>),
+  axios.<span class="fn">get</span>(<span class="str">'/rooms'</span>),
+  axios.<span class="fn">get</span>(<span class="str">'/reviews'</span>),
+]);
+
+<span class="cm">// Promise.allSettled — tất cả, kể cả lỗi</span>
+<span class="kw">const</span> results = <span class="kw">await</span> Promise.<span class="fn">allSettled</span>([p1, p2, p3]);
+results.<span class="fn">forEach</span>(r => {
+  <span class="kw">if</span> (r.status === <span class="str">'fulfilled'</span>) use(r.value);
+  <span class="kw">else</span> log(r.reason);
+});</pre>
+                        </div>
+                    </div>
+                    <div class="flex-col">
+                        <div class="col-label">Promise States — Visual</div>
+                        <div class="promise-chain">
+                            <div class="p-step">
+                                <div class="p-dot" style="background:var(--gold);color:var(--gold)"></div>
+                                <div style="font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--gold)">
+                                    pending</div>
+                                <div style="font-size:.72rem;color:var(--dim);margin-left:.5rem">Đang xử lý, chưa có kết
+                                    quả</div>
+                            </div>
+                            <div style="padding-left:.45rem;color:var(--muted);font-size:.8rem">│</div>
+                            <div style="padding-left:.45rem;color:var(--muted);font-size:.8rem">├─── fulfilled ──→</div>
+                            <div class="p-step" style="margin-left:1.5rem">
+                                <div class="p-dot" style="background:var(--grn);color:var(--grn)"></div>
+                                <div style="font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--grn)">
+                                    .then(value => ...)</div>
+                            </div>
+                            <div style="padding-left:.45rem;color:var(--muted);font-size:.8rem">└─── rejected ───→</div>
+                            <div class="p-step" style="margin-left:1.5rem">
+                                <div class="p-dot" style="background:var(--red);color:var(--red)"></div>
+                                <div style="font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--red)">
+                                    .catch(err => ...)</div>
+                            </div>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="col-label">Promise.all vs allSettled</div>
+                        <div class="code-wrap">
+                            <table class="cmp-table">
+                                <tr>
+                                    <th>Method</th>
+                                    <th>Hành vi khi 1 reject</th>
+                                    <th>Dùng khi</th>
+                                </tr>
+                                <tr>
+                                    <td>all</td>
+                                    <td>Reject ngay (fail-fast)</td>
+                                    <td>Tất cả phải thành công</td>
+                                </tr>
+                                <tr>
+                                    <td>allSettled</td>
+                                    <td>Vẫn chờ tất cả</td>
+                                    <td>Xử lý từng kết quả riêng</td>
+                                </tr>
+                                <tr>
+                                    <td>race</td>
+                                    <td>Lấy kết quả đầu tiên</td>
+                                    <td>Timeout pattern</td>
+                                </tr>
+                                <tr>
+                                    <td>any</td>
+                                    <td>Lấy fulfilled đầu tiên</td>
+                                    <td>Fallback server</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="takeaway">
+                    <div class="takeaway-icon">⚡</div>
+                    <div class="takeaway-text"><strong>Promise.all</strong> là cách chạy nhiều API call song song —
+                        nhanh hơn nhiều so với await từng cái một. Thời gian = max(t1, t2, t3) thay vì t1 + t2 + t3.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════
+  S16 — ASYNC / AWAIT + AXIOS
+════════════════════════════════════════════════════ -->
+        <div class="slide" id="s16">
+            <div class="chapter-bar"></div>
+            <div class="si">
+                <div class="mod-tag"><span class="pip"></span>Module 07 — Async</div>
+                <div class="slide-title">async/await + <span class="hi">axios</span></div>
+                <div class="slide-subtitle">Kết hợp async/await với axios là pattern chuẩn trong mọi dự án JS/React hiện
+                    đại — phải thành thạo trước khi học framework.</div>
+
+                <div class="cols cols-2" style="flex:1">
+                    <div class="flex-col">
+                        <div class="code-wrap">
+                            <div class="code-top">
+                                <div class="code-dots"><span class="c-r"></span><span class="c-a"></span><span
+                                        class="c-g"></span></div><span class="code-fname">api-service.js</span><span
+                                    class="code-lang">JS</span>
+                            </div>
+                            <pre><span class="cm">// Setup axios instance (chuẩn dự án thực)</span>
+<span class="kw">const</span> api = axios.<span class="fn">create</span>({
+  baseURL: <span class="str">'https://api.example.com/v1'</span>,
+  timeout: <span class="num">10000</span>,
+  headers: { <span class="str">'Content-Type'</span>: <span class="str">'application/json'</span> }
+});
+
+<span class="cm">// GET — lấy dữ liệu</span>
+<span class="kw">async function</span> <span class="fn">getProducts</span>(page = <span class="num">1</span>, limit = <span class="num">10</span>) {
+  <span class="kw">const</span> res = <span class="kw">await</span> api.<span class="fn">get</span>(<span class="str">'/products'</span>, {
+    params: { page, limit }
+  });
+  <span class="kw">return</span> res.data;
+}
+
+<span class="cm">// POST — tạo mới</span>
+<span class="kw">async function</span> <span class="fn">createProduct</span>(product) {
+  <span class="kw">const</span> res = <span class="kw">await</span> api.<span class="fn">post</span>(<span class="str">'/products'</span>, product);
+  <span class="kw">return</span> res.data;
+}
+
+<span class="cm">// PUT — cập nhật</span>
+<span class="kw">async function</span> <span class="fn">updateProduct</span>(id, data) {
+  <span class="kw">const</span> res = <span class="kw">await</span> api.<span class="fn">put</span>(<span class="str">`/products/<span class="kw">${</span>id<span class="kw">}</span>`</span>, data);
+  <span class="kw">return</span> res.data;
+}
+
+<span class="cm">// DELETE</span>
+<span class="kw">async function</span> <span class="fn">deleteProduct</span>(id) {
+  <span class="kw">await</span> api.<span class="fn">delete</span>(<span class="str">`/products/<span class="kw">${</span>id<span class="kw">}</span>`</span>);
+}</pre>
+                        </div>
+                    </div>
+                    <div class="flex-col">
+                        <div class="code-wrap">
+                            <div class="code-top">
+                                <div class="code-dots"><span class="c-r"></span><span class="c-a"></span><span
+                                        class="c-g"></span></div><span class="code-fname">product-flow.js</span><span
+                                    class="code-lang">JS</span>
+                            </div>
+                            <pre><span class="cm">// Render flow hoàn chỉnh</span>
+<span class="kw">async function</span> <span class="fn">loadProducts</span>() {
+  <span class="kw">const</span> container = document.<span class="fn">querySelector</span>(<span class="str">'#app'</span>);
+
+  <span class="cm">// 1. Show loading state</span>
+  container.<span class="prop">innerHTML</span> = <span class="str">`
+    &lt;div class="skeleton"&gt;Đang tải...&lt;/div&gt;
+  `</span>;
+
+  <span class="kw">try</span> {
+    <span class="cm">// 2. Fetch data</span>
+    <span class="kw">const</span> products = <span class="kw">await</span> <span class="fn">getProducts</span>();
+
+    <span class="cm">// 3. Render</span>
+    container.<span class="prop">innerHTML</span> = products
+      .<span class="fn">map</span>(p => <span class="str">`
+        &lt;div class="card"&gt;
+          &lt;h3&gt;<span class="kw">${</span>p.name<span class="kw">}</span>&lt;/h3&gt;
+          &lt;p&gt;<span class="kw">${</span>p.price.<span class="fn">toLocaleString</span>(<span class="str">'vi-VN'</span>)<span class="kw">}</span>đ&lt;/p&gt;
+          &lt;button data-id="<span class="kw">${</span>p.id<span class="kw">}</span>" class="buy-btn"&gt;
+            Mua ngay
+          &lt;/button&gt;
+        &lt;/div&gt;
+      `</span>)
+      .<span class="fn">join</span>(<span class="str">""</span>);
+
+  } <span class="kw">catch</span> (err) {
+    <span class="cm">// 4. Error state</span>
+    container.<span class="prop">innerHTML</span> = <span class="str">`
+      &lt;p class="error"&gt;❌ <span class="kw">${</span>err.message<span class="kw">}</span>&lt;/p&gt;
+      &lt;button onclick="loadProducts()"&gt;Thử lại&lt;/button&gt;
+    `</span>;
+  }
+}</pre>
+                        </div>
+                        <div class="tip-box"><strong>Luôn có 3 state:</strong> loading, success, error. Người dùng phải
+                            luôn biết chuyện gì đang xảy ra — không được để màn hình trắng hay freeze.</div>
+                    </div>
+                </div>
+                <div class="takeaway">
+                    <div class="takeaway-icon">📡</div>
+                    <div class="takeaway-text">Pattern chuẩn: <strong>show loading → await fetch → render data → catch
+                            error + show retry</strong>. Không bao giờ để người dùng nhìn màn hình trắng không biết
+                        chuyện gì xảy ra.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════
+  S17 — ES6 MODULES
+════════════════════════════════════════════════════ -->
+        <div class="slide" id="s17">
+            <div class="chapter-bar"></div>
+            <div class="si">
+                <div class="mod-tag"><span class="pip"></span>Module 08 — Modules</div>
+                <div class="slide-title">ES6 Modules: <span class="hi">import · export</span></div>
+                <div class="slide-subtitle">Modules là nền tảng để tổ chức code lớn. Mỗi file là một module riêng biệt
+                    với scope độc lập.</div>
+
+                <div class="cols cols-2" style="flex:1">
+                    <div class="flex-col">
+                        <div class="code-wrap">
+                            <div class="code-top">
+                                <div class="code-dots"><span class="c-r"></span><span class="c-a"></span><span
+                                        class="c-g"></span></div><span class="code-fname">api/product.js</span><span
+                                    class="code-lang">JS</span>
+                            </div>
+                            <pre><span class="cm">// Named exports — export nhiều thứ</span>
+<span class="kw">export const</span> BASE_URL = <span class="str">"https://api.example.com"</span>;
+
+<span class="kw">export async function</span> <span class="fn">getProducts</span>() { <span class="cm">/* ... */</span> }
+<span class="kw">export async function</span> <span class="fn">getProductById</span>(id) { <span class="cm">/* ... */</span> }
+<span class="kw">export async function</span> <span class="fn">createProduct</span>(data) { <span class="cm">/* ... */</span> }
+
+<span class="cm">// Default export — export 1 thứ chính</span>
+<span class="kw">export default class</span> <span class="cls">ProductService</span> {
+  <span class="kw">static</span> <span class="fn">getAll</span>() { <span class="cm">/* ... */</span> }
+  <span class="kw">static</span> <span class="fn">create</span>(data) { <span class="cm">/* ... */</span> }
+}</pre>
+                        </div>
+                        <div class="code-wrap">
+                            <div class="code-top">
+                                <div class="code-dots"><span class="c-r"></span><span class="c-a"></span><span
+                                        class="c-g"></span></div><span class="code-fname">app/core.js</span><span
+                                    class="code-lang">JS</span>
+                            </div>
+                            <pre><span class="cm">// Import named exports</span>
+<span class="kw">import</span> { <span class="fn">getProducts</span>, <span class="fn">createProduct</span>, BASE_URL } <span class="kw">from</span> <span class="str">'../api/product.js'</span>;
+
+<span class="cm">// Import default</span>
+<span class="kw">import</span> <span class="cls">ProductService</span> <span class="kw">from</span> <span class="str">'../api/product.js'</span>;
+
+<span class="cm">// Import tất cả vào namespace</span>
+<span class="kw">import</span> * <span class="kw">as</span> ProductAPI <span class="kw">from</span> <span class="str">'../api/product.js'</span>;
+ProductAPI.<span class="fn">getProducts</span>();
+
+<span class="cm">// Rename khi import</span>
+<span class="kw">import</span> { <span class="fn">getProducts</span> <span class="kw">as</span> <span class="fn">fetchAll</span> } <span class="kw">from</span> <span class="str">'../api/product.js'</span>;</pre>
+                        </div>
+                    </div>
+                    <div class="flex-col">
+                        <div class="col-label">Cấu Trúc Thư Mục Chuẩn (Buoi_13)</div>
+                        <div class="code-wrap">
+                            <pre style="font-size:.68rem;line-height:1.9">
+<span class="str">src/</span>
+<span class="str">├── js/</span>
+<span class="str">│   ├── app.js</span>          <span class="cm"># entry point — gọi init()</span>
+<span class="str">│   ├── admin.js</span>        <span class="cm"># admin entry</span>
+<span class="str">│   │</span>
+<span class="str">│   ├── app/</span>
+<span class="str">│   │   ├── core.js</span>     <span class="cm"># state + khởi tạo app</span>
+<span class="str">│   │   ├── product-flow.js</span> <span class="cm"># fetch & render products</span>
+<span class="str">│   │   ├── card-flow.js</span>    <span class="cm"># cart logic</span>
+<span class="str">│   │   ├── popup-flow.js</span>   <span class="cm"># modal open/close</span>
+<span class="str">│   │   └── filter-flow.js</span> <span class="cm"># search & debounce</span>
+<span class="str">│   │</span>
+<span class="str">│   └── admin/</span>
+<span class="str">│       ├── core.js</span>     <span class="cm"># admin state</span>
+<span class="str">│       ├── crud-flow.js</span>    <span class="cm"># GET/POST/PUT/DELETE</span>
+<span class="str">│       └── ui-flow.js</span>     <span class="cm"># form, edit, reset UI</span>
+<span class="str">│</span>
+<span class="str">├── css/</span>
+<span class="str">└── index.html</span>
+          </pre>
+                        </div>
+                        <div class="tip-box"><strong>Nguyên tắc Single Responsibility:</strong> Mỗi file chỉ làm một
+                            việc. <code style="color:var(--js)">product-flow.js</code> chỉ fetch và render. <code
+                                style="color:var(--js)">card-flow.js</code> chỉ xử lý cart. Dễ tìm bug và bảo trì hơn
+                            rất nhiều.</div>
+                    </div>
+                </div>
+                <div class="takeaway">
+                    <div class="takeaway-icon">📦</div>
+                    <div class="takeaway-text">Quy tắc: <strong>1 file = 1 trách nhiệm</strong>. File quá dài hoặc làm
+                        nhiều việc → dấu hiệu cần tách. Tên file phải mô tả rõ nó làm gì.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════
+  S18 — STATE MANAGEMENT
+════════════════════════════════════════════════════ -->
+        <div class="slide" id="s18">
+            <div class="chapter-bar"></div>
+            <div class="si">
+                <div class="mod-tag"><span class="pip"></span>Module 08 — App Architecture</div>
+                <div class="slide-title">State & <span class="hi">Render Pattern</span></div>
+                <div class="slide-subtitle">Hiểu cách quản lý state là bước đệm trực tiếp sang React/Vue. Nguyên lý là
+                    giống nhau — chỉ syntax khác.</div>
+
+                <div class="cols cols-2" style="flex:1">
+                    <div class="flex-col">
+                        <div class="code-wrap">
+                            <div class="code-top">
+                                <div class="code-dots"><span class="c-r"></span><span class="c-a"></span><span
+                                        class="c-g"></span></div><span class="code-fname">app/core.js</span><span
+                                    class="code-lang">JS</span>
+                            </div>
+                            <pre><span class="cm">// State tập trung — single source of truth</span>
+<span class="kw">export const</span> state = {
+  products: [],
+  filteredProducts: [],
+  cart: [],
+  currentPage: <span class="num">1</span>,
+  searchQuery: <span class="str">""</span>,
+  isLoading: <span class="bool">false</span>,
+  error: <span class="bool">null</span>,
+};
+
+<span class="cm">// Khởi tạo app</span>
+<span class="kw">export async function</span> <span class="fn">initApp</span>() {
+  state.isLoading = <span class="bool">true</span>;
+  <span class="fn">renderApp</span>(); <span class="cm">// render loading state</span>
+
+  <span class="kw">try</span> {
+    state.products = <span class="kw">await</span> <span class="fn">getProducts</span>();
+    state.filteredProducts = [...state.products];
+    state.isLoading = <span class="bool">false</span>;
+    <span class="fn">renderApp</span>(); <span class="cm">// render với data</span>
+  } <span class="kw">catch</span> (err) {
+    state.error = err.message;
+    state.isLoading = <span class="bool">false</span>;
+    <span class="fn">renderApp</span>(); <span class="cm">// render error state</span>
+  }
+}
+
+<span class="cm">// Render dựa vào state</span>
+<span class="kw">function</span> <span class="fn">renderApp</span>() {
+  <span class="kw">if</span> (state.isLoading) { <span class="fn">renderLoading</span>(); <span class="kw">return</span>; }
+  <span class="kw">if</span> (state.error)     { <span class="fn">renderError</span>(); <span class="kw">return</span>; }
+  <span class="fn">renderProductList</span>(state.filteredProducts);
+  <span class="fn">renderCart</span>(state.cart);
+}</pre>
+                        </div>
+                    </div>
+                    <div class="flex-col">
+                        <div class="code-wrap">
+                            <div class="code-top">
+                                <div class="code-dots"><span class="c-r"></span><span class="c-a"></span><span
+                                        class="c-g"></span></div><span class="code-fname">filter-flow.js</span><span
+                                    class="code-lang">JS</span>
+                            </div>
+                            <pre><span class="kw">import</span> { state } <span class="kw">from</span> <span class="str">'./core.js'</span>;
+
+<span class="cm">// Debounce — delay function call</span>
+<span class="kw">function</span> <span class="fn">debounce</span>(fn, delay = <span class="num">300</span>) {
+  <span class="kw">let</span> timer;
+  <span class="kw">return</span> (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => <span class="fn">fn</span>(...args), delay);
+  };
+}
+
+<span class="cm">// Search với debounce</span>
+<span class="kw">const</span> <span class="fn">handleSearch</span> = <span class="fn">debounce</span>((query) => {
+  state.searchQuery = query.<span class="fn">toLowerCase</span>();
+  state.filteredProducts = state.products.<span class="fn">filter</span>(p =>
+    p.name.<span class="fn">toLowerCase</span>().<span class="fn">includes</span>(state.searchQuery)
+  );
+  <span class="fn">renderProductList</span>(state.filteredProducts);
+});
+
+<span class="cm">// Cart logic</span>
+<span class="kw">export function</span> <span class="fn">addToCart</span>(productId) {
+  <span class="kw">const</span> existing = state.cart.<span class="fn">find</span>(i => i.id === productId);
+
+  <span class="kw">if</span> (existing) {
+    existing.qty++;
+  } <span class="kw">else</span> {
+    <span class="kw">const</span> product = state.products.<span class="fn">find</span>(p => p.id === productId);
+    state.cart.<span class="fn">push</span>({ ...product, qty: <span class="num">1</span> });
+  }
+  <span class="fn">renderCart</span>(state.cart);
+}</pre>
+                        </div>
+                        <div class="tip-box"><strong>Debounce quan trọng:</strong> Người dùng gõ 10 ký tự → 10 search
+                            call. Với debounce 300ms, chỉ gọi sau khi ngừng gõ 300ms → 1 call. Tiết kiệm request và CPU.
+                        </div>
+                    </div>
+                </div>
+                <div class="takeaway">
+                    <div class="takeaway-icon">🗃️</div>
+                    <div class="takeaway-text"><strong>State = nguồn sự thật duy nhất</strong>. Không update DOM trực
+                        tiếp — update state rồi gọi render(). Đây chính xác là cách React hoạt động bên trong.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════
+  S19 — DEBUGGING
+════════════════════════════════════════════════════ -->
+        <div class="slide" id="s19">
+            <div class="chapter-bar"></div>
+            <div class="si">
+                <div class="mod-tag"><span class="pip"></span>Module 09 — Debugging</div>
+                <div class="slide-title">Debug <span class="hi">Như Senior</span></div>
+                <div class="slide-subtitle">Debugging là kỹ năng thiếu nhất ở junior — người biết debug nhanh luôn được
+                    đánh giá cao hơn người chỉ biết viết code.</div>
+
+                <div class="cols cols-3" style="flex:1;align-content:start">
+                    <div class="flex-col">
+                        <div class="card">
+                            <div class="card-title">🔵 console Methods</div>
+                            <div class="code-wrap" style="margin-top:.5rem">
+                                <pre style="font-size:.68rem;line-height:1.85"><span class="cm">// Log có nhãn</span>
+console.<span class="fn">log</span>(<span class="str">'data:'</span>, data);
+
+<span class="cm">// Log object đẹp</span>
+console.<span class="fn">table</span>(array);
+console.<span class="fn">dir</span>(object);
+
+<span class="cm">// Đo thời gian</span>
+console.<span class="fn">time</span>(<span class="str">'fetch'</span>);
+<span class="kw">await</span> <span class="fn">fetchData</span>();
+console.<span class="fn">timeEnd</span>(<span class="str">'fetch'</span>);
+
+<span class="cm">// Nhóm logs</span>
+console.<span class="fn">group</span>(<span class="str">'Cart'</span>);
+console.<span class="fn">log</span>(state.cart);
+console.<span class="fn">groupEnd</span>();
+
+<span class="cm">// Cảnh báo có điều kiện</span>
+console.<span class="fn">assert</span>(x > <span class="num">0</span>, <span class="str">'x phải > 0'</span>);</pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex-col">
+                        <div class="card">
+                            <div class="card-title">🔴 Breakpoints & DevTools</div>
+                            <div class="card-body">Dùng <strong>Sources tab</strong> trong Chrome DevTools để set
+                                breakpoint — dừng code tại dòng muốn kiểm tra, xem giá trị mọi biến.</div>
+                            <div class="code-wrap" style="margin-top:.5rem">
+                                <pre style="font-size:.68rem;line-height:1.85"><span class="cm">// debugger statement</span>
+<span class="cm">// Code sẽ dừng ở đây</span>
+<span class="kw">async function</span> <span class="fn">process</span>(data) {
+  <span class="kw">debugger</span>; <span class="cm">// ← dừng tại đây</span>
+  <span class="cm">// Inspect data trong DevTools</span>
+  <span class="kw">const</span> result = <span class="fn">transform</span>(data);
+  <span class="kw">return</span> result;
+}</pre>
+                            </div>
+                        </div>
+                        <div class="tip-box" style="font-size:.72rem"><strong>F8</strong> = Continue &nbsp;|&nbsp;
+                            <strong>F10</strong> = Step Over &nbsp;|&nbsp; <strong>F11</strong> = Step Into</div>
+                    </div>
+                    <div class="flex-col">
+                        <div class="card">
+                            <div class="card-title">⚡ Đọc Stack Trace</div>
+                            <div class="output-box" style="font-size:.66rem;margin-top:.3rem">
+                                <div style="color:var(--red)">TypeError: Cannot read properties</div>
+                                <div style="color:var(--red)">of undefined (reading 'name')</div>
+                                <div style="color:var(--muted);margin-top:.3rem">at renderCard (app.js:45)</div>
+                                <div style="color:var(--muted)">at Array.map (&lt;anonymous&gt;)</div>
+                                <div style="color:var(--muted)">at renderList (app.js:30)</div>
+                                <div style="color:var(--muted)">at initApp (core.js:12)</div>
+                            </div>
+                            <div class="card-body" style="margin-top:.4rem;font-size:.72rem">Đọc từ <strong>trên
+                                    xuống</strong> — dòng đầu là nơi lỗi xảy ra. Bấm vào tên file để nhảy tới đúng dòng
+                                trong DevTools.</div>
+                        </div>
+                        <div class="good-box" style="font-size:.72rem">
+                            <strong>Network tab:</strong> Xem tất cả HTTP request — status code, request body, response
+                            data. Luôn check đây trước khi debug JS khi làm API.
+                        </div>
+                    </div>
+                </div>
+                <div class="takeaway">
+                    <div class="takeaway-icon">🔍</div>
+                    <div class="takeaway-text">Quy trình debug: <strong>đọc error message → tìm dòng lỗi trong stack
+                            trace → set breakpoint → kiểm tra giá trị biến</strong>. Đừng đoán — hãy đo.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════
+  S20 — COMMON MISTAKES
+════════════════════════════════════════════════════ -->
+        <div class="slide" id="s20">
+            <div class="chapter-bar"></div>
+            <div class="si">
+                <div class="mod-tag"><span class="pip"></span>Module 09 — Lỗi Phổ Biến</div>
+                <div class="slide-title">10 Lỗi <span class="hi">Junior Hay Mắc</span></div>
+                <div class="slide-subtitle">Những lỗi này xuất hiện trong mọi dự án thực tế. Học từ sai lầm của người
+                    khác trước khi tự mắc.</div>
+
+                <div class="cols cols-2" style="flex:1;align-content:start">
+                    <div class="flex-col">
+                        <div class="warn-box"><strong>❌ 1. Không await async function</strong><br /><code
+                                style="color:var(--red)">const data = getUser(); // Promise, không phải data!</code><br /><code
+                                style="color:var(--grn)">const data = await getUser(); // ✅</code></div>
+                        <div class="warn-box"><strong>❌ 2. Mutate state trực tiếp</strong><br /><code
+                                style="color:var(--red)">state.products.push(item); // ❌</code><br /><code
+                                style="color:var(--grn)">state.products = [...state.products, item]; // ✅</code></div>
+                        <div class="warn-box"><strong>❌ 3. Dùng == thay vì ===</strong><br /><code
+                                style="color:var(--red)">if (count == "0") // "0" == 0 là true 😱</code><br /><code
+                                style="color:var(--grn)">if (count === 0) // ✅</code></div>
+                        <div class="warn-box"><strong>❌ 4. Không xử lý async error</strong><br /><code
+                                style="color:var(--red)">await fetchData(); // nếu lỗi → crash</code><br /><code
+                                style="color:var(--grn)">try { await fetchData(); } catch(e) {...} // ✅</code></div>
+                        <div class="warn-box"><strong>❌ 5. Quên Number() khi lấy từ input</strong><br /><code
+                                style="color:var(--red)">"5" + 3 === "53" // string!</code><br /><code
+                                style="color:var(--grn)">Number(input.value) + 3 === 8 // ✅</code></div>
+                    </div>
+                    <div class="flex-col">
+                        <div class="warn-box"><strong>❌ 6. var thay vì let/const</strong><br /><code
+                                style="color:var(--red)">for (var i = 0; i < 3; i++) setTimeout(()=&gt;log(i))</code><br /><code
+                                style="color:var(--dim)">// In ra 3, 3, 3 — dùng let để fix!</code></div>
+                        <div class="warn-box"><strong>❌ 7. Gán lại const object sai</strong><br /><code
+                                style="color:var(--red)">const arr = []; arr = [1,2]; // TypeError!</code><br /><code
+                                style="color:var(--grn)">const arr = []; arr.push(1); // ✅ push được</code></div>
+                        <div class="warn-box"><strong>❌ 8. forEach khi cần return</strong><br /><code
+                                style="color:var(--red)">arr.forEach(x =&gt; { return x*2; }); // return bị bỏ qua</code><br /><code
+                                style="color:var(--grn)">arr.map(x =&gt; x*2); // ✅</code></div>
+                        <div class="warn-box"><strong>❌ 9. Không kiểm tra null/undefined</strong><br /><code
+                                style="color:var(--red)">user.profile.name // TypeError nếu profile null</code><br /><code
+                                style="color:var(--grn)">user?.profile?.name // ✅</code></div>
+                        <div class="warn-box"><strong>❌ 10. Mutate array khi sort</strong><br /><code
+                                style="color:var(--red)">data.sort((a,b) =&gt; a-b); // thay đổi data gốc!</code><br /><code
+                                style="color:var(--grn)">[...data].sort((a,b) =&gt; a-b); // ✅ copy trước</code></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════
+  S21 — MINIMAX AI
+════════════════════════════════════════════════════ -->
+        <div class="slide" id="s21">
+            <div class="chapter-bar"></div>
+            <div class="si">
+                <div class="mod-tag"><span class="pip"></span>Module 10 — Advanced</div>
+                <div class="slide-title">Minimax & <span class="hi">Alpha-Beta Pruning</span></div>
+                <div class="slide-subtitle">Thuật toán AI cho game cờ caro — ứng dụng thực tế của recursion, tree
+                    traversal và optimization.</div>
+
+                <div class="cols cols-2" style="flex:1">
+                    <div class="flex-col">
+                        <div class="code-wrap">
+                            <div class="code-top">
+                                <div class="code-dots"><span class="c-r"></span><span class="c-a"></span><span
+                                        class="c-g"></span></div><span class="code-fname">caro.js</span><span
+                                    class="code-lang">JS</span>
+                            </div>
+                            <pre><span class="kw">function</span> <span class="fn">minimax</span>(board, depth, isMaximizing, alpha, beta) {
+  <span class="cm">// Base case: kiểm tra kết thúc game</span>
+  <span class="kw">const</span> score = <span class="fn">evaluate</span>(board);
+  <span class="kw">if</span> (score !== <span class="bool">null</span>) <span class="kw">return</span> score;
+  <span class="kw">if</span> (depth === <span class="num">0</span>) <span class="kw">return</span> <span class="fn">heuristic</span>(board);
+
+  <span class="kw">if</span> (isMaximizing) {
+    <span class="cm">// AI turn — tối đa điểm</span>
+    <span class="kw">let</span> best = -Infinity;
+    <span class="kw">for</span> (<span class="kw">const</span> move <span class="kw">of</span> <span class="fn">getMoves</span>(board)) {
+      <span class="fn">applyMove</span>(board, move);
+      <span class="kw">const</span> val = <span class="fn">minimax</span>(board, depth-<span class="num">1</span>, <span class="bool">false</span>, alpha, beta);
+      <span class="fn">undoMove</span>(board, move);
+
+      best  = Math.<span class="fn">max</span>(best, val);
+      alpha = Math.<span class="fn">max</span>(alpha, val);
+
+      <span class="cm">// Alpha-Beta pruning ✂️</span>
+      <span class="kw">if</span> (beta <= alpha) <span class="kw">break</span>; <span class="cm">// cắt nhánh!</span>
+    }
+    <span class="kw">return</span> best;
+
+  } <span class="kw">else</span> {
+    <span class="cm">// Human turn — tối thiểu điểm</span>
+    <span class="kw">let</span> best = +Infinity;
+    <span class="kw">for</span> (<span class="kw">const</span> move <span class="kw">of</span> <span class="fn">getMoves</span>(board)) {
+      <span class="fn">applyMove</span>(board, move);
+      <span class="kw">const</span> val = <span class="fn">minimax</span>(board, depth-<span class="num">1</span>, <span class="bool">true</span>, alpha, beta);
+      <span class="fn">undoMove</span>(board, move);
+
+      best = Math.<span class="fn">min</span>(best, val);
+      beta = Math.<span class="fn">min</span>(beta, val);
+      <span class="kw">if</span> (beta <= alpha) <span class="kw">break</span>;
+    }
+    <span class="kw">return</span> best;
+  }
+}</pre>
+                        </div>
+                    </div>
+                    <div class="flex-col">
+                        <div class="col-label">Game Tree — Minimax Visual</div>
+                        <div class="tree">
+                            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[ROOT] <span
+                                    class="max-n">MAX (AI)</span></div>
+                            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;┌───────┴──────┐</div>
+                            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="min-n">[B]
+                                    MIN</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="min-n">[C] MIN</span>
+                            </div>
+                            <div>&nbsp;&nbsp;&nbsp;&nbsp;┌───┴───┐&nbsp;&nbsp;&nbsp;&nbsp;┌──┴──┐</div>
+                            <div>&nbsp;&nbsp;<span class="leaf">[D]+3</span> <span
+                                    class="leaf">[E]-2</span>&nbsp;&nbsp;<span class="leaf">[F]+1</span> <span
+                                    class="pruned">[G]+5✂</span></div>
+                            <div style="margin-top:.5rem;font-size:.65rem;color:var(--muted)">→ B chọn min(-2) = -2
+                            </div>
+                            <div style="font-size:.65rem;color:var(--muted)">→ G bị cắt (alpha-beta), không cần tính
+                            </div>
+                            <div style="font-size:.65rem;color:var(--muted)">→ ROOT chọn max(-2, ...) = tìm nước tốt
+                                nhất</div>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="card">
+                            <div class="card-title">⚡ Tại Sao Alpha-Beta Quan Trọng?</div>
+                            <div class="card-body">Minimax thuần: O(b^d) nodes — với cờ caro 15×15 và depth 5, con số
+                                khổng lồ. Alpha-Beta cắt ~50% nodes, giảm còn O(b^(d/2)). Depth 5 → tương đương depth 10
+                                không có pruning.</div>
+                        </div>
+                        <div class="tip-box"><strong>Concepts áp dụng:</strong> Recursion, Game tree traversal, Pruning
+                            optimization. Nền tảng của Chess engines (Stockfish), AlphaGo và nhiều AI game thực tế.
+                        </div>
+                    </div>
+                </div>
+                <div class="takeaway">
+                    <div class="takeaway-icon">🧠</div>
+                    <div class="takeaway-text">Minimax là ví dụ tuyệt vời của <strong>recursion trong thực tế</strong>.
+                        Hiểu code này nghĩa là bạn đã sẵn sàng cho Computer Science và thuật toán nâng cao.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════
+  S22 — NEXT STEPS
+════════════════════════════════════════════════════ -->
+        <div class="slide" id="s22">
+            <div class="chapter-bar"></div>
+            <div class="orb" style="width:500px;height:500px;background:#7c3aed;top:-150px;right:-100px;opacity:.1">
+            </div>
+            <div class="orb" style="width:400px;height:400px;background:#22d3ee;bottom:-100px;left:-80px;opacity:.08">
+            </div>
+            <div class="si">
+                <div class="mod-tag"><span class="pip"></span>Sau Khóa Học</div>
+                <div class="slide-title">Tiếp Theo — <span class="hi">Học Gì?</span></div>
+                <div class="slide-subtitle">Nắm chắc nền tảng JS này, bạn có thể tự tin chọn hướng tiếp theo phù hợp với
+                    mục tiêu career.</div>
+
+                <div class="cols cols-3" style="flex:1;align-content:start">
+                    <div class="card" style="border-color:rgba(97,218,251,.25)">
+                        <div style="font-size:1.6rem">⚛️</div>
+                        <div class="card-title" style="color:#61dafb">Frontend — React</div>
+                        <div class="card-body">Xây dựng UI component-based. JSX, hooks (useState, useEffect), props,
+                            context. Nhu cầu tuyển dụng cao nhất hiện tại.</div>
+                        <div style="display:flex;flex-wrap:wrap;gap:.25rem;margin-top:.4rem">
+                            <span class="badge b-cy">React 18</span><span class="badge b-cy">Next.js</span><span
+                                class="badge b-cy">TypeScript</span>
+                        </div>
+                    </div>
+                    <div class="card" style="border-color:rgba(104,211,145,.25)">
+                        <div style="font-size:1.6rem">🟢</div>
+                        <div class="card-title" style="color:#68d391">Backend — Node.js</div>
+                        <div class="card-body">Xây REST API, kết nối database, authentication. Express.js hoặc NestJS.
+                            Tận dụng toàn bộ JS đã học.</div>
+                        <div style="display:flex;flex-wrap:wrap;gap:.25rem;margin-top:.4rem">
+                            <span class="badge b-gr">Node.js</span><span class="badge b-gr">Express</span><span
+                                class="badge b-gr">MySQL</span>
+                        </div>
+                    </div>
+                    <div class="card" style="border-color:rgba(247,223,30,.25)">
+                        <div style="font-size:1.6rem">📱</div>
+                        <div class="card-title" style="color:var(--js)">Mobile — React Native</div>
+                        <div class="card-body">Build app iOS + Android bằng React và JS. Cùng concept với React web —
+                            component, state, hooks.</div>
+                        <div style="display:flex;flex-wrap:wrap;gap:.25rem;margin-top:.4rem">
+                            <span class="badge b-js">React Native</span><span class="badge b-js">Expo</span>
+                        </div>
+                    </div>
+                    <div class="card" style="border-color:rgba(196,181,253,.2)">
+                        <div style="font-size:1.6rem">🔷</div>
+                        <div class="card-title" style="color:#c4b5fd">TypeScript</div>
+                        <div class="card-body">Thêm static typing vào JS. Bắt lỗi lúc viết code thay vì runtime. Bắt
+                            buộc trong mọi dự án doanh nghiệp.</div>
+                        <div style="display:flex;flex-wrap:wrap;gap:.25rem;margin-top:.4rem">
+                            <span class="badge b-pu">Types</span><span class="badge b-pu">Interfaces</span><span
+                                class="badge b-pu">Generics</span>
+                        </div>
+                    </div>
+                    <div class="card" style="border-color:rgba(52,211,153,.2)">
+                        <div style="font-size:1.6rem">🧪</div>
+                        <div class="card-title" style="color:var(--grn)">Testing</div>
+                        <div class="card-body">Unit test với Jest, component test với React Testing Library. Code có
+                            test = code tự tin deploy.</div>
+                        <div style="display:flex;flex-wrap:wrap;gap:.25rem;margin-top:.4rem">
+                            <span class="badge b-gr">Jest</span><span class="badge b-gr">Vitest</span>
+                        </div>
+                    </div>
+                    <div class="card" style="border-color:rgba(251,191,36,.2)">
+                        <div style="font-size:1.6rem">🚀</div>
+                        <div class="card-title" style="color:var(--gold)">Build & Deploy</div>
+                        <div class="card-body">Vite/Webpack để bundle. Vercel, Netlify cho frontend. Docker, VPS cho
+                            backend. CI/CD với GitHub Actions.</div>
+                        <div style="display:flex;flex-wrap:wrap;gap:.25rem;margin-top:.4rem">
+                            <span class="badge b-gd">Vite</span><span class="badge b-gd">Vercel</span><span
+                                class="badge b-gd">Docker</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="takeaway">
+                    <div class="takeaway-icon">🗺️</div>
+                    <div class="takeaway-text">Lộ trình gợi ý: <strong>JS Vanilla (xong rồi) → TypeScript → React →
+                            Node.js → Deploy</strong>. Học theo dự án thực tế, không chỉ tutorial.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════════════
+  S23 — FINAL
+════════════════════════════════════════════════════ -->
+        <div class="slide" id="s23">
+            <div class="orb"
+                style="width:700px;height:700px;background:#f7df1e;top:-300px;left:50%;transform:translateX(-50%);opacity:.07">
+            </div>
+            <div class="orb" style="width:400px;height:400px;background:#7c3aed;bottom:-150px;right:-100px;opacity:.1">
+            </div>
+            <div
+                style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:2rem;text-align:center;position:relative;z-index:1">
+                <div
+                    style="font-size:.65rem;font-family:'JetBrains Mono',monospace;color:var(--muted);letter-spacing:.15em;text-transform:uppercase;margin-bottom:1.5rem">
+                    JavaScript · Học Từ Đầu</div>
+
+                <div
+                    style="font-family:'Space Grotesk',sans-serif;font-size:clamp(3rem,8vw,6rem);font-weight:900;letter-spacing:-.05em;line-height:1;color:var(--js);text-shadow:0 0 80px rgba(247,223,30,.25);margin-bottom:.6rem">
+                    Code it.<br />Ship it.
+                </div>
+                <div style="font-size:1rem;color:var(--dim);max-width:480px;line-height:1.75;margin-bottom:2.5rem">
+                    Bạn đã có đủ nền tảng. Bước tiếp theo quan trọng nhất là <strong style="color:var(--txt)">xây một dự
+                        án thật</strong> — không hoàn hảo cũng được, miễn là thật.
+                </div>
+
+                <div style="display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;margin-bottom:2rem">
+                    <div
+                        style="background:var(--pan);border:1px solid var(--bdr2);border-radius:.75rem;padding:1rem 1.5rem;text-align:center">
+                        <div
+                            style="font-size:2.2rem;font-weight:900;color:var(--js);font-family:'Space Grotesk',sans-serif;line-height:1">
+                            23</div>
+                        <div style="font-size:.65rem;color:var(--muted);margin-top:.2rem">Slides dạy học</div>
+                    </div>
+                    <div
+                        style="background:var(--pan);border:1px solid var(--bdr2);border-radius:.75rem;padding:1rem 1.5rem;text-align:center">
+                        <div
+                            style="font-size:2.2rem;font-weight:900;color:var(--js);font-family:'Space Grotesk',sans-serif;line-height:1">
+                            10</div>
+                        <div style="font-size:.65rem;color:var(--muted);margin-top:.2rem">Modules</div>
+                    </div>
+                    <div
+                        style="background:var(--pan);border:1px solid var(--bdr2);border-radius:.75rem;padding:1rem 1.5rem;text-align:center">
+                        <div
+                            style="font-size:2.2rem;font-weight:900;color:var(--js);font-family:'Space Grotesk',sans-serif;line-height:1">
+                            50+</div>
+                        <div style="font-size:.65rem;color:var(--muted);margin-top:.2rem">Code examples</div>
+                    </div>
+                    <div
+                        style="background:var(--pan);border:1px solid var(--bdr2);border-radius:.75rem;padding:1rem 1.5rem;text-align:center">
+                        <div
+                            style="font-size:2.2rem;font-weight:900;color:var(--js);font-family:'Space Grotesk',sans-serif;line-height:1">
+                            6W</div>
+                        <div style="font-size:.65rem;color:var(--muted);margin-top:.2rem">Lộ trình</div>
+                    </div>
+                </div>
+
+                <div style="font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--muted)">
+                    <span style="color:var(--pur-l)">const</span> <span style="color:var(--cyn-l)">you</span> = <span
+                        style="color:var(--grn-l)">"JavaScript Developer"</span>;
+                </div>
+            </div>
+        </div>
+
+    </div><!-- end deck -->
+
+    <!-- NAVIGATION -->
+    <nav class="nav" id="nav">
+        <button class="nav-btn" onclick="go(-1)">←</button>
+        <div class="dot-row" id="dots"></div>
+        <div class="slide-ctr" id="ctr">1 / 24</div>
+        <button class="nav-btn" onclick="go(1)">→</button>
+    </nav>
+
+    <!-- Module jump menu -->
+    <div id="menu" style="
+  position:fixed;top:1rem;right:1.2rem;z-index:9999;
+  display:flex;flex-direction:column;align-items:flex-end;gap:.35rem;
+">
+        <button onclick="toggleMenu()" style="
+    background:rgba(13,13,22,.9);border:1px solid rgba(255,255,255,.1);
+    border-radius:.4rem;padding:.35rem .7rem;cursor:pointer;
+    font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--dim);
+    backdrop-filter:blur(16px);
+  " id="menuBtn">☰ Modules</button>
+        <div id="menuList"
+            style="display:none;flex-direction:column;gap:.2rem;background:rgba(13,13,22,.95);border:1px solid rgba(255,255,255,.1);border-radius:.5rem;padding:.5rem;backdrop-filter:blur(20px);min-width:180px">
+            <div class="menu-item" onclick="jump(0)">📌 Cover</div>
+            <div class="menu-item" onclick="jump(1)">🎯 Mục tiêu</div>
+            <div class="menu-item" onclick="jump(2)">01 · JS là gì?</div>
+            <div class="menu-item" onclick="jump(3)">02 · Variables</div>
+            <div class="menu-item" onclick="jump(4)">02 · Data Types</div>
+            <div class="menu-item" onclick="jump(5)">03 · Functions</div>
+            <div class="menu-item" onclick="jump(6)">03 · Scope/Closure</div>
+            <div class="menu-item" onclick="jump(7)">04 · Control Flow</div>
+            <div class="menu-item" onclick="jump(8)">04 · Loops</div>
+            <div class="menu-item" onclick="jump(9)">05 · Array Methods</div>
+            <div class="menu-item" onclick="jump(10)">05 · Objects/Spread</div>
+            <div class="menu-item" onclick="jump(11)">06 · DOM</div>
+            <div class="menu-item" onclick="jump(12)">06 · Events</div>
+            <div class="menu-item" onclick="jump(13)">06 · Forms</div>
+            <div class="menu-item" onclick="jump(14)">07 · Error Handling</div>
+            <div class="menu-item" onclick="jump(15)">07 · Promises</div>
+            <div class="menu-item" onclick="jump(16)">07 · Async/Await+axios</div>
+            <div class="menu-item" onclick="jump(17)">08 · Modules</div>
+            <div class="menu-item" onclick="jump(18)">08 · State/Render</div>
+            <div class="menu-item" onclick="jump(19)">09 · Debugging</div>
+            <div class="menu-item" onclick="jump(20)">09 · Common Mistakes</div>
+            <div class="menu-item" onclick="jump(21)">10 · Minimax AI</div>
+            <div class="menu-item" onclick="jump(22)">Next Steps</div>
+            <div class="menu-item" onclick="jump(23)">🏁 Final</div>
+        </div>
+    </div>
+
+    <style>
+        .menu-item {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .62rem;
+            color: var(--dim);
+            padding: .3rem .7rem;
+            border-radius: .3rem;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .menu-item:hover {
+            background: rgba(247, 223, 30, .08);
+            color: var(--js)
+        }
+    </style>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const N = slides.length;
+        let cur = 0, animating = false;
+
+        // Build dots
+        const dotRow = document.getElementById('dots');
+        for (let i = 0; i < N; i++) {
+            const d = document.createElement('div');
+            d.className = 'dot' + (i === 0 ? ' on' : '');
+            d.onclick = () => jump(i);
+            dotRow.appendChild(d);
+        }
+
+        function updateUI() {
+            document.getElementById('ctr').textContent = `${cur + 1} / ${N}`;
+            document.getElementById('prog').style.width = `${((cur + 1) / N) * 100}%`;
+            document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('on', i === cur));
+        }
+
+        function jump(idx) {
+            if (animating || idx === cur) return;
+            const dir = idx > cur ? 1 : -1;
+            animating = true;
+            slides[cur].classList.remove('active');
+            slides[cur].classList.add('exit');
+            slides[idx].style.transform = `translateX(${dir * 40}px)`;
+            slides[idx].style.opacity = '0';
+            slides[idx].classList.add('active');
+            requestAnimationFrame(() => {
+                slides[idx].style.transform = '';
+                slides[idx].style.opacity = '';
+            });
+            setTimeout(() => {
+                slides[cur].classList.remove('exit');
+                cur = idx;
+                updateUI();
+                animating = false;
+                if (document.getElementById('menuList').style.display !== 'none') toggleMenu();
+            }, 400);
+        }
+
+        function go(dir) { jump(Math.max(0, Math.min(N - 1, cur + dir))); }
+
+        function toggleMenu() {
+            const ml = document.getElementById('menuList');
+            ml.style.display = ml.style.display === 'none' ? 'flex' : 'none';
+        }
+
+        document.addEventListener('keydown', e => {
+            if (e.key === 'ArrowRight' || e.key === 'ArrowDown') go(1);
+            if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') go(-1);
+            if (e.key === 'Escape') { const ml = document.getElementById('menuList'); ml.style.display = 'none'; }
+        });
+
+        let tx = 0;
+        document.addEventListener('touchstart', e => tx = e.touches[0].clientX);
+        document.addEventListener('touchend', e => {
+            const dx = tx - e.changedTouches[0].clientX;
+            if (Math.abs(dx) > 50) go(dx > 0 ? 1 : -1);
+        });
+
+        updateUI();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,1522 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JavaScript Learning Roadmap – 5_JS</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg: #0a0a0f;
+            --surface: #111118;
+            --panel: #16161f;
+            --border: rgba(255, 255, 255, 0.07);
+            --accent: #7c3aed;
+            --accent2: #06b6d4;
+            --accent3: #10b981;
+            --gold: #f59e0b;
+            --danger: #ef4444;
+            --text: #e2e8f0;
+            --muted: #64748b;
+            --dim: #94a3b8;
+            --grad1: linear-gradient(135deg, #7c3aed 0%, #06b6d4 100%);
+            --grad2: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
+            --grad3: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
+            --grad4: linear-gradient(135deg, #7c3aed 0%, #ec4899 100%);
+        }
+
+        html,
+        body {
+            height: 100%;
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+        }
+
+        /* ─── SLIDE WRAPPER ─────────────────── */
+        .deck {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+
+        .slide {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .5s ease, transform .5s ease;
+            transform: translateX(60px);
+            overflow: hidden;
+        }
+
+        .slide.active {
+            opacity: 1;
+            pointer-events: all;
+            transform: translateX(0);
+        }
+
+        .slide.exit {
+            opacity: 0;
+            transform: translateX(-60px);
+        }
+
+        /* noise texture overlay */
+        .slide::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .slide>* {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ─── GLOW ORBS ─────────────────────── */
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: .18;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ─── NAV BAR ────────────────────────── */
+        .nav {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: rgba(17, 17, 24, .85);
+            border: 1px solid var(--border);
+            border-radius: 3rem;
+            padding: .6rem 1.4rem;
+            backdrop-filter: blur(20px);
+            z-index: 999;
+            box-shadow: 0 0 40px rgba(124, 58, 237, .15);
+        }
+
+        .nav button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--muted);
+            font-size: 1.1rem;
+            width: 2.2rem;
+            height: 2.2rem;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            transition: color .2s, background .2s;
+        }
+
+        .nav button:hover {
+            color: var(--text);
+            background: rgba(255, 255, 255, .06);
+        }
+
+        .nav .dots {
+            display: flex;
+            gap: .45rem;
+        }
+
+        .nav .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--muted);
+            cursor: pointer;
+            transition: background .2s, transform .2s;
+        }
+
+        .nav .dot.on {
+            background: var(--accent);
+            transform: scale(1.4);
+        }
+
+        .slide-counter {
+            font-size: .7rem;
+            color: var(--muted);
+            font-family: 'JetBrains Mono', monospace;
+            min-width: 3.5rem;
+            text-align: center;
+        }
+
+        /* ─── PROGRESS BAR ───────────────────── */
+        .progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 2px;
+            background: var(--grad1);
+            z-index: 999;
+            transition: width .4s ease;
+        }
+
+        /* ─── SLIDE HEADER TAG ───────────────── */
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            gap: .4rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .7rem;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: .6rem;
+        }
+
+        .tag .dot-tag {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: var(--accent);
+        }
+
+        /* ─── UTILITY ─────────────────────────── */
+        .mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .badge {
+            display: inline-block;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .65rem;
+            font-weight: 600;
+            letter-spacing: .06em;
+            padding: .2rem .55rem;
+            border-radius: .3rem;
+        }
+
+        .badge-purple {
+            background: rgba(124, 58, 237, .18);
+            color: #a78bfa;
+            border: 1px solid rgba(124, 58, 237, .3);
+        }
+
+        .badge-cyan {
+            background: rgba(6, 182, 212, .18);
+            color: #67e8f9;
+            border: 1px solid rgba(6, 182, 212, .3);
+        }
+
+        .badge-green {
+            background: rgba(16, 185, 129, .18);
+            color: #6ee7b7;
+            border: 1px solid rgba(16, 185, 129, .3);
+        }
+
+        .badge-gold {
+            background: rgba(245, 158, 11, .18);
+            color: #fcd34d;
+            border: 1px solid rgba(245, 158, 11, .3);
+        }
+
+        .badge-red {
+            background: rgba(239, 68, 68, .18);
+            color: #fca5a5;
+            border: 1px solid rgba(239, 68, 68, .3);
+        }
+
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            gap: .35rem;
+            font-size: .72rem;
+            padding: .3rem .75rem;
+            border-radius: 2rem;
+            font-weight: 500;
+            border: 1px solid var(--border);
+            background: var(--panel);
+            color: var(--dim);
+        }
+
+        .divider {
+            width: 100%;
+            height: 1px;
+            background: var(--border);
+            margin: 1.5rem 0;
+        }
+
+        /* ─── SLIDE 1 — COVER ────────────────── */
+        #s1 {
+            background: var(--bg);
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            gap: 0;
+        }
+
+        #s1 .orb1 {
+            width: 700px;
+            height: 700px;
+            background: #7c3aed;
+            top: -200px;
+            left: -150px;
+        }
+
+        #s1 .orb2 {
+            width: 500px;
+            height: 500px;
+            background: #06b6d4;
+            bottom: -150px;
+            right: -100px;
+        }
+
+        .cover-eyebrow {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .7rem;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: .5rem;
+        }
+
+        .cover-eyebrow::before,
+        .cover-eyebrow::after {
+            content: '';
+            flex: 1;
+            max-width: 3rem;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .cover-title {
+            font-size: clamp(2.8rem, 7vw, 5.5rem);
+            font-weight: 900;
+            line-height: 1.05;
+            letter-spacing: -.03em;
+            background: var(--grad1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: .6rem;
+        }
+
+        .cover-sub {
+            font-size: clamp(1rem, 2vw, 1.4rem);
+            color: var(--dim);
+            font-weight: 300;
+            margin-bottom: 2.5rem;
+            letter-spacing: .01em;
+        }
+
+        .cover-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .5rem;
+            justify-content: center;
+            margin-bottom: 3rem;
+        }
+
+        .cover-scroll {
+            font-size: .7rem;
+            color: var(--muted);
+            font-family: 'JetBrains Mono', monospace;
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+            letter-spacing: .1em;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: .4
+            }
+
+            50% {
+                opacity: 1
+            }
+        }
+
+        .code-window {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: .75rem;
+            padding: 1.25rem 1.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .78rem;
+            line-height: 1.8;
+            text-align: left;
+            margin: 0 auto;
+            max-width: 380px;
+            box-shadow: 0 0 60px rgba(124, 58, 237, .12);
+        }
+
+        .code-window .win-dots {
+            display: flex;
+            gap: .35rem;
+            margin-bottom: .8rem;
+        }
+
+        .code-window .win-dots span {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .code-window .c-red {
+            background: #ff5f57;
+        }
+
+        .code-window .c-amber {
+            background: #febc2e;
+        }
+
+        .code-window .c-green {
+            background: #28c840;
+        }
+
+        .kw {
+            color: #a78bfa;
+        }
+
+        .fn {
+            color: #67e8f9;
+        }
+
+        .str {
+            color: #6ee7b7;
+        }
+
+        .cm {
+            color: #475569;
+            font-style: italic;
+        }
+
+        /* ─── SLIDE COMMON LAYOUTS ───────────── */
+        .slide-inner {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 3.5rem 5rem 5rem;
+            max-width: 1100px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .slide-inner.centered {
+            justify-content: center;
+        }
+
+        .slide-title {
+            font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+            font-weight: 800;
+            letter-spacing: -.03em;
+            line-height: 1.15;
+            margin-bottom: 2.5rem;
+        }
+
+        .slide-title span {
+            background: var(--grad1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* ─── GRID CARDS ─────────────────────── */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            flex: 1;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            flex: 1;
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: .85rem;
+            flex: 1;
+        }
+
+        .card {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: .75rem;
+            padding: 1.4rem;
+            display: flex;
+            flex-direction: column;
+            gap: .6rem;
+            transition: border-color .25s, transform .25s;
+        }
+
+        .card:hover {
+            border-color: rgba(124, 58, 237, .4);
+            transform: translateY(-2px);
+        }
+
+        .card-icon {
+            font-size: 1.6rem;
+        }
+
+        .card-title {
+            font-weight: 700;
+            font-size: .95rem;
+        }
+
+        .card-body {
+            font-size: .78rem;
+            color: var(--dim);
+            line-height: 1.6;
+            flex: 1;
+        }
+
+        .card-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .3rem;
+            margin-top: .3rem;
+        }
+
+        /* ─── STAGE ROWS ─────────────────────── */
+        .stage-row {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 1.2rem;
+            align-items: start;
+            padding: .9rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .stage-row:last-child {
+            border-bottom: none;
+        }
+
+        .stage-num {
+            width: 2.4rem;
+            height: 2.4rem;
+            border-radius: .5rem;
+            display: grid;
+            place-items: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            font-size: .85rem;
+            flex-shrink: 0;
+        }
+
+        .stage-info {
+            display: flex;
+            flex-direction: column;
+            gap: .3rem;
+        }
+
+        .stage-label {
+            font-weight: 700;
+            font-size: .9rem;
+        }
+
+        .stage-desc {
+            font-size: .77rem;
+            color: var(--dim);
+            line-height: 1.6;
+        }
+
+        .stage-topics {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .3rem;
+            margin-top: .2rem;
+        }
+
+        /* ─── TIMELINE ───────────────────────── */
+        .timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            flex: 1;
+        }
+
+        .tl-item {
+            display: grid;
+            grid-template-columns: 3rem 1px 1fr;
+            gap: 0 1rem;
+        }
+
+        .tl-week {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .65rem;
+            font-weight: 700;
+            color: var(--accent2);
+            text-align: right;
+            padding-top: .15rem;
+        }
+
+        .tl-line {
+            background: var(--border);
+            position: relative;
+        }
+
+        .tl-dot {
+            position: absolute;
+            top: .15rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent);
+            box-shadow: 0 0 12px rgba(124, 58, 237, .7);
+        }
+
+        .tl-content {
+            padding: 0 0 2rem 0;
+        }
+
+        .tl-title {
+            font-weight: 700;
+            font-size: .88rem;
+            margin-bottom: .25rem;
+        }
+
+        .tl-body {
+            font-size: .75rem;
+            color: var(--dim);
+            line-height: 1.6;
+        }
+
+        /* ─── CODE SNIPPET ───────────────────── */
+        .snippet {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: .6rem;
+            padding: 1rem 1.2rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .72rem;
+            line-height: 1.8;
+            overflow: auto;
+        }
+
+        /* ─── GLOSSARY ───────────────────────── */
+        .glossary-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: .7rem;
+            flex: 1;
+            align-content: start;
+        }
+
+        .gitem {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: .6rem;
+            padding: .9rem 1.1rem;
+            display: flex;
+            gap: .75rem;
+            align-items: flex-start;
+        }
+
+        .gterm {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .72rem;
+            font-weight: 700;
+            color: #a78bfa;
+            white-space: nowrap;
+        }
+
+        .gdef {
+            font-size: .72rem;
+            color: var(--dim);
+            line-height: 1.6;
+        }
+
+        /* ─── STAT NUMBERS ───────────────────── */
+        .stat-big {
+            font-size: clamp(2rem, 4vw, 3.2rem);
+            font-weight: 900;
+            letter-spacing: -.04em;
+            line-height: 1;
+        }
+
+        /* ─── KEYBOARD SHORTCUT ──────────────── */
+        .kbd-hint {
+            position: fixed;
+            top: 1.2rem;
+            right: 1.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .6rem;
+            color: var(--muted);
+            display: flex;
+            gap: .5rem;
+            align-items: center;
+            z-index: 999;
+        }
+
+        .kbd {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: .25rem;
+            padding: .15rem .4rem;
+            font-size: .6rem;
+        }
+
+        /* ─── SLIDE 7 — FULL-WIDTH CODE DEMO ── */
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            flex: 1;
+        }
+
+        .col-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: .65rem;
+            text-transform: uppercase;
+            letter-spacing: .12em;
+            color: var(--muted);
+            margin-bottom: .6rem;
+        }
+
+        /* ─── FINAL SLIDE ─────────────────────── */
+        #s10 {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .big-check {
+            font-size: 5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .final-title {
+            font-size: clamp(2rem, 5vw, 4rem);
+            font-weight: 900;
+            letter-spacing: -.04em;
+            line-height: 1.1;
+            margin-bottom: 1rem;
+        }
+
+        .final-sub {
+            color: var(--dim);
+            font-size: 1rem;
+            max-width: 550px;
+            line-height: 1.7;
+            margin: 0 auto 2rem;
+        }
+
+        /* star badge */
+        .star-row {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .star-card {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: .75rem;
+            padding: 1rem 1.5rem;
+            text-align: left;
+            min-width: 140px;
+        }
+
+        .star-num {
+            font-size: 1.8rem;
+            font-weight: 900;
+        }
+
+        .star-desc {
+            font-size: .7rem;
+            color: var(--dim);
+            margin-top: .1rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="progress" id="progress"></div>
+    <div class="kbd-hint"><span class="kbd">←</span><span class="kbd">→</span> để điều hướng</div>
+
+    <!-- ═══════════════════════════════════════
+     SLIDE 1 — COVER
+════════════════════════════════════════ -->
+    <div class="deck" id="deck">
+        <div class="slide active" id="s1">
+            <div class="orb orb1"></div>
+            <div class="orb orb2"></div>
+
+            <div
+                style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:0;padding:2rem;">
+                <div class="cover-eyebrow">5_JS Workspace &nbsp;·&nbsp; Lộ Trình Học Tập</div>
+
+                <div class="cover-title">JavaScript<br />Roadmap</div>
+                <div class="cover-sub">Từ console.log đến ứng dụng đầy đủ tính năng</div>
+
+                <div class="cover-pills">
+                    <span class="pill">🟨 ES6+</span>
+                    <span class="pill">🌐 DOM</span>
+                    <span class="pill">⚡ async/await</span>
+                    <span class="pill">📦 axios</span>
+                    <span class="pill">🧩 Modules</span>
+                    <span class="pill">🤖 Minimax AI</span>
+                </div>
+
+                <div class="code-window" style="margin-bottom:2rem;">
+                    <div class="win-dots">
+                        <span class="c-red"></span><span class="c-amber"></span><span class="c-green"></span>
+                    </div>
+                    <div><span class="cm">// Bắt đầu hành trình JS của bạn</span></div>
+                    <div><span class="kw">const</span> roadmap = {</div>
+                    <div>&nbsp;&nbsp;stages: <span class="str">8</span>,</div>
+                    <div>&nbsp;&nbsp;weeks: <span class="str">6</span>,</div>
+                    <div>&nbsp;&nbsp;goal: <span class="str">"Build real apps 🚀"</span></div>
+                    <div>};</div>
+                    <div></div>
+                    <div><span class="fn">startLearning</span>(roadmap);</div>
+                </div>
+
+                <div class="cover-scroll">▼ &nbsp; Nhấn → để bắt đầu</div>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════
+     SLIDE 2 — TỔNG QUAN
+════════════════════════════════════════ -->
+        <div class="slide" id="s2">
+            <div class="orb" style="width:500px;height:500px;background:#7c3aed;top:-100px;right:-100px;opacity:.12;">
+            </div>
+            <div class="slide-inner centered">
+                <div class="tag"><span class="dot-tag"></span>Overview</div>
+                <div class="slide-title">Tổng Quan<br /><span>Workspace 5_JS</span></div>
+
+                <div class="grid-4" style="align-content:start;">
+                    <div class="card" style="grid-column:span 2;">
+                        <div class="card-icon">🗂️</div>
+                        <div class="card-title">4 Buổi Học</div>
+                        <div class="card-body">Từ <code style="color:#a78bfa;">Buoi_9</code> đến <code
+                                style="color:#a78bfa;">Buoi_13</code> — mỗi buổi tập trung vào một nhóm kỹ năng cụ thể,
+                            từ cơ bản đến nâng cao.</div>
+                        <div class="card-tags">
+                            <span class="badge badge-purple">Buoi_9</span>
+                            <span class="badge badge-purple">Buoi_10</span>
+                            <span class="badge badge-purple">Buoi_11</span>
+                            <span class="badge badge-cyan">Buoi_12</span>
+                            <span class="badge badge-cyan">Buoi_13</span>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">🎯</div>
+                        <div class="card-title">8 Giai Đoạn</div>
+                        <div class="card-body">Lộ trình chia thành 8 stage học tập có thứ tự, từ biến số đến kiến trúc
+                            ứng dụng.</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">📅</div>
+                        <div class="card-title">6 Tuần</div>
+                        <div class="card-body">Lịch học thực tế được thiết kế để tiến bộ đều đặn, không quá tải.</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">🛒</div>
+                        <div class="card-title">Mini App</div>
+                        <div class="card-body">Dự án cuối: ứng dụng e-commerce với sản phẩm, giỏ hàng, tìm kiếm và trang
+                            Admin.</div>
+                        <div class="card-tags"><span class="badge badge-green">Buoi_13_API_phone</span></div>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">🤖</div>
+                        <div class="card-title">AI Game</div>
+                        <div class="card-body">Bonus: thuật toán Minimax + Alpha-Beta pruning cho game cờ caro.</div>
+                        <div class="card-tags"><span class="badge badge-gold">Advanced</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════
+     SLIDE 3 — STAGE 1–3
+════════════════════════════════════════ -->
+        <div class="slide" id="s3">
+            <div class="orb" style="width:400px;height:400px;background:#06b6d4;bottom:-50px;left:-80px;opacity:.12;">
+            </div>
+            <div class="slide-inner">
+                <div class="tag"><span class="dot-tag"></span>Stage 1 → 3</div>
+                <div class="slide-title">Nền Tảng<br /><span>Cú Pháp & Cấu Trúc Dữ Liệu</span></div>
+
+                <div style="display:flex;flex-direction:column;flex:1;justify-content:center;">
+                    <div class="stage-row">
+                        <div class="stage-num" style="background:rgba(124,58,237,.18);color:#a78bfa;">01</div>
+                        <div class="stage-info">
+                            <div class="stage-label">JavaScript Cơ Bản</div>
+                            <div class="stage-desc">Hiểu về giá trị, biến số và toán tử. Viết script in kết quả ra
+                                console.</div>
+                            <div class="stage-topics">
+                                <span class="badge badge-purple">let / const</span>
+                                <span class="badge badge-purple">string / number / boolean</span>
+                                <span class="badge badge-purple">console.log</span>
+                                <span class="badge badge-purple">Arithmetic operators</span>
+                            </div>
+                            <div
+                                style="font-size:.7rem;color:var(--muted);margin-top:.4rem;font-family:'JetBrains Mono',monospace;">
+                                📁 Buoi_9_console &nbsp; Buoi_10_ToanTu</div>
+                        </div>
+                    </div>
+
+                    <div class="stage-row">
+                        <div class="stage-num" style="background:rgba(6,182,212,.18);color:#67e8f9;">02</div>
+                        <div class="stage-info">
+                            <div class="stage-label">Điều Kiện & Ra Quyết Định</div>
+                            <div class="stage-desc">Viết logic điều kiện xử lý các tình huống khác nhau từ input người
+                                dùng.</div>
+                            <div class="stage-topics">
+                                <span class="badge badge-cyan">if / else if / else</span>
+                                <span class="badge badge-cyan">switch</span>
+                                <span class="badge badge-cyan">&amp;&amp; || !</span>
+                                <span class="badge badge-cyan">Nested conditions</span>
+                            </div>
+                            <div
+                                style="font-size:.7rem;color:var(--muted);margin-top:.4rem;font-family:'JetBrains Mono',monospace;">
+                                📁 Buoi_11_if_array/js/if_else.js &nbsp; Buoi_12_data/Bai_1.js</div>
+                        </div>
+                    </div>
+
+                    <div class="stage-row">
+                        <div class="stage-num" style="background:rgba(16,185,129,.18);color:#6ee7b7;">03</div>
+                        <div class="stage-info">
+                            <div class="stage-label">Array & Vòng Lặp</div>
+                            <div class="stage-desc">Quản lý danh sách dữ liệu, lặp, lọc, biến đổi và tính toán tổng hợp.
+                            </div>
+                            <div class="stage-topics">
+                                <span class="badge badge-green">push / pop / splice</span>
+                                <span class="badge badge-green">for / while</span>
+                                <span class="badge badge-green">forEach / map / filter</span>
+                                <span class="badge badge-green">find / reduce / some</span>
+                            </div>
+                            <div
+                                style="font-size:.7rem;color:var(--muted);margin-top:.4rem;font-family:'JetBrains Mono',monospace;">
+                                📁 Buoi_11_if_array/js/array_loop.js</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════
+     SLIDE 4 — STAGE 4–5
+════════════════════════════════════════ -->
+        <div class="slide" id="s4">
+            <div class="orb" style="width:450px;height:450px;background:#7c3aed;top:-100px;right:0;opacity:.12;"></div>
+            <div class="slide-inner">
+                <div class="tag"><span class="dot-tag"></span>Stage 4 → 5</div>
+                <div class="slide-title">Trình Duyệt &<br /><span>JavaScript Hiện Đại</span></div>
+
+                <div class="two-col" style="flex:1;">
+                    <div style="display:flex;flex-direction:column;gap:.8rem;">
+                        <div class="col-label">Stage 04 — DOM & Browser</div>
+                        <div class="card">
+                            <div class="card-icon">🖱️</div>
+                            <div class="card-title">Tương Tác Trang Web</div>
+                            <div class="card-body">Chọn phần tử HTML, lắng nghe sự kiện và cập nhật nội dung trang theo
+                                input người dùng.</div>
+                        </div>
+                        <div class="snippet">
+                            <span class="cm">// Chọn phần tử</span>
+                            <span class="kw">const</span> btn = document.<span class="fn">getElementById</span>(<span
+                                class="str">'myBtn'</span>);
+
+                            <span class="cm">// Lắng nghe sự kiện</span>
+                            btn.<span class="fn">addEventListener</span>(<span class="str">'click'</span>, <span
+                                class="fn">handleClick</span>);
+
+                            <span class="cm">// Cập nhật DOM</span>
+                            el.innerHTML = <span class="str">`&lt;p&gt;${result}&lt;/p&gt;`</span>;
+                        </div>
+                        <div style="display:flex;flex-wrap:wrap;gap:.3rem;">
+                            <span class="badge badge-purple">getElementById</span>
+                            <span class="badge badge-purple">addEventListener</span>
+                            <span class="badge badge-purple">innerText / innerHTML</span>
+                            <span class="badge badge-purple">preventDefault()</span>
+                        </div>
+                        <div style="font-size:.7rem;color:var(--muted);font-family:'JetBrains Mono',monospace;">📁
+                            Buoi_11 → main.js &nbsp; Buoi_12 → Bai_1.js</div>
+                    </div>
+
+                    <div style="display:flex;flex-direction:column;gap:.8rem;">
+                        <div class="col-label">Stage 05 — ES6 Modern JS</div>
+                        <div class="card">
+                            <div class="card-icon">✨</div>
+                            <div class="card-title">Cú Pháp Hiện Đại</div>
+                            <div class="card-body">Viết code gọn gàng, dễ đọc hơn với các tính năng ES6 như arrow
+                                function, destructuring.</div>
+                        </div>
+                        <div class="snippet">
+                            <span class="cm">// Arrow function</span>
+                            <span class="kw">const</span> <span class="fn">greet</span> = (name = <span
+                                class="str">"World"</span>) => <span class="str">`Hello ${name}!`</span>;
+
+                            <span class="cm">// Destructuring</span>
+                            <span class="kw">const</span> { id, name, price } = product;
+                            <span class="kw">const</span> [first, ...rest] = items;
+
+                            <span class="cm">// Spread operator</span>
+                            <span class="kw">const</span> newArr = [...arr1, ...arr2];
+                        </div>
+                        <div style="display:flex;flex-wrap:wrap;gap:.3rem;">
+                            <span class="badge badge-cyan">Arrow functions</span>
+                            <span class="badge badge-cyan">Destructuring</span>
+                            <span class="badge badge-cyan">Spread ...</span>
+                            <span class="badge badge-cyan">Template literals</span>
+                        </div>
+                        <div style="font-size:.7rem;color:var(--muted);font-family:'JetBrains Mono',monospace;">📁
+                            Buoi_11 → main.js &nbsp; Buoi_12 → destructuring.js</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════
+     SLIDE 5 — STAGE 6: ASYNC & API
+════════════════════════════════════════ -->
+        <div class="slide" id="s5">
+            <div class="orb"
+                style="width:500px;height:500px;background:#10b981;bottom:-150px;right:-100px;opacity:.10;"></div>
+            <div class="slide-inner">
+                <div class="tag"><span class="dot-tag"></span>Stage 6</div>
+                <div class="slide-title">Async JavaScript<br /><span>&amp; Kết Nối API</span></div>
+
+                <div class="grid-3" style="flex:1;align-content:start;">
+                    <div class="card" style="grid-column:span 3;">
+                        <div style="display:grid;grid-template-columns:1fr 2fr;gap:1.5rem;align-items:center;">
+                            <div>
+                                <div class="card-icon" style="font-size:2.5rem;">⚡</div>
+                                <div class="card-title" style="font-size:1.1rem;margin-top:.4rem;">async / await</div>
+                                <div class="card-body" style="margin-top:.4rem;">Viết code bất đồng bộ trông như đồng bộ
+                                    — dễ đọc và debug hơn Promise thuần.</div>
+                                <div class="card-tags" style="margin-top:.6rem;">
+                                    <span class="badge badge-green">async function</span>
+                                    <span class="badge badge-green">await</span>
+                                    <span class="badge badge-green">try / catch</span>
+                                </div>
+                            </div>
+                            <div class="snippet" style="margin:0;">
+                                <span class="kw">const</span> <span class="fn">getPhones</span> = <span
+                                    class="kw">async</span> () => {
+                                <span class="kw">try</span> {
+                                <span class="kw">const</span> res = <span class="kw">await</span> axios.<span
+                                    class="fn">get</span>(<span class="str">'/api/phones'</span>);
+                                <span class="fn">renderList</span>(res.data);
+                                } <span class="kw">catch</span> (err) {
+                                console.<span class="fn">error</span>(<span class="str">'Lỗi:'</span>, err.message);
+                                }
+                                };
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-icon">📡</div>
+                        <div class="card-title">axios HTTP</div>
+                        <div class="card-body">Gửi request GET, POST, PUT, DELETE tới API. Xử lý response và error một
+                            cách gọn gàng.</div>
+                        <div class="card-tags">
+                            <span class="badge badge-cyan">GET</span>
+                            <span class="badge badge-cyan">POST</span>
+                            <span class="badge badge-cyan">PUT</span>
+                            <span class="badge badge-cyan">DELETE</span>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-icon">📋</div>
+                        <div class="card-title">Form Validation</div>
+                        <div class="card-body">Xác thực dữ liệu người dùng trước khi gửi. Dùng <code
+                                style="color:#a78bfa;">submit</code> event và <code
+                                style="color:#a78bfa;">preventDefault()</code>.</div>
+                        <div class="card-tags">
+                            <span class="badge badge-gold">Validation logic</span>
+                            <span class="badge badge-gold">UX feedback</span>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-icon">🔄</div>
+                        <div class="card-title">API Data Flow</div>
+                        <div class="card-body">Fetch dữ liệu → Render ra giao diện → Cập nhật khi người dùng tương tác.
+                        </div>
+                        <div class="card-tags">
+                            <span class="badge badge-green">Fetch → Render → Update</span>
+                        </div>
+                    </div>
+
+                    <div
+                        style="font-size:.7rem;color:var(--muted);font-family:'JetBrains Mono',monospace;grid-column:span 3;padding-top:.5rem;">
+                        📁 Buoi_12_data/asyncAwait.js &nbsp;·&nbsp; Buoi_13/product-flow.js &nbsp;·&nbsp;
+                        Buoi_13/crud-flow.js
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════
+     SLIDE 6 — STAGE 7: APP ARCHITECTURE
+════════════════════════════════════════ -->
+        <div class="slide" id="s6">
+            <div class="orb" style="width:450px;height:450px;background:#7c3aed;top:-80px;left:-80px;opacity:.13;">
+            </div>
+            <div class="slide-inner">
+                <div class="tag"><span class="dot-tag"></span>Stage 7</div>
+                <div class="slide-title">Kiến Trúc Ứng Dụng<br /><span>Modular &amp; State</span></div>
+
+                <div class="grid-2" style="flex:1;align-content:start;gap:1.2rem;">
+                    <div style="display:flex;flex-direction:column;gap:.8rem;">
+                        <div class="card">
+                            <div style="display:flex;align-items:center;gap:.75rem;">
+                                <div style="font-size:1.4rem;">📦</div>
+                                <div>
+                                    <div class="card-title">ES6 Modules</div>
+                                    <div class="card-body" style="margin-top:.2rem;">Tách code thành các file độc lập,
+                                        dùng <code style="color:#a78bfa;">import/export</code> để kết nối.</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div style="display:flex;align-items:center;gap:.75rem;">
+                                <div style="font-size:1.4rem;">🗃️</div>
+                                <div>
+                                    <div class="card-title">Shared State Object</div>
+                                    <div class="card-body" style="margin-top:.2rem;">Một object <code
+                                            style="color:#a78bfa;">state</code> trung tâm lưu toàn bộ dữ liệu của app —
+                                        giỏ hàng, filter, danh sách sản phẩm.</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div style="display:flex;align-items:center;gap:.75rem;">
+                                <div style="font-size:1.4rem;">🔍</div>
+                                <div>
+                                    <div class="card-title">Search + Debounce</div>
+                                    <div class="card-body" style="margin-top:.2rem;">Tìm kiếm thời gian thực với <code
+                                            style="color:#a78bfa;">debounce</code> để giảm số lần gọi API không cần
+                                        thiết.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="display:flex;flex-direction:column;gap:.8rem;">
+                        <div class="col-label">Cấu Trúc File — Buoi_13_API_phone</div>
+                        <div class="snippet" style="flex:1;overflow:auto;">
+                            <span class="cm">src/js/</span>
+                            <span class="str">├── app.js</span> <span class="cm"># entry point</span>
+                            <span class="str">├── admin.js</span> <span class="cm"># admin entry</span>
+                            <span class="str">├── app/</span>
+                            <span class="str">│ ├── core.js</span> <span class="cm"># state + init</span>
+                            <span class="str">│ ├── product-flow.js</span> <span class="cm"># fetch & render</span>
+                            <span class="str">│ ├── card-flow.js</span> <span class="cm"># cart logic</span>
+                            <span class="str">│ ├── popup-flow.js</span> <span class="cm"># modal UI</span>
+                            <span class="str">│ └── filter-flow.js</span> <span class="cm"># search/filter</span>
+                            <span class="str">└── admin/</span>
+                            <span class="str">├── core.js</span> <span class="cm"># admin state</span>
+                            <span class="str">├── crud-flow.js</span> <span class="cm"># CRUD ops</span>
+                            <span class="str">└── ui-flow.js</span> <span class="cm"># form/edit UI</span>
+                        </div>
+                        <div class="card-tags">
+                            <span class="badge badge-purple">import/export</span>
+                            <span class="badge badge-green">CRUD</span>
+                            <span class="badge badge-cyan">Debounce</span>
+                            <span class="badge badge-gold">Cart Logic</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════
+     SLIDE 7 — STAGE 8: AI / MINIMAX
+════════════════════════════════════════ -->
+        <div class="slide" id="s7">
+            <div class="orb" style="width:600px;height:600px;background:#f59e0b;top:-200px;right:-200px;opacity:.08;">
+            </div>
+            <div class="slide-inner">
+                <div class="tag"><span class="dot-tag"></span>Stage 8 — Advanced</div>
+                <div class="slide-title">AI Game:<br /><span>Minimax &amp; Alpha-Beta Pruning</span></div>
+
+                <div class="grid-2" style="flex:1;align-content:start;">
+                    <div style="display:flex;flex-direction:column;gap:1rem;">
+                        <div class="card" style="border-color:rgba(245,158,11,.3);">
+                            <div class="card-icon">🧠</div>
+                            <div class="card-title">Minimax Algorithm</div>
+                            <div class="card-body">AI đánh giá tất cả các nước đi có thể xảy ra và chọn nước đi tối ưu
+                                nhất — tối đa điểm cho mình, tối thiểu điểm cho đối thủ.</div>
+                            <div class="card-tags"><span class="badge badge-gold">Game Tree</span><span
+                                    class="badge badge-gold">Recursion</span><span
+                                    class="badge badge-gold">Scoring</span></div>
+                        </div>
+                        <div class="card" style="border-color:rgba(245,158,11,.3);">
+                            <div class="card-icon">✂️</div>
+                            <div class="card-title">Alpha-Beta Pruning</div>
+                            <div class="card-body">Tối ưu Minimax bằng cách bỏ qua các nhánh không cần tính toán — giảm
+                                đáng kể thời gian xử lý.</div>
+                            <div class="card-tags"><span class="badge badge-gold">Optimization</span><span
+                                    class="badge badge-gold">Performance</span></div>
+                        </div>
+                        <div style="font-size:.7rem;color:var(--muted);font-family:'JetBrains Mono',monospace;">📁
+                            Buoi_11_if_array/js/caro.js</div>
+                    </div>
+
+                    <div style="display:flex;flex-direction:column;gap:.75rem;">
+                        <div class="col-label">Cách Hoạt Động</div>
+                        <!-- Mini visual tree -->
+                        <div
+                            style="background:var(--panel);border:1px solid rgba(245,158,11,.2);border-radius:.75rem;padding:1.2rem;font-family:'JetBrains Mono',monospace;font-size:.7rem;line-height:1.9;flex:1;">
+                            <div style="color:#fcd34d;font-weight:700;margin-bottom:.5rem;">Game Tree (Minimax)</div>
+                            <div style="color:var(--dim);">
+                                <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[ROOT]</div>
+                                <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Max node (AI)</div>
+                                <div>&nbsp;&nbsp;&nbsp;&nbsp;┌─────┴─────┐</div>
+                                <div>&nbsp;&nbsp;&nbsp;[B]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[C]</div>
+                                <div>&nbsp;Min nodes (Human)</div>
+                                <div>&nbsp;┌─┴─┐&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;┌─┴─┐</div>
+                                <div>[D]&nbsp;[E]&nbsp;&nbsp;&nbsp;[F]&nbsp;[G]</div>
+                                <div style="color:#6ee7b7;margin-top:.5rem;">+3 &nbsp;-2 &nbsp;&nbsp;&nbsp;+1 &nbsp;+5
+                                </div>
+                                <div
+                                    style="color:#fcd34d;border-top:1px solid var(--border);margin-top:.5rem;padding-top:.5rem;">
+                                    Alpha-Beta cắt nhánh [G] nếu<br />đã tìm được kết quả tốt hơn ✂️
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-title">Kết Quả Học Được</div>
+                            <div class="card-body">Hiểu cách AI chọn nước đi tối ưu, tại sao pruning quan trọng, và áp
+                                dụng recursion vào giải thuật game thực tế.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════
+     SLIDE 8 — LỊCH HỌC
+════════════════════════════════════════ -->
+        <div class="slide" id="s8">
+            <div class="orb" style="width:400px;height:400px;background:#06b6d4;bottom:-100px;right:-80px;opacity:.12;">
+            </div>
+            <div class="slide-inner">
+                <div class="tag"><span class="dot-tag"></span>Study Schedule</div>
+                <div class="slide-title">Lịch Học<br /><span>6 Tuần Thực Chiến</span></div>
+
+                <div class="timeline" style="flex:1;justify-content:center;">
+                    <div class="tl-item">
+                        <div class="tl-week">Tuần 1</div>
+                        <div class="tl-line">
+                            <div class="tl-dot"></div>
+                        </div>
+                        <div class="tl-content">
+                            <div class="tl-title">Buoi_9 & Buoi_10 — Biến, Toán Tử</div>
+                            <div class="tl-body">Viết các script nhỏ: tính lương, tính trung bình, chuyển đổi tiền tệ.
+                                Làm quen với console output.</div>
+                        </div>
+                    </div>
+                    <div class="tl-item">
+                        <div class="tl-week">Tuần 2</div>
+                        <div class="tl-line">
+                            <div class="tl-dot"
+                                style="background:var(--accent2);box-shadow:0 0 12px rgba(6,182,212,.7);"></div>
+                        </div>
+                        <div class="tl-content">
+                            <div class="tl-title">Buoi_11 — Điều Kiện & Vòng Lặp</div>
+                            <div class="tl-body">Thực hành if/else, switch, vòng lặp array. Xây dựng logic xử lý dữ liệu
+                                từ danh sách.</div>
+                        </div>
+                    </div>
+                    <div class="tl-item">
+                        <div class="tl-week">Tuần 3</div>
+                        <div class="tl-line">
+                            <div class="tl-dot"
+                                style="background:var(--accent3);box-shadow:0 0 12px rgba(16,185,129,.7);"></div>
+                        </div>
+                        <div class="tl-content">
+                            <div class="tl-title">Buoi_11 — DOM & Trang Web Tương Tác</div>
+                            <div class="tl-body">Kết nối JavaScript với HTML. Xây dựng các nút, form phản hồi sự kiện
+                                người dùng.</div>
+                        </div>
+                    </div>
+                    <div class="tl-item">
+                        <div class="tl-week">Tuần 4</div>
+                        <div class="tl-line">
+                            <div class="tl-dot" style="background:var(--gold);box-shadow:0 0 12px rgba(245,158,11,.7);">
+                            </div>
+                        </div>
+                        <div class="tl-content">
+                            <div class="tl-title">ES6 & Array Methods Nâng Cao</div>
+                            <div class="tl-body">Viết lại code cũ bằng cú pháp ES6. Thực hành reduce, map, filter trên
+                                tập dữ liệu thực.</div>
+                        </div>
+                    </div>
+                    <div class="tl-item">
+                        <div class="tl-week">Tuần 5</div>
+                        <div class="tl-line">
+                            <div class="tl-dot" style="background:#ec4899;box-shadow:0 0 12px rgba(236,72,153,.7);">
+                            </div>
+                        </div>
+                        <div class="tl-content">
+                            <div class="tl-title">Buoi_12 — Async & API</div>
+                            <div class="tl-body">Học async/await, gọi API bằng axios, xử lý form validation và hiển thị
+                                kết quả từ server.</div>
+                        </div>
+                    </div>
+                    <div class="tl-item">
+                        <div class="tl-week">Tuần 6</div>
+                        <div class="tl-line">
+                            <div class="tl-dot" style="background:#7c3aed;box-shadow:0 0 12px rgba(124,58,237,.9);">
+                            </div>
+                        </div>
+                        <div class="tl-content" style="padding-bottom:0;">
+                            <div class="tl-title">Buoi_13 — Mini App Hoàn Chỉnh</div>
+                            <div class="tl-body">Build ứng dụng phone store với state, render, cart và admin CRUD. Hiểu
+                                kiến trúc modular.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════
+     SLIDE 9 — GLOSSARY
+════════════════════════════════════════ -->
+        <div class="slide" id="s9">
+            <div class="orb" style="width:500px;height:500px;background:#7c3aed;top:-150px;left:-100px;opacity:.12;">
+            </div>
+            <div class="slide-inner">
+                <div class="tag"><span class="dot-tag"></span>Glossary</div>
+                <div class="slide-title">Từ Điển<br /><span>Thuật Ngữ Kỹ Thuật</span></div>
+
+                <div class="glossary-grid" style="flex:1;align-content:start;">
+                    <div class="gitem">
+                        <div class="gterm">ES6</div>
+                        <div class="gdef">Phiên bản JavaScript hiện đại với cú pháp mới: arrow function, destructuring,
+                            import/export, template literals.</div>
+                    </div>
+                    <div class="gitem">
+                        <div class="gterm">DOM</div>
+                        <div class="gdef">Document Object Model — cấu trúc HTML mà JS dùng để đọc và thay đổi nội dung
+                            trang web.</div>
+                    </div>
+                    <div class="gitem">
+                        <div class="gterm">API</div>
+                        <div class="gdef">Application Programming Interface — dịch vụ trả dữ liệu về cho ứng dụng qua
+                            các HTTP request.</div>
+                    </div>
+                    <div class="gitem">
+                        <div class="gterm">CRUD</div>
+                        <div class="gdef">Create, Read, Update, Delete — bốn thao tác cơ bản khi làm việc với dữ liệu.
+                        </div>
+                    </div>
+                    <div class="gitem">
+                        <div class="gterm">async/await</div>
+                        <div class="gdef">Cú pháp viết code bất đồng bộ trông như đồng bộ, dễ đọc hơn so với callback
+                            hay Promise thuần.</div>
+                    </div>
+                    <div class="gitem">
+                        <div class="gterm">axios</div>
+                        <div class="gdef">Thư viện gửi HTTP request (GET/POST/PUT/DELETE) tới API, xử lý response gọn
+                            gàng hơn fetch.</div>
+                    </div>
+                    <div class="gitem">
+                        <div class="gterm">debounce</div>
+                        <div class="gdef">Kỹ thuật trì hoãn hàm để tránh gọi quá nhiều lần liên tiếp — thường dùng cho ô
+                            tìm kiếm.</div>
+                    </div>
+                    <div class="gitem">
+                        <div class="gterm">import/export</div>
+                        <div class="gdef">Cú pháp ES6 để chia code thành các module riêng biệt, dễ bảo trì và tái sử
+                            dụng.</div>
+                    </div>
+                    <div class="gitem">
+                        <div class="gterm">Minimax</div>
+                        <div class="gdef">Thuật toán AI trong game: duyệt cây quyết định để chọn nước đi tối ưu bằng
+                            cách tối đa/tối thiểu điểm.</div>
+                    </div>
+                    <div class="gitem">
+                        <div class="gterm">Alpha-Beta</div>
+                        <div class="gdef">Tối ưu hóa Minimax — cắt bỏ các nhánh không ảnh hưởng kết quả, giảm thời gian
+                            tính toán.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════
+     SLIDE 10 — FINAL
+════════════════════════════════════════ -->
+        <div class="slide" id="s10">
+            <div class="orb"
+                style="width:700px;height:700px;background:#7c3aed;top:-200px;left:50%;transform:translateX(-50%);opacity:.15;">
+            </div>
+            <div class="orb" style="width:400px;height:400px;background:#06b6d4;bottom:-100px;left:-100px;opacity:.12;">
+            </div>
+            <div class="orb"
+                style="width:400px;height:400px;background:#10b981;bottom:-100px;right:-100px;opacity:.10;"></div>
+
+            <div
+                style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:2rem;text-align:center;">
+                <div class="big-check">🚀</div>
+
+                <div class="final-title">
+                    Sẵn Sàng<br />
+                    <span
+                        style="background:var(--grad1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">
+                        Build App Thật
+                    </span>
+                </div>
+
+                <div class="final-sub">
+                    Hoàn thành 8 stage trong 6 tuần — bạn sẽ có nền tảng vững chắc để tự mình xây dựng các web app với
+                    đầy đủ tính năng.
+                </div>
+
+                <div class="star-row" style="margin-bottom:2.5rem;">
+                    <div class="star-card">
+                        <div class="star-num"
+                            style="background:var(--grad1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">
+                            8</div>
+                        <div class="star-desc">Stage học tập</div>
+                    </div>
+                    <div class="star-card">
+                        <div class="star-num"
+                            style="background:var(--grad2);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">
+                            6</div>
+                        <div class="star-desc">Tuần thực chiến</div>
+                    </div>
+                    <div class="star-card">
+                        <div class="star-num"
+                            style="background:var(--grad3);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">
+                            5+</div>
+                        <div class="star-desc">Buổi học thực tế</div>
+                    </div>
+                    <div class="star-card">
+                        <div class="star-num"
+                            style="background:var(--grad4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">
+                            ∞</div>
+                        <div class="star-desc">Dự án có thể làm</div>
+                    </div>
+                </div>
+
+                <div style="display:flex;gap:.6rem;flex-wrap:wrap;justify-content:center;">
+                    <span class="pill" style="border-color:rgba(124,58,237,.3);color:#a78bfa;">🟨 JavaScript</span>
+                    <span class="pill" style="border-color:rgba(6,182,212,.3);color:#67e8f9;">🌐 DOM</span>
+                    <span class="pill" style="border-color:rgba(16,185,129,.3);color:#6ee7b7;">⚡ Async API</span>
+                    <span class="pill" style="border-color:rgba(245,158,11,.3);color:#fcd34d;">📦 Modules</span>
+                    <span class="pill" style="border-color:rgba(239,68,68,.3);color:#fca5a5;">🤖 AI Game</span>
+                </div>
+            </div>
+        </div>
+
+    </div><!-- end deck -->
+
+    <!-- ─── NAVIGATION ─────────────────────── -->
+    <nav class="nav">
+        <button id="prevBtn" onclick="go(-1)" title="Trước">←</button>
+        <div class="dots" id="dots"></div>
+        <div class="slide-counter" id="counter">1 / 10</div>
+        <button id="nextBtn" onclick="go(1)" title="Tiếp">→</button>
+    </nav>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const dots = document.getElementById('dots');
+        const counter = document.getElementById('counter');
+        const bar = document.getElementById('progress');
+        const N = slides.length;
+        let cur = 0, prev = -1, animating = false;
+
+        // Build dots
+        for (let i = 0; i < N; i++) {
+            const d = document.createElement('div');
+            d.className = 'dot' + (i === 0 ? ' on' : '');
+            d.onclick = () => go(i - cur);
+            dots.appendChild(d);
+        }
+
+        function updateUI() {
+            counter.textContent = `${cur + 1} / ${N}`;
+            bar.style.width = `${((cur + 1) / N) * 100}%`;
+            document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('on', i === cur));
+        }
+
+        function go(dir) {
+            if (animating) return;
+            const next = cur + dir;
+            if (next < 0 || next >= N) return;
+            animating = true;
+
+            // exit current
+            slides[cur].classList.remove('active');
+            slides[cur].classList.add('exit');
+
+            // enter next (from right if going forward, from left if going back)
+            slides[next].style.transform = dir > 0 ? 'translateX(60px)' : 'translateX(-60px)';
+            slides[next].style.opacity = '0';
+            slides[next].style.pointerEvents = 'none';
+            slides[next].classList.add('active');
+
+            requestAnimationFrame(() => {
+                slides[next].style.transform = '';
+                slides[next].style.opacity = '';
+            });
+
+            setTimeout(() => {
+                slides[cur].classList.remove('exit');
+                slides[next].style.pointerEvents = '';
+                cur = next;
+                updateUI();
+                animating = false;
+            }, 520);
+        }
+
+        // Keyboard
+        document.addEventListener('keydown', e => {
+            if (e.key === 'ArrowRight' || e.key === 'ArrowDown') go(1);
+            if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') go(-1);
+        });
+
+        // Touch swipe
+        let tx = 0;
+        document.addEventListener('touchstart', e => { tx = e.touches[0].clientX; });
+        document.addEventListener('touchend', e => {
+            const dx = tx - e.changedTouches[0].clientX;
+            if (Math.abs(dx) > 50) go(dx > 0 ? 1 : -1);
+        });
+
+        updateUI();
+    </script>
+</body>
+
+</html>

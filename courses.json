@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "title": "Lộ trình học JavaScript",
+    "description": "Roadmap từ zero đến hero — từ biến, hàm, DOM đến async/await và Minimax AI.",
+    "category": "JavaScript",
+    "color": "#F7B731",
+    "badge": "Sẵn sàng",
+    "badgeType": "ready",
+    "slides": "8 giai đoạn",
+    "progress": 40,
+    "href": "./roadmap.html"
+  },
+  {
+    "id": 2,
+    "title": "Slide học JavaScript",
+    "description": "24 slides enterprise-quality — syntax, functions, DOM, event, OOP, async/await, và thuật toán AI.",
+    "category": "JavaScript · Slide",
+    "color": "#2D6BE4",
+    "badge": "Mới",
+    "badgeType": "new",
+    "slides": "24 slides",
+    "progress": 0,
+    "href": "./slidestudyJS.html"
+  },
+  {
+    "id": 3,
+    "title": "Ngữ pháp TOEIC toàn tập",
+    "description": "12 slides ôn tập — từ loại, 12 thì, liên từ, mệnh đề quan hệ, so sánh, câu điều kiện.",
+    "category": "Tiếng Anh · TOEIC",
+    "color": "#D4541A",
+    "badge": "Mới",
+    "badgeType": "new",
+    "slides": "12 slides",
+    "progress": 0,
+    "href": "./toiec.html"
+  }
+]
