@@ -34,5 +34,17 @@
     "slides": "12 slides",
     "progress": 0,
     "href": "./toiec.html"
+  },
+  {
+    "id": 4,
+    "title": "Design App StayZ",
+    "description": "Thiết kế phong cách nhật, bảng màu cỡ chữ khoảng cách...layout mẫu",
+    "category": "Dart Flutter",
+    "color": "#D4541A",
+    "badge": "Mới",
+    "badgeType": "new",
+    "slides": "2 Landing Page",
+    "progress": 0,
+    "href": "./StayZ-Design-System.html"
   }
 ]
