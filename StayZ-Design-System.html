@@ -2176,7 +2176,7 @@
                             01</div>
                         <div>
                             <div style="font-size:13px;font-weight:500;color:var(--ink);">Splash & Onboarding</div>
-                            <div style="font-size:11px;color:var(--n500);">3 slides giới thiệu</div>
+                            <div style="font-size:11px;color:var(--n500);">Splash + 3 slides giới thiệu</div>
                         </div>
                     </div>
                     <div
@@ -2186,7 +2186,7 @@
                             02</div>
                         <div>
                             <div style="font-size:13px;font-weight:500;color:var(--ink);">Login / Register</div>
-                            <div style="font-size:11px;color:var(--n500);">Auth, OTP (optional)</div>
+                            <div style="font-size:11px;color:var(--n500);">Login, register, forgot, OTP, reset password</div>
                         </div>
                     </div>
                     <div
@@ -2196,7 +2196,7 @@
                             03</div>
                         <div>
                             <div style="font-size:13px;font-weight:500;color:var(--cream);">Home</div>
-                            <div style="font-size:11px;color:rgba(245,240,232,0.7);">Featured + Nearby hotels</div>
+                            <div style="font-size:11px;color:rgba(245,240,232,0.7);">Featured, hotel list, notifications</div>
                         </div>
                     </div>
                     <div
@@ -2206,7 +2206,7 @@
                             04</div>
                         <div>
                             <div style="font-size:13px;font-weight:500;color:var(--ink);">Search & Filter</div>
-                            <div style="font-size:11px;color:var(--n500);">Tìm kiếm + bottom sheet filter</div>
+                            <div style="font-size:11px;color:var(--n500);">Search, filter, empty, offline states</div>
                         </div>
                     </div>
                     <div
@@ -2216,7 +2216,7 @@
                             05</div>
                         <div>
                             <div style="font-size:13px;font-weight:500;color:var(--ink);">Hotel Detail</div>
-                            <div style="font-size:11px;color:var(--n500);">Gallery, tiện ích, review, map</div>
+                            <div style="font-size:11px;color:var(--n500);">Gallery, tiện ích, review, booking info</div>
                         </div>
                     </div>
                     <div
@@ -2226,7 +2226,7 @@
                             06</div>
                         <div>
                             <div style="font-size:13px;font-weight:500;color:var(--ink);">Room Selection</div>
-                            <div style="font-size:11px;color:var(--n500);">Danh sách phòng + giá</div>
+                            <div style="font-size:11px;color:var(--n500);">Chọn phòng + giá theo loại phòng</div>
                         </div>
                     </div>
                     <div
@@ -2236,7 +2236,7 @@
                             07</div>
                         <div>
                             <div style="font-size:13px;font-weight:500;color:var(--ink);">Booking Checkout</div>
-                            <div style="font-size:11px;color:var(--n500);">Thông tin + thanh toán</div>
+                            <div style="font-size:11px;color:var(--n500);">Lịch lưu trú, khách, payment checkout</div>
                         </div>
                     </div>
                     <div
@@ -2246,7 +2246,7 @@
                             08</div>
                         <div>
                             <div style="font-size:13px;font-weight:500;color:var(--ink);">Confirmation</div>
-                            <div style="font-size:11px;color:var(--n500);">Mã đặt phòng + QR code</div>
+                            <div style="font-size:11px;color:var(--n500);">Mã đặt phòng, QR check-in, CTA chi tiết</div>
                         </div>
                     </div>
                     <div
@@ -2256,7 +2256,7 @@
                             09</div>
                         <div>
                             <div style="font-size:13px;font-weight:500;color:var(--ink);">My Bookings</div>
-                            <div style="font-size:11px;color:var(--n500);">Sắp tới / Hoàn thành / Đã hủy</div>
+                            <div style="font-size:11px;color:var(--n500);">List, detail, cancel result, review</div>
                         </div>
                     </div>
                     <div
@@ -2266,7 +2266,7 @@
                             10</div>
                         <div>
                             <div style="font-size:13px;font-weight:500;color:var(--ink);">Profile</div>
-                            <div style="font-size:11px;color:var(--n500);">Thông tin, settings, đăng xuất</div>
+                            <div style="font-size:11px;color:var(--n500);">Settings, profile form, edit profile, payment methods</div>
                         </div>
                     </div>
                 </div>
@@ -2307,6 +2307,10 @@
                         </div>
                         <div class="flow-arrow">→</div>
                         <div class="flow-col">
+                            <div class="flow-node">Schedule</div>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-col">
                             <div class="flow-node">Checkout</div>
                         </div>
                         <div class="flow-arrow">→</div>
@@ -2326,9 +2330,11 @@
                         style="font-family:'DM Mono',monospace; font-size:11px; color:var(--n600); line-height:2; background:var(--n50); padding:16px; border-radius:8px;">
                         Home → Tap search → Search screen<br>
                         &nbsp;&nbsp;→ Nhập điểm đến + ngày + số khách → Apply filter<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;→ Empty / Offline state nếu không có kết quả hoặc mất mạng<br>
                         &nbsp;&nbsp;&nbsp;&nbsp;→ Tap khách sạn → Hotel Detail<br>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→ "Chọn phòng" → Room Selection<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→ "Đặt ngay" → Checkout → Xác nhận<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→ "Đặt ngay" → Chọn thời gian & khách<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→ Checkout → Xác nhận thanh toán<br>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→ <span
                             style="color:var(--success);">Booking Confirmation (QR)</span>
                     </div>
@@ -2365,9 +2371,10 @@
                     <div
                         style="font-family:'DM Mono',monospace; font-size:11px; color:var(--n600); line-height:2; background:var(--n50); padding:16px; border-radius:8px;">
                         Bottom Nav "Đặt phòng" → My Bookings<br>
-                        &nbsp;&nbsp;Tab "Sắp tới" → Booking Detail → Xem QR<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;→ "Hủy" → Confirm dialog → Update status<br>
-                        &nbsp;&nbsp;Tab "Hoàn thành" → "Đánh giá" → Rating screen → Submit
+                        &nbsp;&nbsp;Tab "Sắp tới" → Upcoming Booking Detail → Xem QR<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;→ "Hủy" → Confirm dialog → Cancel Booking Result<br>
+                        &nbsp;&nbsp;Tab "Hoàn thành" → Completed Booking Detail → "Đánh giá" → Rating screen → Submit<br>
+                        &nbsp;&nbsp;Tab "Đã hủy" → Cancelled Booking Detail → Đặt lại phòng này
                     </div>
                 </div>
             </div>
