@@ -46,5 +46,17 @@
     "slides": "2 Landing Page",
     "progress": 0,
     "href": "./StayZ-Design-System.html"
+  },
+  {
+    "id": 5,
+    "title": "InterView",
+    "description": "Tổng hợp kiến thức phỏng vấn Frontend: JavaScript, React, TypeScript, Redux/TanStack Query, Next.js... chia rõ Core Skills và Exposure, kèm câu hỏi mock và chiến lược trả lời.",
+    "category": "Frontend Development",
+    "color": "#D4541A",
+    "badge": "Mới",
+    "badgeType": "new",
+    "slides": "6 Chương",
+    "progress": 0,
+    "href": "./interview.html"
   }
 ]
