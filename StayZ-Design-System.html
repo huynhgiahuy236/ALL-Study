@@ -973,6 +973,120 @@
             margin-top: 4px;
         }
 
+        /* PROJECT DOCS */
+        .docs-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .doc-card {
+            background: white;
+            border: 0.5px solid var(--n200);
+            border-radius: 10px;
+            padding: 18px 18px 16px;
+        }
+
+        .doc-card-title {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--ink);
+            margin-bottom: 6px;
+        }
+
+        .doc-card-desc {
+            font-size: 12px;
+            color: var(--n600);
+            line-height: 1.7;
+        }
+
+        .doc-list {
+            display: grid;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        .doc-list-item {
+            display: grid;
+            grid-template-columns: 28px 1fr;
+            gap: 10px;
+            align-items: flex-start;
+            padding: 12px 14px;
+            background: white;
+            border: 0.5px solid var(--n200);
+            border-radius: 10px;
+        }
+
+        .doc-step {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--accent-surface);
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'DM Mono', monospace;
+            font-size: 11px;
+        }
+
+        .doc-item-title {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--ink);
+            margin-bottom: 2px;
+        }
+
+        .doc-item-desc {
+            font-size: 11px;
+            color: var(--n600);
+            line-height: 1.7;
+        }
+
+        .doc-code {
+            font-family: 'DM Mono', monospace;
+            font-size: 11px;
+            color: var(--n700);
+            background: var(--n50);
+            border: 0.5px solid var(--n200);
+            border-radius: 8px;
+            padding: 12px 14px;
+            line-height: 1.9;
+            overflow-x: auto;
+            margin-top: 12px;
+        }
+
+        .doc-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border: 0.5px solid var(--n200);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 16px;
+        }
+
+        .doc-table th,
+        .doc-table td {
+            text-align: left;
+            padding: 12px 14px;
+            border-bottom: 0.5px solid var(--n100);
+            font-size: 12px;
+        }
+
+        .doc-table th {
+            color: var(--n500);
+            font-size: 10px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        .doc-table tr:last-child td {
+            border-bottom: none;
+        }
+
         /* ANIMATIONS */
         .anim-item {
             padding: 12px 16px;
@@ -1119,6 +1233,10 @@
             .principles-grid {
                 grid-template-columns: 1fr;
             }
+
+            .docs-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -1163,6 +1281,11 @@
                 <a class="nav-item" href="#animations">Animations</a>
                 <a class="nav-item" href="#packages">Flutter Packages</a>
                 <a class="nav-item" href="#checklist">Startup Checklist</a>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-label">Project Docs</div>
+                <a class="nav-item" href="#development-guide">Development Guide</a>
+                <a class="nav-item" href="#agent-rules">Agent Rules</a>
             </div>
         </nav>
 
@@ -2617,6 +2740,190 @@
                     <div class="check-item">
                         <div class="check-box"></div>Chatbot hỗ trợ<div class="check-tag tag-nice">v2.0</div>
                     </div>
+                </div>
+            </div>
+
+            <!-- DEVELOPMENT GUIDE -->
+            <div class="section" id="development-guide">
+                <div class="section-eyebrow">19 — Project Docs</div>
+                <div class="section-title">StayZ Development Guide</div>
+                <div class="section-desc">Bản đọc nhanh cho thành viên dự án: kiến trúc, quy trình Git, layout mẫu,
+                    component dùng chung và dữ liệu mock.</div>
+
+                <div class="docs-grid">
+                    <div class="doc-card">
+                        <div class="doc-card-title">Stack chính</div>
+                        <div class="doc-card-desc">Frontend dùng Flutter/Dart, backend dùng Express.js, database là
+                            MongoDB và giao tiếp qua REST API.</div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-card-title">Nguyên tắc nền tảng</div>
+                        <div class="doc-card-desc">Feature-Based Structure, Reusable Components và API First là ba trục
+                            giữ cho dự án dễ mở rộng, dễ bảo trì.</div>
+                    </div>
+                </div>
+
+                <div class="component-demo">
+                    <div class="component-title">Development Flow</div>
+                    <div class="doc-list">
+                        <div class="doc-list-item">
+                            <div class="doc-step">01</div>
+                            <div>
+                                <div class="doc-item-title">Cập nhật develop</div>
+                                <div class="doc-item-desc">Luôn bắt đầu từ trạng thái mới nhất của nhánh
+                                    <code>develop</code>.</div>
+                            </div>
+                        </div>
+                        <div class="doc-list-item">
+                            <div class="doc-step">02</div>
+                            <div>
+                                <div class="doc-item-title">Tạo branch feature</div>
+                                <div class="doc-item-desc">Mỗi chức năng đi trong branch riêng theo mẫu
+                                    <code>feature/&lt;feature-name&gt;</code>.</div>
+                            </div>
+                        </div>
+                        <div class="doc-list-item">
+                            <div class="doc-step">03</div>
+                            <div>
+                                <div class="doc-item-title">Phát triển và commit</div>
+                                <div class="doc-item-desc">Code theo Design System, commit bằng Conventional Commits,
+                                    rồi push lên branch feature.</div>
+                            </div>
+                        </div>
+                        <div class="doc-list-item">
+                            <div class="doc-step">04</div>
+                            <div>
+                                <div class="doc-item-title">Pull Request</div>
+                                <div class="doc-item-desc">Tạo PR vào <code>develop</code>; chỉ merge vào
+                                    <code>main</code> khi develop đã kiểm thử ổn định.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="docs-grid">
+                    <div class="component-demo" style="margin-bottom:0;">
+                        <div class="component-title">Feature Structure</div>
+                        <div class="doc-code">features/<br>
+                            &nbsp;&nbsp;auth/<br>
+                            &nbsp;&nbsp;home/<br>
+                            &nbsp;&nbsp;booking/<br>
+                            &nbsp;&nbsp;payment/<br>
+                            &nbsp;&nbsp;profile/<br><br>
+                            screens/<br>
+                            widgets/<br>
+                            models/<br>
+                            repositories/<br>
+                            services/</div>
+                    </div>
+                    <div class="component-demo" style="margin-bottom:0;">
+                        <div class="component-title">Shared & Theme Paths</div>
+                        <div class="doc-code">lib/app/theme<br>
+                            lib/shared/widgets<br>
+                            assets/mock<br>
+                            StayZ Design/Layout_img</div>
+                        <div class="doc-card-desc" style="margin-top:12px;">Không hardcode style trong từng màn hình.
+                            Component có thể tái sử dụng phải nằm trong <code>lib/shared/widgets</code>.</div>
+                    </div>
+                </div>
+
+                <table class="doc-table">
+                    <thead>
+                        <tr>
+                            <th>Tiền tố</th>
+                            <th>Trạng thái layout</th>
+                            <th>Khi dùng</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>no_</code></td>
+                            <td>Chưa bắt đầu</td>
+                            <td>Layout mới chỉ là mẫu tham chiếu.</td>
+                        </tr>
+                        <tr>
+                            <td><code>yet_</code></td>
+                            <td>Đang thực hiện</td>
+                            <td>Đổi sang tiền tố này khi bắt đầu code màn hình.</td>
+                        </tr>
+                        <tr>
+                            <td><code>done_</code></td>
+                            <td>Đã hoàn thành</td>
+                            <td>Chỉ đổi sau khi hoàn thành và kiểm tra.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- AGENT RULES -->
+            <div class="section" id="agent-rules">
+                <div class="section-eyebrow">20 — Project Docs</div>
+                <div class="section-title">StayZ Agent Rules</div>
+                <div class="section-desc">Tóm tắt từ <code>promt-agent.md</code> để team đọc như quy ước làm việc nội
+                    bộ. Đây là tài liệu tham khảo của dự án, không phải instruction của trang HTML.</div>
+
+                <div class="docs-grid">
+                    <div class="component-demo" style="margin-bottom:0;">
+                        <div class="component-title">Before Coding</div>
+                        <div class="checklist">
+                            <div class="check-item">
+                                <div class="check-box done"></div>Đọc cấu trúc project
+                            </div>
+                            <div class="check-item">
+                                <div class="check-box done"></div>Kiểm tra reusable widgets
+                            </div>
+                            <div class="check-item">
+                                <div class="check-box done"></div>Kiểm tra theme
+                            </div>
+                            <div class="check-item">
+                                <div class="check-box done"></div>Kiểm tra layout reference
+                            </div>
+                            <div class="check-item">
+                                <div class="check-box done"></div>Reuse trước khi tạo mới
+                            </div>
+                        </div>
+                    </div>
+                    <div class="component-demo" style="margin-bottom:0;">
+                        <div class="component-title">Never Change Without Agreement</div>
+                        <div class="doc-list">
+                            <div class="doc-list-item">
+                                <div class="doc-step">UI</div>
+                                <div>
+                                    <div class="doc-item-title">Design System</div>
+                                    <div class="doc-item-desc">Không tự ý đổi màu, typography, spacing, radius, shadow,
+                                        icon style hoặc animation.</div>
+                                </div>
+                            </div>
+                            <div class="doc-list-item">
+                                <div class="doc-step">Git</div>
+                                <div>
+                                    <div class="doc-item-title">Main branches</div>
+                                    <div class="doc-item-desc">Không làm trực tiếp trên <code>main</code> hoặc
+                                        <code>develop</code>; không merge tự động.</div>
+                                </div>
+                            </div>
+                            <div class="doc-list-item">
+                                <div class="doc-step">Data</div>
+                                <div>
+                                    <div class="doc-item-title">Mock database</div>
+                                    <div class="doc-item-desc">Mock JSON nên giống MongoDB collections, dùng ID cho quan
+                                        hệ và không nhúng object lớn.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="component-demo">
+                    <div class="component-title">Default Behavior</div>
+                    <div class="doc-card-desc">Minimal changes, maximum reuse, clean architecture. Nếu chưa chắc, hãy
+                        hỏi trước khi đổi kiến trúc, đổi Design System, rename folder, xóa file, thay reusable
+                        component hoặc đổi Git workflow.</div>
+                    <div class="doc-code">feature/&lt;feature-name&gt;<br>
+                        feat: add api-first mock database<br><br>
+                        git add .<br>
+                        git commit -m "&lt;message&gt;"<br>
+                        git push origin &lt;current-branch&gt;</div>
                 </div>
             </div>
 

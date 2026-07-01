@@ -1,0 +1,1537 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>準備 — Chuẩn Bị Phỏng Vấn Frontend</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --cream: #F7F3EA;
+            --cream-deep: #EFE9DC;
+            --ink: #2A2622;
+            --ink-soft: #5C564D;
+            --beni: #B7422E;
+            --beni-soft: #D9C4B8;
+            --line: #DFD6C4;
+            --gold: #A88A4F;
+            --exp-tag: #7C8A6E;
+            --exp-bg: #EEEFE6;
+            --extra-tag: #6E7B8A;
+            --extra-bg: #EAEEF1;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--cream);
+            color: var(--ink);
+            font-family: 'Inter', sans-serif;
+            font-weight: 400;
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        ::selection {
+            background: var(--beni);
+            color: var(--cream);
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background-image: radial-gradient(var(--ink) 0.5px, transparent 0.5px);
+            background-size: 26px 26px;
+            opacity: 0.035;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            position: relative;
+            min-height: 70vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 8vh 8vw 6vh;
+            border-bottom: 1px solid var(--line);
+            overflow: hidden;
+        }
+
+        .hero-kanji {
+            position: absolute;
+            right: -2vw;
+            top: 50%;
+            transform: translateY(-50%);
+            font-family: 'Noto Serif JP', serif;
+            font-size: min(42vw, 480px);
+            font-weight: 700;
+            color: var(--ink);
+            opacity: 0.04;
+            line-height: 1;
+            user-select: none;
+            pointer-events: none;
+        }
+
+        .hero-eyebrow {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--beni);
+            margin-bottom: 28px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .hero-eyebrow::before {
+            content: "";
+            width: 36px;
+            height: 1px;
+            background: var(--beni);
+            display: inline-block;
+        }
+
+        .hero h1 {
+            font-family: 'Noto Serif JP', serif;
+            font-weight: 600;
+            font-size: clamp(36px, 5.6vw, 66px);
+            line-height: 1.25;
+            letter-spacing: -0.01em;
+            max-width: 15ch;
+        }
+
+        .hero h1 .accent {
+            color: var(--beni);
+        }
+
+        .hero-sub {
+            margin-top: 26px;
+            max-width: 60ch;
+            font-size: 15.5px;
+            color: var(--ink-soft);
+            font-weight: 300;
+        }
+
+        .hero-meta {
+            margin-top: 44px;
+            display: flex;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .hero-meta div {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--ink-soft);
+        }
+
+        .hero-meta b {
+            display: block;
+            font-family: 'Noto Serif JP', serif;
+            font-size: 22px;
+            color: var(--ink);
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        /* ===== NAV STRIP ===== */
+        .navstrip {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: rgba(247, 243, 234, 0.94);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--line);
+            display: flex;
+            align-items: center;
+            gap: 0;
+            overflow-x: auto;
+            padding: 0 8vw;
+        }
+
+        .navstrip::-webkit-scrollbar {
+            display: none;
+        }
+
+        .navstrip a {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10.5px;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--ink-soft);
+            padding: 15px 14px;
+            white-space: nowrap;
+            border-bottom: 2px solid transparent;
+            transition: color .2s, border-color .2s;
+        }
+
+        .navstrip a:hover {
+            color: var(--beni);
+            border-bottom-color: var(--beni);
+        }
+
+        /* ===== SECTION SHELL ===== */
+        .section {
+            padding: 90px 8vw;
+            border-bottom: 1px solid var(--line);
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            gap: 24px;
+            margin-bottom: 56px;
+            flex-wrap: wrap;
+        }
+
+        .section-head .num {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--gold);
+            letter-spacing: 0.15em;
+        }
+
+        .section-head h2 {
+            font-family: 'Noto Serif JP', serif;
+            font-weight: 600;
+            font-size: clamp(28px, 3.4vw, 44px);
+            margin-top: 8px;
+        }
+
+        .section-head p {
+            max-width: 42ch;
+            color: var(--ink-soft);
+            font-size: 14px;
+            text-align: right;
+        }
+
+        @media (max-width:720px) {
+            .section-head p {
+                text-align: left;
+                max-width: 100%;
+            }
+        }
+
+        .tag {
+            display: inline-block;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 4px 10px;
+            border-radius: 2px;
+            margin-bottom: 14px;
+        }
+
+        .tag.core {
+            background: var(--beni);
+            color: var(--cream);
+        }
+
+        .tag.exp {
+            background: var(--exp-tag);
+            color: var(--cream);
+        }
+
+        .tag.extra {
+            background: var(--extra-tag);
+            color: var(--cream);
+        }
+
+        /* ===== TOPIC CARD ===== */
+        .topic {
+            border-top: 1px solid var(--line);
+            padding: 40px 0;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 40px;
+        }
+
+        .topic:last-child {
+            border-bottom: none;
+        }
+
+        @media (max-width:860px) {
+            .topic {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+        }
+
+        .topic-title {
+            font-family: 'Noto Serif JP', serif;
+            font-size: 22px;
+            font-weight: 600;
+            position: sticky;
+            top: 60px;
+            align-self: start;
+        }
+
+        .topic-title .jp {
+            display: block;
+            font-size: 13px;
+            color: var(--gold);
+            font-weight: 400;
+            margin-bottom: 6px;
+            letter-spacing: 0.05em;
+        }
+
+        .topic-body h4 {
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 14.5px;
+            color: var(--beni);
+            margin: 22px 0 8px;
+        }
+
+        .topic-body h4:first-child {
+            margin-top: 0;
+        }
+
+        .topic-body ul {
+            padding-left: 20px;
+            margin-bottom: 4px;
+        }
+
+        .topic-body li {
+            margin-bottom: 7px;
+            font-size: 14.5px;
+            color: var(--ink);
+        }
+
+        .topic-body p {
+            font-size: 14.5px;
+            color: var(--ink);
+            margin-bottom: 8px;
+        }
+
+        .topic-body p.soft {
+            color: var(--ink-soft);
+            font-size: 13.5px;
+        }
+
+        .topic-body table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 14px 0;
+            font-size: 13.5px;
+        }
+
+        .topic-body th,
+        .topic-body td {
+            border: 1px solid var(--line);
+            padding: 8px 10px;
+            text-align: left;
+        }
+
+        .topic-body th {
+            background: var(--cream-deep);
+            font-weight: 600;
+            color: var(--ink);
+        }
+
+        code,
+        .code-inline {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--cream-deep);
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 0.88em;
+            color: var(--beni);
+        }
+
+        pre {
+            background: var(--ink);
+            color: #EAE3D3;
+            padding: 18px 20px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12.5px;
+            line-height: 1.6;
+            margin: 12px 0 16px;
+        }
+
+        pre code {
+            background: none;
+            color: inherit;
+            padding: 0;
+        }
+
+        .callout {
+            border-left: 2px solid var(--beni);
+            padding: 12px 18px;
+            background: var(--cream-deep);
+            font-size: 13.5px;
+            color: var(--ink-soft);
+            margin: 14px 0;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .callout b {
+            color: var(--ink);
+        }
+
+        .qbox {
+            margin-top: 12px;
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .qbox summary {
+            cursor: pointer;
+            padding: 12px 16px;
+            font-size: 13.5px;
+            font-weight: 500;
+            background: var(--cream-deep);
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .qbox summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .qbox summary::after {
+            content: "+";
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--beni);
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .qbox[open] summary::after {
+            content: "–";
+        }
+
+        .qbox .answer {
+            padding: 14px 16px;
+            font-size: 13.5px;
+            color: var(--ink-soft);
+            border-top: 1px solid var(--line);
+        }
+
+        .qbox .answer b {
+            color: var(--ink);
+        }
+
+        /* ===== EXPOSURE STRATEGY BOX ===== */
+        .strategy {
+            background: var(--exp-bg);
+            border: 1px solid #D7DBC9;
+            border-radius: 8px;
+            padding: 32px;
+            margin-top: 20px;
+        }
+
+        .strategy h3 {
+            font-family: 'Noto Serif JP', serif;
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: var(--ink);
+        }
+
+        .strategy p {
+            font-size: 14px;
+            color: var(--ink-soft);
+            margin-bottom: 6px;
+        }
+
+        .strategy .script {
+            margin-top: 14px;
+            font-style: italic;
+            font-family: 'Noto Serif JP', serif;
+            font-size: 15px;
+            color: var(--ink);
+            padding-left: 16px;
+            border-left: 2px solid var(--exp-tag);
+        }
+
+        /* ===== TIMELINE FOOTER ===== */
+        footer {
+            padding: 70px 8vw 100px;
+            text-align: center;
+        }
+
+        footer .mark {
+            font-family: 'Noto Serif JP', serif;
+            font-size: 15px;
+            color: var(--gold);
+            letter-spacing: 0.1em;
+        }
+
+        footer p {
+            margin-top: 14px;
+            color: var(--ink-soft);
+            font-size: 13px;
+            max-width: 44ch;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Priority checklist */
+        .checklist {
+            list-style: none;
+            padding: 0;
+            margin-top: 16px;
+        }
+
+        .checklist li {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            padding: 10px 0;
+            border-bottom: 1px dashed var(--line);
+            font-size: 14px;
+        }
+
+        .checklist li:last-child {
+            border-bottom: none;
+        }
+
+        .checklist .dot {
+            flex-shrink: 0;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--beni);
+            margin-top: 7px;
+        }
+
+        /* two-column answer grid for behavioral / vocab */
+        .grid2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-top: 14px;
+        }
+
+        @media (max-width:720px) {
+            .grid2 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .vcard {
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            padding: 16px 18px;
+            background: var(--cream-deep);
+        }
+
+        .vcard .en {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12.5px;
+            color: var(--beni);
+            margin-bottom: 4px;
+        }
+
+        .vcard .vi {
+            font-size: 13px;
+            color: var(--ink-soft);
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--cream);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--beni-soft);
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <section class="hero">
+        <div class="hero-kanji">準備</div>
+        <div class="hero-eyebrow">Interview Preparation — Huỳnh Gia Huy · Bản đầy đủ</div>
+        <h1>Chuẩn bị<br>phỏng vấn <span class="accent">Frontend</span></h1>
+        <p class="hero-sub">Tài liệu ôn tập toàn diện dựa trên CV của bạn — từ nền tảng JavaScript/React đến các mảng ít
+            khi được để ý như hiệu năng, bảo mật, testing, và cả bộ câu hỏi hành vi + từ vựng phỏng vấn tiếng Anh. Đọc
+            từ trên xuống hoặc bấm menu để nhảy nhanh.</p>
+        <div class="hero-meta">
+            <div><b>10</b>Core Skills</div>
+            <div><b>06</b>Exposure Skills</div>
+            <div><b>04</b>Chủ đề mở rộng</div>
+            <div><b>30+</b>Câu hỏi mock</div>
+        </div>
+    </section>
+
+    <nav class="navstrip">
+        <a href="#js">JavaScript</a>
+        <a href="#ts">TypeScript</a>
+        <a href="#react">React</a>
+        <a href="#state">Redux/Query</a>
+        <a href="#next">Next.js</a>
+        <a href="#router">Router</a>
+        <a href="#axios">Axios</a>
+        <a href="#form">Formik/Yup</a>
+        <a href="#css">HTML/CSS/Tailwind</a>
+        <a href="#git">Git</a>
+        <a href="#perf">Hiệu năng</a>
+        <a href="#security">Bảo mật</a>
+        <a href="#testing">Testing/Deploy</a>
+        <a href="#exposure">Exposure</a>
+        <a href="#behavior">Câu hỏi hành vi</a>
+        <a href="#english">Từ vựng EN</a>
+        <a href="#strategy">Chiến lược</a>
+    </nav>
+
+    <!-- ================= CORE SECTION ================= -->
+    <section class="section" id="core">
+        <div class="section-head">
+            <div>
+                <span class="num">CHƯƠNG 01 — コア</span>
+                <h2>Core Skills</h2>
+            </div>
+            <p>Đây là những gì CV ghi bạn "thành thạo". Nhà tuyển dụng sẽ hỏi sâu, có thể yêu cầu code trực tiếp. Nắm
+                chắc từng mục dưới đây.</p>
+        </div>
+
+        <div class="topic" id="js">
+            <div class="topic-title"><span class="jp">言語の基礎</span>JavaScript</div>
+            <div class="topic-body">
+                <span class="tag core">Bị hỏi nhiều nhất</span>
+
+                <h4>Closure</h4>
+                <p>Một hàm "nhớ" được biến ở scope cha ngay cả sau khi hàm cha đã chạy xong.</p>
+                <pre><code>function counter() {
+  let count = 0;
+  return () => ++count;
+}
+const inc = counter();
+inc(); // 1
+inc(); // 2 — vẫn nhớ "count"</code></pre>
+
+                <h4>Hoisting & Scope</h4>
+                <ul>
+                    <li><code>var</code> hoisted lên đầu function, khởi tạo <code>undefined</code></li>
+                    <li><code>let</code>/<code>const</code> hoisted nhưng nằm trong "temporal dead zone" → truy cập
+                        trước khi khai báo sẽ lỗi</li>
+                    <li>Block scope (<code>{}</code>) vs Function scope</li>
+                </ul>
+
+                <h4>"this" binding — hay bị hỏi bẫy</h4>
+                <ul>
+                    <li>Trong function thường: <code>this</code> phụ thuộc vào cách gọi (object gọi nó)</li>
+                    <li>Trong arrow function: <code>this</code> lấy theo scope cha (lexical this) — không tự có
+                        <code>this</code> riêng
+                    </li>
+                    <li><code>call / apply / bind</code> — dùng để ép <code>this</code> trỏ tới object chỉ định</li>
+                </ul>
+                <pre><code>const obj = {
+  name: 'Huy',
+  normal: function() { console.log(this.name); }, // 'Huy'
+  arrow: () => { console.log(this.name); }        // undefined (this = window/global)
+};</code></pre>
+
+                <h4>Event Loop</h4>
+                <p>Trình tự chạy: <b>Call Stack → Microtask Queue (Promise) → Macrotask Queue (setTimeout)</b>.
+                    Microtask luôn chạy trước macrotask kế tiếp.</p>
+                <pre><code>console.log('1');
+setTimeout(() => console.log('2'), 0);
+Promise.resolve().then(() => console.log('3'));
+console.log('4');
+// Kết quả: 1, 4, 3, 2</code></pre>
+                <div class="callout"><b>Mẹo:</b> Đây là câu hỏi kinh điển. Luôn giải thích được vì sao Promise chạy
+                    trước setTimeout dù cả hai đều "delay 0ms".</div>
+
+                <h4>Prototype & Prototype Chain</h4>
+                <p>Mọi object JS đều có link ngầm <code>__proto__</code> trỏ tới object cha. <code>class</code> trong
+                    ES6 chỉ là syntactic sugar cho prototype. Khi truy cập 1 thuộc tính, JS tìm trên chính object trước,
+                    không có thì tìm ngược lên chuỗi prototype.</p>
+
+                <h4>Array/Object methods hay dùng</h4>
+                <ul>
+                    <li><code>map / filter / reduce</code> — viết tay được <code>reduce</code> để tính tổng, group by
+                    </li>
+                    <li>Spread/rest: <code>{...obj}</code>, <code>[...arr]</code></li>
+                    <li>Destructuring: <code>const {name, age} = user</code></li>
+                    <li><code>Promise.all</code> vs <code>Promise.allSettled</code>: <code>all</code> fail ngay nếu 1
+                        promise reject, <code>allSettled</code> luôn đợi hết và trả kết quả từng cái</li>
+                </ul>
+
+                <h4>Debounce / Throttle — thường bị bắt code tay</h4>
+                <pre><code>function debounce(fn, delay) {
+  let timer;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => fn(...args), delay);
+  };
+}
+
+function throttle(fn, limit) {
+  let inThrottle;
+  return (...args) => {
+    if (!inThrottle) {
+      fn(...args);
+      inThrottle = true;
+      setTimeout(() => inThrottle = false, limit);
+    }
+  };
+}</code></pre>
+                <p class="soft">Debounce: chỉ chạy sau khi ngừng gọi trong X ms (VD: search input). Throttle: giới hạn
+                    chạy tối đa 1 lần mỗi X ms (VD: scroll event, resize).</p>
+
+                <h4>So sánh giá trị & sao chép</h4>
+                <ul>
+                    <li><code>==</code> so sánh có coerce type, <code>===</code> so sánh chặt cả type</li>
+                    <li>Shallow copy (<code>{...obj}</code>) chỉ copy 1 cấp, nested object vẫn tham chiếu chung</li>
+                    <li>Deep copy: <code>structuredClone(obj)</code> hoặc <code>JSON.parse(JSON.stringify(obj))</code>
+                        (mất function, Date, undefined)</li>
+                </ul>
+
+                <h4>Kiểu dữ liệu & Type Coercion</h4>
+                <ul>
+                    <li>Primitive: <code>string, number, boolean, null, undefined, symbol, bigint</code></li>
+                    <li>Reference: <code>object, array, function</code> — gán bằng tham chiếu, không phải copy giá trị
+                    </li>
+                    <li><code>null</code> vs <code>undefined</code>: <code>undefined</code> = chưa gán giá trị,
+                        <code>null</code> = cố tình gán "rỗng"
+                    </li>
+                </ul>
+
+                <details class="qbox">
+                    <summary>Q: Giải thích closure bằng ví dụ thực tế trong project của bạn</summary>
+                    <div class="answer">Gợi ý trả lời: liên hệ tới debounce trong ô search sản phẩm ở project Shoes
+                        Store/Phone Store — biến <b>timer</b> được "giữ" trong closure giữa các lần gọi hàm.</div>
+                </details>
+                <details class="qbox">
+                    <summary>Q: let/const/var khác nhau ở điểm nào?</summary>
+                    <div class="answer"><b>var</b>: function-scope, hoisted với giá trị undefined, redeclare được.
+                        <b>let</b>: block-scope, không redeclare được cùng scope. <b>const</b>: block-scope, không gán
+                        lại được (nhưng nếu là object/array thì nội dung bên trong vẫn sửa được).
+                    </div>
+                </details>
+                <details class="qbox">
+                    <summary>Q: Sự khác nhau giữa null và undefined?</summary>
+                    <div class="answer"><code>typeof undefined === 'undefined'</code>,
+                        <code>typeof null === 'object'</code> (đây là 1 bug lịch sử của JS). Dùng <code>== </code> thì
+                        <code>null == undefined</code> là true, nhưng <code>===</code> thì false.
+                    </div>
+                </details>
+            </div>
+        </div>
+
+        <div class="topic" id="ts">
+            <div class="topic-title"><span class="jp">型システム</span>TypeScript</div>
+            <div class="topic-body">
+                <span class="tag core">Core</span>
+
+                <h4>Interface vs Type</h4>
+                <ul>
+                    <li><code>interface</code>: mở rộng được bằng declaration merging, hợp cho object shape / props</li>
+                    <li><code>type</code>: linh hoạt hơn, dùng được cho union, intersection, primitive alias</li>
+                </ul>
+                <pre><code>type Status = 'idle' | 'loading' | 'error';
+interface Product {
+  id: string;
+  price: number;
+  status: Status;
+}</code></pre>
+
+                <h4>Generic</h4>
+                <pre><code>function getFirst&lt;T&gt;(arr: T[]): T {
+  return arr[0];
+}</code></pre>
+                <p class="soft">Generic giúp hàm dùng lại được với nhiều kiểu dữ liệu mà vẫn giữ type-safety.</p>
+
+                <h4>Utility Types hay dùng</h4>
+                <ul>
+                    <li><code>Partial&lt;T&gt;</code> — mọi field thành optional (hữu ích khi update form)</li>
+                    <li><code>Pick&lt;T, K&gt;</code> — chọn ra vài field</li>
+                    <li><code>Omit&lt;T, K&gt;</code> — loại bỏ vài field</li>
+                    <li><code>Record&lt;K, V&gt;</code> — định nghĩa object dạng map</li>
+                    <li><code>Readonly&lt;T&gt;</code> — mọi field không thể gán lại</li>
+                </ul>
+
+                <h4>any vs unknown</h4>
+                <p><code>any</code> tắt hoàn toàn type-check (nguy hiểm). <code>unknown</code> an toàn hơn — bắt buộc
+                    phải kiểm tra kiểu trước khi dùng.</p>
+
+                <h4>Type API response</h4>
+                <p>Luôn định nghĩa interface cho response API để tránh lỗi runtime khi field bị thiếu/đổi tên.</p>
+
+                <details class="qbox">
+                    <summary>Q: Vì sao dự án của bạn dùng TypeScript thay vì JavaScript thuần?</summary>
+                    <div class="answer">Bắt lỗi ngay lúc code thay vì runtime, tự động gợi ý (autocomplete) tốt hơn, dễ
+                        maintain khi project lớn/nhiều người làm, tài liệu hoá được kiểu dữ liệu qua interface.</div>
+                </details>
+            </div>
+        </div>
+
+        <div class="topic" id="react">
+            <div class="topic-title"><span class="jp">構築</span>ReactJS</div>
+            <div class="topic-body">
+                <span class="tag core">Trọng tâm phỏng vấn</span>
+
+                <h4>Virtual DOM & Reconciliation</h4>
+                <p>React tạo cây Virtual DOM, so sánh (diff) với cây trước đó, chỉ cập nhật phần khác biệt lên DOM thật
+                    → tối ưu hiệu năng thay vì render lại toàn bộ.</p>
+
+                <h4>Vì sao cần "key" khi render list</h4>
+                <p>Key giúp React nhận diện phần tử nào thay đổi/thêm/xóa giữa các lần render, tránh re-render nhầm hoặc
+                    mất state. <b>Không nên dùng index làm key</b> nếu list có thể thay đổi thứ tự (thêm/xoá/sắp xếp
+                    lại).</p>
+
+                <h4>useEffect — dependency array & cleanup</h4>
+                <pre><code>useEffect(() => {
+  const controller = new AbortController();
+  fetchData(controller.signal);
+  return () => controller.abort(); // cleanup
+}, [id]); // chạy lại khi "id" đổi</code></pre>
+                <ul>
+                    <li>Mảng rỗng <code>[]</code> → chạy 1 lần khi mount</li>
+                    <li>Không có mảng → chạy sau mỗi render (hiếm khi cần)</li>
+                    <li>Cleanup function chạy trước lần effect kế tiếp hoặc khi unmount</li>
+                </ul>
+
+                <h4>useMemo / useCallback — khi nào thật sự cần</h4>
+                <p class="soft">Chỉ dùng khi có tính toán nặng hoặc truyền callback xuống component con được bọc
+                    <code>React.memo</code>. Dùng tùy tiện sẽ làm code phức tạp mà không tăng hiệu năng đáng kể.
+                </p>
+
+                <h4>Custom Hook</h4>
+                <pre><code>function useDebounce(value, delay = 400) {
+  const [debounced, setDebounced] = useState(value);
+  useEffect(() => {
+    const t = setTimeout(() => setDebounced(value), delay);
+    return () => clearTimeout(t);
+  }, [value, delay]);
+  return debounced;
+}</code></pre>
+
+                <h4>Nguyên nhân re-render & cách tối ưu</h4>
+                <ul>
+                    <li>Parent re-render → mọi con re-render theo (trừ khi dùng <code>memo</code>)</li>
+                    <li>State/props thay đổi (kể cả object mới nhưng giá trị giống nhau)</li>
+                    <li>Giải pháp: tách component nhỏ, <code>React.memo</code>, tránh tạo object/function mới trong JSX
+                        mỗi render, dùng key hợp lý</li>
+                </ul>
+
+                <h4>Controlled vs Uncontrolled component</h4>
+                <p>Controlled: giá trị input do React state quản lý (<code>value + onChange</code>). Uncontrolled: dùng
+                    <code>ref</code> để đọc giá trị trực tiếp từ DOM, ít re-render hơn nhưng khó validate real-time.
+                </p>
+
+                <h4>Lifting state up & Context API</h4>
+                <p>Khi 2 component con cần chia sẻ state, đưa state lên component cha chung rồi truyền xuống qua props.
+                    Nếu phải truyền qua nhiều tầng ("prop drilling"), cân nhắc dùng <code>Context API</code> hoặc thư
+                    viện state management.</p>
+
+                <h4>useRef dùng để làm gì</h4>
+                <p>Lưu giá trị không gây re-render khi thay đổi, hoặc truy cập trực tiếp DOM node (VD: focus input, đo
+                    kích thước phần tử).</p>
+
+                <details class="qbox">
+                    <summary>Q: React Fiber là gì?</summary>
+                    <div class="answer">Fiber là kiến trúc reconciliation từ React 16, cho phép chia nhỏ việc render
+                        thành các đơn vị công việc, ngắt/tiếp tục được → giúp UI không bị đơ khi render nặng (concurrent
+                        rendering).</div>
+                </details>
+                <details class="qbox">
+                    <summary>Q: Khi nào bạn chọn dùng useReducer thay vì useState?</summary>
+                    <div class="answer">Khi state phức tạp, nhiều action thay đổi khác nhau, hoặc state kế tiếp phụ
+                        thuộc logic action cụ thể — <code>useReducer</code> giúp logic cập nhật state rõ ràng, tập trung
+                        một chỗ, giống mô hình Redux nhưng local trong component.</div>
+                </details>
+            </div>
+        </div>
+
+        <div class="topic" id="state">
+            <div class="topic-title"><span class="jp">状態管理</span>Redux Toolkit<br>vs TanStack Query</div>
+            <div class="topic-body">
+                <span class="tag core">CV dùng cả 2 → chắc chắn bị hỏi</span>
+
+                <div class="callout"><b>Câu hỏi chắc chắn gặp:</b> "Vì sao project của bạn dùng cả Redux Toolkit lẫn
+                    TanStack Query? Không dùng 1 cái thôi được không?"</div>
+
+                <h4>Phân biệt cốt lõi</h4>
+                <ul>
+                    <li><b>Redux Toolkit</b> → quản lý <b>Client State</b>: state thuộc về UI, không đến từ server (giỏ
+                        hàng, trạng thái modal, filter đang chọn, auth token trong bộ nhớ)</li>
+                    <li><b>TanStack Query</b> → quản lý <b>Server State</b>: dữ liệu lấy từ API (danh sách sản phẩm, đơn
+                        hàng) — tự động cache, refetch, xử lý loading/error, đồng bộ nhiều nơi dùng chung data</li>
+                </ul>
+
+                <h4>Vì sao không dùng Redux để fetch API luôn?</h4>
+                <p>Nếu dùng Redux thuần để fetch API, bạn phải tự viết loading state, error state, cache, invalidate
+                    cache, retry... TanStack Query có sẵn tất cả, giảm rất nhiều boilerplate.</p>
+
+                <h4>Cú pháp cơ bản</h4>
+                <pre><code>// Redux Toolkit
+const cartSlice = createSlice({
+  name: 'cart',
+  initialState: [],
+  reducers: {
+    addItem: (state, action) => { state.push(action.payload); }
+  }
+});
+
+// TanStack Query
+const { data, isLoading, error } = useQuery({
+  queryKey: ['products'],
+  queryFn: fetchProducts
+});</code></pre>
+
+                <h4>Redux Toolkit giải quyết vấn đề gì của Redux thuần?</h4>
+                <p>Redux gốc cần viết action type, action creator, reducer riêng biệt, rất nhiều boilerplate. RTK gộp
+                    lại qua <code>createSlice</code>, tích hợp sẵn Immer nên viết state "mutate trực tiếp" mà thực chất
+                    vẫn immutable phía dưới.</p>
+
+                <h4>Cache invalidation trong TanStack Query</h4>
+                <p>Sau khi <code>useMutation</code> thành công (VD: thêm sản phẩm), gọi
+                    <code>queryClient.invalidateQueries(['products'])</code> để báo React Query fetch lại dữ liệu mới
+                    nhất.
+                </p>
+
+                <details class="qbox">
+                    <summary>Q: TanStack Query cache dữ liệu ra sao?</summary>
+                    <div class="answer">Mỗi query có <code>queryKey</code> duy nhất, dữ liệu được cache theo key đó. Khi
+                        component khác gọi cùng key, dữ liệu lấy từ cache ngay (stale-while-revalidate), sau đó tự động
+                        refetch ngầm nếu dữ liệu đã "stale".</div>
+                </details>
+                <details class="qbox">
+                    <summary>Q: Nếu không dùng thư viện nào, bạn quản lý state global bằng cách nào?</summary>
+                    <div class="answer">Context API kết hợp <code>useReducer</code> cho state đơn giản/vừa. Với app lớn,
+                        quy mô nhiều, Redux Toolkit hoặc Zustand vẫn tốt hơn vì tránh re-render toàn bộ cây component
+                        khi Context thay đổi.</div>
+                </details>
+            </div>
+        </div>
+
+        <div class="topic" id="next">
+            <div class="topic-title"><span class="jp">サーバー</span>Next.js</div>
+            <div class="topic-body">
+                <span class="tag core">Core</span>
+                <h4>SSR / SSG / CSR / ISR</h4>
+                <table>
+                    <tr>
+                        <th>Kiểu render</th>
+                        <th>Khi nào build</th>
+                        <th>Phù hợp</th>
+                    </tr>
+                    <tr>
+                        <td>CSR</td>
+                        <td>Ở browser lúc chạy</td>
+                        <td>App tương tác nhiều, ít quan tâm SEO</td>
+                    </tr>
+                    <tr>
+                        <td>SSR</td>
+                        <td>Mỗi request trên server</td>
+                        <td>Dữ liệu đổi liên tục + cần SEO</td>
+                    </tr>
+                    <tr>
+                        <td>SSG</td>
+                        <td>Lúc build (1 lần)</td>
+                        <td>Trang ít đổi: blog, landing page</td>
+                    </tr>
+                    <tr>
+                        <td>ISR</td>
+                        <td>Build + tự làm mới sau X giây</td>
+                        <td>Cân bằng tốc độ & dữ liệu mới</td>
+                    </tr>
+                </table>
+                <h4>App Router vs Pages Router</h4>
+                <p>App Router (thư mục <code>app/</code>) hỗ trợ Server Component mặc định, layout lồng nhau, streaming.
+                    Pages Router (<code>pages/</code>) là cách cũ, mọi thứ đều Client Component.</p>
+                <h4>Server Component vs Client Component</h4>
+                <p>Server Component render trên server, không gửi JS xuống client → nhẹ hơn. Client Component (khai báo
+                    <code>'use client'</code>) cần khi có state, event handler, hook.
+                </p>
+                <h4>Image & Font Optimization</h4>
+                <p><code>next/image</code> tự động lazy-load, resize, chuyển định dạng ảnh tối ưu (WebP).
+                    <code>next/font</code> tự host font, tránh layout shift khi load font ngoài.
+                </p>
+            </div>
+        </div>
+
+        <div class="topic" id="router">
+            <div class="topic-title"><span class="jp">経路</span>React Router</div>
+            <div class="topic-body">
+                <span class="tag core">Core</span>
+                <ul>
+                    <li>Nested route — route con render trong <code>&lt;Outlet /&gt;</code> của route cha</li>
+                    <li>Dynamic route: <code>/product/:id</code> → đọc bằng <code>useParams()</code></li>
+                    <li>Điều hướng bằng code: <code>useNavigate()</code></li>
+                    <li><b>Protected Route</b> — vì CV bạn có phân quyền admin/user, cần giải thích được cách chặn route
+                        chưa đăng nhập (kiểm tra token/role trước khi render, redirect nếu không hợp lệ)</li>
+                </ul>
+                <pre><code>function ProtectedRoute({ children, role }) {
+  const { user } = useAuth();
+  if (!user) return &lt;Navigate to="/login" /&gt;;
+  if (role && user.role !== role) return &lt;Navigate to="/403" /&gt;;
+  return children;
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="topic" id="axios">
+            <div class="topic-title"><span class="jp">通信</span>Axios & API</div>
+            <div class="topic-body">
+                <span class="tag core">Core</span>
+                <h4>Interceptor</h4>
+                <p>Request interceptor thường dùng để gắn token tự động vào header. Response interceptor dùng để xử lý
+                    lỗi tập trung (VD: 401 → tự logout).</p>
+                <pre><code>axios.interceptors.request.use(config => {
+  config.headers.Authorization = `Bearer ${token}`;
+  return config;
+});</code></pre>
+                <h4>Loading / Error state</h4>
+                <p>Luôn có 3 trạng thái khi gọi API: <code>loading</code>, <code>success (data)</code>,
+                    <code>error</code> — giải thích được cách bạn xử lý cả 3 trong project.
+                </p>
+                <h4>Cancel request khi unmount</h4>
+                <p>Dùng <code>AbortController</code> để hủy request khi component unmount, tránh warning "set state on
+                    unmounted component".</p>
+                <h4>HTTP Status Code cần nhớ</h4>
+                <p><code>200</code> OK · <code>201</code> Created · <code>400</code> Bad Request · <code>401</code>
+                    Unauthorized · <code>403</code> Forbidden · <code>404</code> Not Found · <code>500</code> Internal
+                    Server Error</p>
+                <h4>GET/POST/PUT/PATCH/DELETE khác nhau ra sao</h4>
+                <p><code>PUT</code> thay toàn bộ resource, <code>PATCH</code> chỉ sửa 1 phần. Cả hai đều idempotent (gọi
+                    nhiều lần kết quả như nhau), còn <code>POST</code> thì không (gọi nhiều lần tạo nhiều bản ghi mới).
+                </p>
+            </div>
+        </div>
+
+        <div class="topic" id="form">
+            <div class="topic-title"><span class="jp">検証</span>Formik & Yup</div>
+            <div class="topic-body">
+                <span class="tag core">Core</span>
+                <p>Formik quản lý state form (values, touched, errors) mà không cần tự viết <code>useState</code> cho
+                    từng field. Yup định nghĩa schema validate khai báo (declarative).</p>
+                <pre><code>const schema = Yup.object({
+  email: Yup.string().email().required(),
+  password: Yup.string().min(6).required()
+});</code></pre>
+                <p class="soft">Câu hỏi hay gặp: "Vì sao không tự validate bằng tay?" → Formik + Yup giảm boilerplate,
+                    dễ maintain, tách rõ logic validate khỏi UI.</p>
+                <h4>Alternative hiện đại</h4>
+                <p>Nhiều project mới chuyển sang <code>React Hook Form + Zod</code> vì ít re-render hơn (uncontrolled by
+                    default) — nên biết để trả lời nếu bị hỏi "có biết lựa chọn khác không".</p>
+            </div>
+        </div>
+
+        <div class="topic" id="css">
+            <div class="topic-title"><span class="jp">意匠</span>HTML / CSS / Tailwind</div>
+            <div class="topic-body">
+                <span class="tag core">Core</span>
+
+                <h4>Box Model</h4>
+                <p>Mỗi phần tử gồm: <code>content → padding → border → margin</code>.
+                    <code>box-sizing: border-box</code> giúp width/height tính luôn cả padding + border (thường dùng mặc
+                    định cho dễ tính toán layout).
+                </p>
+
+                <h4>Flexbox vs Grid</h4>
+                <ul>
+                    <li><b>Flexbox</b>: layout 1 chiều (hàng hoặc cột) — hợp cho navbar, danh sách item cùng hàng</li>
+                    <li><b>Grid</b>: layout 2 chiều (hàng và cột cùng lúc) — hợp cho layout tổng thể trang, dashboard
+                    </li>
+                </ul>
+
+                <h4>CSS Specificity</h4>
+                <p>Thứ tự ưu tiên: <code>inline style</code> &gt; <code>ID</code> &gt;
+                    <code>class/attribute/pseudo-class</code> &gt; <code>element</code>. <code>!important</code> ghi đè
+                    tất cả nhưng nên tránh dùng vì khó maintain.
+                </p>
+
+                <h4>Position</h4>
+                <p><code>static</code> (mặc định) · <code>relative</code> (dịch so với vị trí gốc) ·
+                    <code>absolute</code> (so với cha gần nhất có position khác static) · <code>fixed</code> (so với
+                    viewport) · <code>sticky</code> (dính khi scroll qua ngưỡng).
+                </p>
+
+                <h4>Utility-first là gì (Tailwind)</h4>
+                <p>Thay vì viết class CSS riêng, ghép các class tiện ích có sẵn (<code>flex</code>, <code>p-4</code>,
+                    <code>text-lg</code>) trực tiếp trong HTML/JSX. Ưu điểm: không phải đặt tên class, ít CSS thừa
+                    (purge unused). Nhược điểm: HTML dài, cần quen mắt.
+                </p>
+
+                <h4>Responsive / Mobile-first</h4>
+                <p>Tailwind mặc định là mobile-first: viết style cho mobile trước, thêm breakpoint
+                    <code>sm: md: lg:</code> để override cho màn lớn hơn.
+                </p>
+
+                <h4>Dark Mode</h4>
+                <p>Dùng class <code>dark:</code> kết hợp toggle class <code>dark</code> trên thẻ <code>html</code>, lưu
+                    preference vào localStorage.</p>
+
+                <h4>Semantic HTML & Accessibility cơ bản</h4>
+                <ul>
+                    <li>Dùng đúng thẻ: <code>&lt;button&gt;</code> cho hành động, không dùng
+                        <code>&lt;div onClick&gt;</code>
+                    </li>
+                    <li><code>alt</code> cho ảnh, <code>label</code> gắn với input</li>
+                    <li>Đảm bảo điều hướng được bằng bàn phím (focus visible)</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="topic" id="git">
+            <div class="topic-title"><span class="jp">履歴</span>Git / GitHub</div>
+            <div class="topic-body">
+                <span class="tag core">Core</span>
+                <ul>
+                    <li><b>Merge</b>: giữ nguyên lịch sử, tạo merge commit — an toàn, dễ trace</li>
+                    <li><b>Rebase</b>: viết lại lịch sử thành 1 đường thẳng — lịch sử gọn hơn nhưng rủi ro hơn khi làm
+                        nhóm</li>
+                    <li>Resolve conflict: hiểu được đoạn <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</code> ...
+                        <code>=======</code> ... <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code> nghĩa là gì và cách chọn giữ
+                        code nào
+                    </li>
+                    <li>Branch strategy cơ bản: feature branch → Pull Request → review → merge vào main/dev</li>
+                    <li><code>git stash</code> — lưu tạm thay đổi chưa commit để chuyển branch khác</li>
+                    <li><code>git cherry-pick</code> — lấy 1 commit cụ thể từ branch khác áp vào branch hiện tại</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= EXTRA SECTION ================= -->
+    <section class="section" id="extra">
+        <div class="section-head">
+            <div>
+                <span class="num">CHƯƠNG 02 — 応用</span>
+                <h2>Chủ đề mở rộng</h2>
+            </div>
+            <p>Không nằm trực tiếp trong CV nhưng nhà tuyển dụng Frontend hay hỏi để đánh giá tư duy tổng thể, không chỉ
+                biết code theo tutorial.</p>
+        </div>
+
+        <div class="topic" id="perf">
+            <div class="topic-title"><span class="jp">性能</span>Hiệu năng (Performance)</div>
+            <div class="topic-body">
+                <span class="tag extra">Mở rộng</span>
+                <h4>Code Splitting & Lazy Loading</h4>
+                <pre><code>const AdminDashboard = React.lazy(() => import('./AdminDashboard'));
+// Chỉ tải chunk này khi route được truy cập</code></pre>
+                <p>Giúp giảm kích thước bundle ban đầu, tải trang nhanh hơn — chỉ load code khi thật sự cần.</p>
+                <h4>Image Optimization</h4>
+                <ul>
+                    <li>Dùng định dạng WebP/AVIF thay JPG/PNG khi có thể</li>
+                    <li>Lazy load ảnh dưới fold (<code>loading="lazy"</code>)</li>
+                    <li>Đặt đúng kích thước ảnh, tránh gửi ảnh 4000px cho khung hiển thị 400px</li>
+                </ul>
+                <h4>Core Web Vitals (Google đo hiệu năng)</h4>
+                <table>
+                    <tr>
+                        <th>Chỉ số</th>
+                        <th>Đo gì</th>
+                    </tr>
+                    <tr>
+                        <td>LCP</td>
+                        <td>Tốc độ render phần tử lớn nhất nhìn thấy đầu tiên</td>
+                    </tr>
+                    <tr>
+                        <td>CLS</td>
+                        <td>Độ "nhảy" bố cục ngoài ý muốn khi trang tải</td>
+                    </tr>
+                    <tr>
+                        <td>INP</td>
+                        <td>Độ trễ phản hồi khi người dùng tương tác</td>
+                    </tr>
+                </table>
+                <h4>Memoization & Virtualization</h4>
+                <p>Với list rất dài (hàng nghìn item), dùng thư viện virtualization (VD: <code>react-window</code>) để
+                    chỉ render các item đang hiển thị trong viewport.</p>
+            </div>
+        </div>
+
+        <div class="topic" id="security">
+            <div class="topic-title"><span class="jp">安全</span>Bảo mật cơ bản</div>
+            <div class="topic-body">
+                <span class="tag extra">Mở rộng</span>
+                <h4>XSS (Cross-Site Scripting)</h4>
+                <p>Kẻ tấn công chèn script độc hại vào input rồi hiển thị lại cho user khác. React tự động escape giá
+                    trị render trong JSX nên khá an toàn, nhưng <code>dangerouslySetInnerHTML</code> thì không — cần
+                    sanitize trước khi dùng.</p>
+                <h4>CSRF (Cross-Site Request Forgery)</h4>
+                <p>Kẻ tấn công lừa user thực hiện hành động ngoài ý muốn trên site đã đăng nhập. Phòng chống bằng CSRF
+                    token, kiểm tra <code>SameSite</code> cookie.</p>
+                <h4>CORS</h4>
+                <p>Cơ chế trình duyệt chặn request cross-origin trừ khi server cho phép qua header
+                    <code>Access-Control-Allow-Origin</code>. Đây là lỗi rất hay gặp khi frontend và backend chạy khác
+                    domain/port lúc dev.
+                </p>
+                <h4>Lưu token an toàn</h4>
+                <p>So sánh <code>localStorage</code> (dễ bị đánh cắp qua XSS) vs <code>httpOnly cookie</code> (an toàn
+                    hơn vì JS không đọc được, nhưng cần xử lý CSRF).</p>
+            </div>
+        </div>
+
+        <div class="topic" id="testing">
+            <div class="topic-title"><span class="jp">試験・展開</span>Testing & Deployment</div>
+            <div class="topic-body">
+                <span class="tag extra">Mở rộng</span>
+                <h4>Các loại test</h4>
+                <ul>
+                    <li><b>Unit test</b>: test 1 hàm/component riêng lẻ (Jest, Vitest)</li>
+                    <li><b>Integration test</b>: test nhiều phần phối hợp với nhau (React Testing Library)</li>
+                    <li><b>E2E test</b>: test toàn bộ luồng như người dùng thật (Cypress, Playwright)</li>
+                </ul>
+                <h4>Deployment (Vercel — công cụ trong CV bạn)</h4>
+                <p>Vercel tự động build & deploy mỗi khi push code lên GitHub (CI/CD đơn giản), có Preview Deployment
+                    riêng cho mỗi Pull Request để review trước khi merge.</p>
+                <h4>Environment Variables</h4>
+                <p>Biến môi trường (API key, URL backend...) không hard-code trong source, quản lý qua file
+                    <code>.env</code>, biến bắt đầu bằng <code>NEXT_PUBLIC_</code> (Next.js) hoặc <code>VITE_</code>
+                    (Vite) mới lộ ra client.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= EXPOSURE SECTION ================= -->
+    <section class="section" id="exposure">
+        <div class="section-head">
+            <div>
+                <span class="num">CHƯƠNG 03 — 接触</span>
+                <h2>Exposure Skills</h2>
+            </div>
+            <p>CV ghi "Exposure to" — không phải thành thạo. Chỉ cần nắm khái niệm, demo được thứ cơ bản, không cần
+                chuyên sâu.</p>
+        </div>
+
+        <div class="topic">
+            <div class="topic-title"><span class="jp">実行環境</span>Node.js</div>
+            <div class="topic-body">
+                <span class="tag exp">Exposure</span>
+                <ul>
+                    <li>Node.js = môi trường chạy JavaScript ngoài browser, dùng V8 engine</li>
+                    <li>Khác browser: không có <code>window</code>/DOM, có hệ thống module
+                        (<code>require</code>/<code>import</code>), truy cập được file system</li>
+                    <li>Non-blocking I/O — Node xử lý nhiều request cùng lúc mà không chặn luồng chính nhờ event loop
+                    </li>
+                    <li>CommonJS (<code>require</code>) vs ES Module (<code>import</code>) — khác cách load module</li>
+                    <li><code>npm</code>/<code>package.json</code> — quản lý dependency, script chạy project</li>
+                </ul>
+                <details class="qbox">
+                    <summary>Q: Node.js single-thread nhưng vẫn xử lý được nhiều request cùng lúc, vì sao?</summary>
+                    <div class="answer">Node dùng 1 thread chính cho JS, nhưng các tác vụ I/O nặng (đọc file, gọi DB,
+                        network) được đẩy xuống libuv/thread pool ở background, xong thì callback được đưa lại vào event
+                        loop để xử lý tiếp — nên thread chính không bị block.</div>
+                </details>
+            </div>
+        </div>
+
+        <div class="topic">
+            <div class="topic-title"><span class="jp">枠組み</span>Express.js</div>
+            <div class="topic-body">
+                <span class="tag exp">Exposure</span>
+                <h4>Middleware</h4>
+                <p>Hàm chạy giữa lúc nhận request và trả response: <code>req → middleware → res</code>. Dùng cho auth
+                    check, logging, parse body...</p>
+                <pre><code>const express = require('express');
+const app = express();
+app.use(express.json());
+
+app.get('/api/products', (req, res) => {
+  res.json({ data: [] });
+});
+
+app.use((err, req, res, next) => {
+  res.status(500).json({ message: err.message });
+});</code></pre>
+                <p class="soft">Nên nhớ luồng CRUD cơ bản: GET (đọc) · POST (tạo) · PUT/PATCH (sửa) · DELETE (xóa).</p>
+                <h4>REST API convention</h4>
+                <p><code>GET /products</code> lấy danh sách, <code>GET /products/:id</code> lấy 1 item,
+                    <code>POST /products</code> tạo mới — đặt tên route theo danh từ số nhiều, dùng HTTP method thể hiện
+                    hành động thay vì nhét vào URL (VD: tránh <code>/getProducts</code>).
+                </p>
+            </div>
+        </div>
+
+        <div class="topic">
+            <div class="topic-title"><span class="jp">文書型</span>MongoDB</div>
+            <div class="topic-body">
+                <span class="tag exp">Exposure</span>
+                <ul>
+                    <li>NoSQL, document-based — lưu dữ liệu dạng JSON-like (BSON), không cần schema cố định</li>
+                    <li>Mongoose: thư viện định nghĩa Schema/Model để làm việc với MongoDB có cấu trúc hơn</li>
+                    <li>Khi nào chọn MongoDB: dữ liệu thay đổi cấu trúc linh hoạt, cần scale nhanh, không cần join phức
+                        tạp</li>
+                </ul>
+                <pre><code>const productSchema = new mongoose.Schema({
+  name: String,
+  price: Number,
+});
+const Product = mongoose.model('Product', productSchema);</code></pre>
+            </div>
+        </div>
+
+        <div class="topic">
+            <div class="topic-title"><span class="jp">関係型</span>SQL</div>
+            <div class="topic-body">
+                <span class="tag exp">Exposure</span>
+                <ul>
+                    <li>Câu lệnh cơ bản: <code>SELECT ... FROM ... WHERE ...</code>, <code>JOIN</code>,
+                        <code>GROUP BY</code>
+                    </li>
+                    <li>Primary Key (khóa chính, duy nhất) vs Foreign Key (khóa ngoại, liên kết bảng khác)</li>
+                    <li>SQL có schema cố định, quan hệ rõ ràng, hợp dữ liệu có cấu trúc chặt (đơn hàng, giao dịch).
+                        MongoDB linh hoạt hơn nhưng ít ràng buộc hơn.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="topic">
+            <div class="topic-title"><span class="jp">容器</span>Docker</div>
+            <div class="topic-body">
+                <span class="tag exp">Exposure</span>
+                <ul>
+                    <li>Container ≠ Virtual Machine: container chia sẻ chung OS kernel → nhẹ và khởi động nhanh hơn VM
+                    </li>
+                    <li><code>Dockerfile</code> — file định nghĩa cách build image</li>
+                    <li><code>Image</code> — bản đóng gói sẵn (code + môi trường), <code>Container</code> — instance
+                        đang chạy của image đó</li>
+                    <li>Lý do dùng: đảm bảo môi trường chạy giống nhau ở mọi máy, tránh lỗi "chạy trên máy tôi thì được"
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="topic">
+            <div class="topic-title"><span class="jp">出版</span>WordPress</div>
+            <div class="topic-body">
+                <span class="tag exp">Exposure</span>
+                <p>Chỉ cần nắm khái niệm: <b>Theme</b> (giao diện), <b>Plugin</b> (mở rộng chức năng), <b>Custom Post
+                        Type</b> (loại nội dung tùy chỉnh ngoài Post/Page mặc định). Hiếm khi hỏi sâu trừ khi công ty
+                    làm site WordPress.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= BEHAVIORAL SECTION ================= -->
+    <section class="section" id="behavior">
+        <div class="section-head">
+            <div>
+                <span class="num">CHƯƠNG 04 — 対話</span>
+                <h2>Câu hỏi hành vi (Behavioral)</h2>
+            </div>
+            <p>Không kém phần quan trọng so với câu hỏi kỹ thuật. Dùng công thức <b>STAR</b>: Situation – Task – Action
+                – Result.</p>
+        </div>
+
+        <div class="topic">
+            <div class="topic-title"><span class="jp">星型</span>Công thức STAR</div>
+            <div class="topic-body">
+                <ul>
+                    <li><b>Situation</b> — Bối cảnh: dự án gì, vấn đề gì xảy ra</li>
+                    <li><b>Task</b> — Nhiệm vụ: bạn cần làm gì</li>
+                    <li><b>Action</b> — Hành động: bạn đã làm cụ thể ra sao</li>
+                    <li><b>Result</b> — Kết quả: đạt được gì, học được gì</li>
+                </ul>
+                <div class="callout"><b>Gợi ý dùng project thật:</b> Project Phone Store của bạn có phần "phân quyền
+                    admin/user + xử lý localStorage" — đây là chất liệu tốt để kể về 1 khó khăn kỹ thuật thực tế đã tự
+                    giải quyết.</div>
+            </div>
+        </div>
+
+        <div class="topic">
+            <div class="topic-title"><span class="jp">質問集</span>Bộ câu hỏi thường gặp</div>
+            <div class="topic-body">
+                <details class="qbox">
+                    <summary>Q: Giới thiệu bản thân (Tell me about yourself)</summary>
+                    <div class="answer">Cấu trúc gợi ý: đang học năm cuối ngành gì, định hướng Frontend, kể ngắn 1-2
+                        project nổi bật + tech stack, kết bằng lý do ứng tuyển vị trí này.</div>
+                </details>
+                <details class="qbox">
+                    <summary>Q: Điểm mạnh / điểm yếu của bạn là gì?</summary>
+                    <div class="answer">Điểm mạnh nên gắn với dẫn chứng cụ thể (VD: tự học nhanh — dẫn chứng bằng việc
+                        tự làm HuyLearn để học JS/tiếng Anh). Điểm yếu nên chọn cái thật nhưng đã có hướng cải thiện,
+                        tránh nói yếu điểm liên quan trực tiếp tới công việc.</div>
+                </details>
+                <details class="qbox">
+                    <summary>Q: Kể về 1 khó khăn kỹ thuật bạn từng gặp và cách giải quyết</summary>
+                    <div class="answer">Dùng STAR. Gợi ý: lỗi Tailwind v4 (<code>@variant dark</code>, bug
+                        <code>@apply group</code>) từng gặp ở PhoneHub — mô tả cách bạn debug, tìm tài liệu, và fix
+                        được.
+                    </div>
+                </details>
+                <details class="qbox">
+                    <summary>Q: Bạn xử lý thế nào khi bất đồng ý kiến kỹ thuật với đồng đội?</summary>
+                    <div class="answer">Nhấn mạnh: lắng nghe lý do của người kia, đưa ra dẫn chứng/so sánh cụ thể (ưu
+                        nhược điểm), ưu tiên giải pháp tốt cho project chứ không phải "thắng-thua", nếu vẫn bất đồng thì
+                        để leader/team quyết định.</div>
+                </details>
+                <details class="qbox">
+                    <summary>Q: Vì sao bạn chọn Frontend?</summary>
+                    <div class="answer">Có thể liên hệ sở thích thẩm mỹ tối giản Nhật Bản, thích nhìn thấy kết quả trực
+                        quan ngay khi code UI, quan tâm trải nghiệm người dùng.</div>
+                </details>
+                <details class="qbox">
+                    <summary>Q: Bạn học công nghệ mới như thế nào?</summary>
+                    <div class="answer">Dẫn chứng thực tế: tự xây HuyLearn làm tài nguyên tự học, thói quen đọc doc
+                        chính thức, làm project nhỏ để thực hành ngay sau khi học lý thuyết.</div>
+                </details>
+                <details class="qbox">
+                    <summary>Q: Tại sao chúng tôi nên chọn bạn cho vị trí Intern này?</summary>
+                    <div class="answer">Nhấn mạnh: đã có 3 project thực chiến gần với công việc thật (không chỉ học lý
+                        thuyết), khả năng tự học công nghệ mới nhanh, có nền tảng cả frontend lẫn hiểu biết cơ bản
+                        backend để phối hợp team tốt.</div>
+                </details>
+                <details class="qbox">
+                    <summary>Q: Bạn có câu hỏi nào cho chúng tôi không? (luôn nên hỏi lại)</summary>
+                    <div class="answer">Gợi ý hỏi: "Tech stack chính team đang dùng là gì?", "Intern sẽ được mentor trực
+                        tiếp hay làm việc độc lập?", "Dự án đầu tiên em có thể tham gia là gì?" — thể hiện sự chủ động
+                        và quan tâm thật sự.</div>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= ENGLISH VOCAB SECTION ================= -->
+    <section class="section" id="english">
+        <div class="section-head">
+            <div>
+                <span class="num">CHƯƠNG 05 — 英語</span>
+                <h2>Từ vựng phỏng vấn tiếng Anh</h2>
+            </div>
+            <p>Vì bạn có CV bản tiếng Anh, một số công ty có thể phỏng vấn 1 phần bằng tiếng Anh. Đây là cụm từ kỹ thuật
+                hay dùng.</p>
+        </div>
+
+        <div class="topic">
+            <div class="topic-title"><span class="jp">語彙</span>Cụm từ kỹ thuật</div>
+            <div class="topic-body">
+                <div class="grid2">
+                    <div class="vcard">
+                        <div class="en">"I built a reusable component for..."</div>
+                        <div class="vi">Tôi đã xây một component tái sử dụng cho...</div>
+                    </div>
+                    <div class="vcard">
+                        <div class="en">"I integrated a RESTful API using Axios"</div>
+                        <div class="vi">Tôi tích hợp API RESTful bằng Axios</div>
+                    </div>
+                    <div class="vcard">
+                        <div class="en">"I optimized performance by..."</div>
+                        <div class="vi">Tôi tối ưu hiệu năng bằng cách...</div>
+                    </div>
+                    <div class="vcard">
+                        <div class="en">"I handled state management with..."</div>
+                        <div class="vi">Tôi quản lý state bằng...</div>
+                    </div>
+                    <div class="vcard">
+                        <div class="en">"I collaborated with two teammates on..."</div>
+                        <div class="vi">Tôi hợp tác với hai bạn cùng nhóm về...</div>
+                    </div>
+                    <div class="vcard">
+                        <div class="en">"I'm comfortable reading technical documentation"</div>
+                        <div class="vi">Tôi tự tin đọc tài liệu kỹ thuật tiếng Anh</div>
+                    </div>
+                    <div class="vcard">
+                        <div class="en">"The main challenge was... I solved it by..."</div>
+                        <div class="vi">Khó khăn chính là... tôi giải quyết bằng cách...</div>
+                    </div>
+                    <div class="vcard">
+                        <div class="en">"I'm eager to learn and adapt to new stacks"</div>
+                        <div class="vi">Tôi sẵn sàng học và thích nghi công nghệ mới</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= STRATEGY SECTION ================= -->
+    <section class="section" id="strategy">
+        <div class="section-head">
+            <div>
+                <span class="num">CHƯƠNG 06 — 戦略</span>
+                <h2>Chiến lược trả lời</h2>
+            </div>
+            <p>Cách xử lý khi bị hỏi sâu hơn khả năng, và thứ tự ưu tiên ôn tập trước ngày phỏng vấn.</p>
+        </div>
+
+        <div class="strategy">
+            <h3>Khi bị hỏi sâu quá phần Exposure</h3>
+            <p>Vì CV ghi "Exposure to" chứ không phải "Proficient", hãy trả lời trung thực — điều này an toàn hơn nhiều
+                so với cố "nổ":</p>
+            <p class="script">"Em có tìm hiểu và thực hành cơ bản phần này để hiểu luồng hoạt động full-stack, giúp em
+                phối hợp tốt hơn với backend team, nhưng định hướng chính của em vẫn là Frontend."</p>
+        </div>
+
+        <div class="topic" style="border-top:none; padding-top:48px;">
+            <div class="topic-title"><span class="jp">優先順位</span>Thứ tự ôn tập</div>
+            <div class="topic-body">
+                <h4>Ưu tiên cao nhất (99% sẽ hỏi)</h4>
+                <ul class="checklist">
+                    <li><span class="dot"></span>Giải thích 3 project trong CV: kiến trúc, vì sao chọn tech đó, khó khăn
+                        & cách xử lý</li>
+                    <li><span class="dot"></span>Redux Toolkit vs TanStack Query — khác nhau ở đâu, vì sao dùng cả 2
+                    </li>
+                    <li><span class="dot"></span>Closure, event loop, debounce/throttle (code tay)</li>
+                    <li><span class="dot"></span>useEffect dependency array & cleanup</li>
+                </ul>
+                <h4>Ưu tiên trung bình</h4>
+                <ul class="checklist">
+                    <li><span class="dot"></span>TypeScript: interface vs type, generic, utility types</li>
+                    <li><span class="dot"></span>Next.js: SSR/SSG/CSR khác nhau, khi nào dùng cái nào</li>
+                    <li><span class="dot"></span>Axios interceptor, xử lý lỗi/loading</li>
+                    <li><span class="dot"></span>Git: merge vs rebase, resolve conflict</li>
+                    <li><span class="dot"></span>Flexbox vs Grid, box model, specificity</li>
+                </ul>
+                <h4>Ưu tiên thấp (nắm khái niệm là đủ)</h4>
+                <ul class="checklist">
+                    <li><span class="dot"></span>Node.js/Express: middleware, CRUD cơ bản</li>
+                    <li><span class="dot"></span>MongoDB vs SQL: khác nhau ở điểm nào</li>
+                    <li><span class="dot"></span>Docker: container vs VM là gì</li>
+                    <li><span class="dot"></span>WordPress: theme/plugin cơ bản</li>
+                    <li><span class="dot"></span>XSS/CSRF/CORS: hiểu khái niệm, không cần demo</li>
+                </ul>
+                <h4>Câu hỏi hành vi (behavioral)</h4>
+                <ul class="checklist">
+                    <li><span class="dot"></span>Kể 1 khó khăn thực tế đã gặp trong project và cách giải quyết (dùng
+                        STAR)</li>
+                    <li><span class="dot"></span>Làm việc nhóm ra sao khi có bất đồng ý kiến kỹ thuật</li>
+                    <li><span class="dot"></span>Chuẩn bị 2-3 câu hỏi để hỏi lại nhà tuyển dụng</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="mark">頑張って</div>
+        <p>Chúc bạn phỏng vấn thành công. Đọc kỹ phần "Ưu tiên cao nhất" trước — đó là những gì gần như chắc chắn sẽ
+            được hỏi.</p>
+    </footer>
+
+</body>
+
+</html>
