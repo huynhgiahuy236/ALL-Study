@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ôn phỏng vấn Frontend — 3 Project</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream: #f6f1e7;
+    --cream-deep: #efe7d6;
+    --paper: #fffdf8;
+    --ink: #2c2620;
+    --ink-soft: #6b6255;
+    --beni: #a5402e;
+    --beni-deep: #7e2f21;
+    --beni-tint: #f1ded7;
+    --line: #e2d8c4;
+    --mono: #4b463d;
+    --radius: 4px;
+    --sidebar-w: 300px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    font-size:15.5px;
+    line-height:1.65;
+  }
+  h1,h2,h3,h4{
+    font-family:'Be Vietnam Pro',sans-serif;
+    color:var(--ink);
+    margin:0 0 .5em 0;
+    letter-spacing:-0.01em;
+  }
+  code{
+    font-family:'DM Mono',monospace;
+    background:var(--cream-deep);
+    color:var(--beni-deep);
+    padding:.1em .4em;
+    border-radius:3px;
+    font-size:.88em;
+  }
+  a{color:var(--beni-deep);}
+
+  /* ===== Layout ===== */
+  .layout{display:flex; max-width:1440px; margin:0 auto;}
+  .sidebar{
+    width:var(--sidebar-w);
+    flex-shrink:0;
+    position:sticky;
+    top:0;
+    height:100vh;
+    overflow-y:auto;
+    padding:36px 22px 40px 32px;
+    border-right:1px solid var(--line);
+  }
+  .brand{
+    font-family:'Be Vietnam Pro',sans-serif;
+    font-weight:800;
+    font-size:1.05rem;
+    letter-spacing:-0.01em;
+    margin-bottom:2px;
+  }
+  .brand .accent{color:var(--beni);}
+  .brand-sub{
+    font-family:'DM Mono',monospace;
+    font-size:.72rem;
+    color:var(--ink-soft);
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    margin-bottom:28px;
+    display:block;
+  }
+  .toc-group{margin-bottom:4px;}
+  .toc-link{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    text-decoration:none;
+    color:var(--ink);
+    font-weight:600;
+    font-size:.92rem;
+    padding:9px 10px;
+    border-radius:var(--radius);
+    transition:background .15s ease, color .15s ease;
+  }
+  .toc-link:hover{background:var(--cream-deep);}
+  .toc-main{margin-top:10px;}
+  .toc-num{
+    font-family:'DM Mono',monospace;
+    font-size:.7rem;
+    color:var(--beni);
+    border:1px solid var(--beni-tint);
+    background:var(--beni-tint);
+    padding:1px 6px;
+    border-radius:2px;
+  }
+  .toc-sub{
+    display:flex;
+    flex-direction:column;
+    margin:2px 0 10px 14px;
+    padding-left:10px;
+    border-left:1px solid var(--line);
+  }
+  .toc-sublink{
+    text-decoration:none;
+    color:var(--ink-soft);
+    font-size:.82rem;
+    padding:5px 8px;
+    border-radius:3px;
+  }
+  .toc-sublink:hover{color:var(--beni-deep); background:var(--cream-deep);}
+
+  .main{
+    flex:1;
+    min-width:0;
+    padding:48px 56px 100px 56px;
+  }
+
+  /* ===== Overview ===== */
+  .section-block{margin-bottom:64px;}
+  .block-eyebrow{
+    display:block;
+    font-family:'DM Mono',monospace;
+    font-size:.72rem;
+    color:var(--beni);
+    text-transform:uppercase;
+    letter-spacing:.12em;
+    margin-bottom:6px;
+  }
+  .block-title{font-size:1.7rem; font-weight:800; margin-bottom:14px;}
+  .lede{color:var(--ink-soft); max-width:640px; margin-bottom:28px;}
+  .ov-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:16px;}
+  .ov-card{
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:22px 20px;
+    text-decoration:none;
+    color:var(--ink);
+    display:block;
+    transition:border-color .15s ease, transform .15s ease;
+  }
+  .ov-card:hover{border-color:var(--beni); transform:translateY(-2px);}
+  .ov-num{
+    font-family:'DM Mono',monospace;
+    color:var(--beni);
+    font-size:.8rem;
+    display:block;
+    margin-bottom:10px;
+  }
+  .ov-card h3{font-size:1.05rem; margin-bottom:6px;}
+  .ov-card p{margin:0; color:var(--ink-soft); font-size:.86rem;}
+
+  /* ===== Project sections ===== */
+  .project{
+    margin-bottom:72px;
+    padding-top:8px;
+    scroll-margin-top:24px;
+  }
+  .project-head{
+    display:flex;
+    align-items:flex-start;
+    gap:18px;
+    padding-bottom:18px;
+    margin-bottom:28px;
+    border-bottom:2px solid var(--ink);
+  }
+  .pnum{
+    font-family:'DM Mono',monospace;
+    font-size:2rem;
+    font-weight:500;
+    color:var(--beni-tint);
+    -webkit-text-stroke:1.4px var(--beni);
+    line-height:1;
+  }
+  .project-head h2{font-size:1.55rem; margin-bottom:4px;}
+  .psub{margin:0; color:var(--ink-soft); font-size:.92rem;}
+
+  .subsec{
+    margin-bottom:26px;
+    scroll-margin-top:24px;
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:20px 24px;
+  }
+  .subsec h4{
+    font-size:1rem;
+    color:var(--beni-deep);
+    padding-bottom:8px;
+    margin-bottom:12px;
+    border-bottom:1px dashed var(--line);
+  }
+  .subsec p{margin:0 0 8px 0;}
+  .subsec p:last-child{margin-bottom:0;}
+
+  /* steps timeline */
+  ol.steps{
+    list-style:none;
+    counter-reset:step;
+    margin:0; padding:0;
+  }
+  ol.steps > li{
+    counter-increment:step;
+    position:relative;
+    padding:0 0 16px 34px;
+    border-left:1.5px solid var(--line);
+    margin-left:12px;
+  }
+  ol.steps > li:last-child{border-left-color:transparent; padding-bottom:0;}
+  ol.steps > li::before{
+    content:counter(step);
+    position:absolute;
+    left:-13px;
+    top:-1px;
+    width:24px; height:24px;
+    background:var(--paper);
+    border:1.5px solid var(--beni);
+    color:var(--beni-deep);
+    font-family:'DM Mono',monospace;
+    font-size:.72rem;
+    font-weight:500;
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+  }
+  ul.sub{
+    list-style:none;
+    margin:8px 0 0 0;
+    padding:0;
+  }
+  ul.sub li{
+    position:relative;
+    padding-left:16px;
+    color:var(--ink-soft);
+    font-size:.92rem;
+    margin-bottom:5px;
+  }
+  ul.sub li::before{
+    content:"–";
+    position:absolute;
+    left:0;
+    color:var(--beni);
+  }
+  ul.plain-list{list-style:none; margin:0; padding:0;}
+  ul.plain-list li{
+    position:relative;
+    padding-left:18px;
+    margin-bottom:8px;
+  }
+  ul.plain-list li::before{
+    content:"";
+    position:absolute;
+    left:0; top:.55em;
+    width:6px; height:6px;
+    background:var(--beni);
+    border-radius:50%;
+  }
+
+  /* tech chips */
+  .tech-block{background:var(--cream-deep); border-color:var(--line);}
+  .chip-row{display:flex; flex-wrap:wrap; gap:8px;}
+  .chip{
+    font-family:'DM Mono',monospace;
+    font-size:.78rem;
+    background:var(--paper);
+    border:1px solid var(--line);
+    color:var(--mono);
+    padding:5px 11px;
+    border-radius:20px;
+  }
+
+  /* callout note */
+  .callout{
+    background:var(--beni-tint);
+    border:1px solid #e0bdb2;
+    border-left:4px solid var(--beni);
+    border-radius:var(--radius);
+    padding:20px 24px;
+  }
+  .callout h4{color:var(--beni-deep); border-bottom:none; margin-bottom:10px;}
+  .callout ul.plain-list li::before{background:var(--beni-deep);}
+
+  /* comparison table */
+  .table-wrap{overflow-x:auto; border:1px solid var(--line); border-radius:var(--radius); background:var(--paper);}
+  table.compare-table{width:100%; border-collapse:collapse; font-size:.88rem;}
+  table.compare-table th{
+    text-align:left;
+    font-family:'Be Vietnam Pro',sans-serif;
+    font-weight:700;
+    background:var(--cream-deep);
+    padding:12px 16px;
+    border-bottom:2px solid var(--ink);
+    white-space:nowrap;
+  }
+  table.compare-table td{
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    vertical-align:top;
+  }
+  table.compare-table tr:last-child td{border-bottom:none;}
+  td.c-name{font-family:'DM Mono',monospace; font-weight:500; color:var(--beni-deep); white-space:nowrap;}
+
+  /* conclusion */
+  .conc-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:16px;}
+  .conc-card{
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-top:3px solid var(--beni);
+    border-radius:var(--radius);
+    padding:20px 22px;
+  }
+  .conc-card h3{font-size:1rem; color:var(--beni-deep); margin-bottom:8px;}
+  .conc-card p{margin:0; font-size:.88rem; color:var(--ink);}
+
+  footer.page-footer{
+    text-align:center;
+    color:var(--ink-soft);
+    font-family:'DM Mono',monospace;
+    font-size:.75rem;
+    padding-top:20px;
+    border-top:1px solid var(--line);
+  }
+
+  /* mobile nav toggle */
+  .mobile-bar{display:none;}
+
+  @media (max-width:980px){
+    .layout{flex-direction:column;}
+    .sidebar{
+      position:relative;
+      width:100%;
+      height:auto;
+      border-right:none;
+      border-bottom:1px solid var(--line);
+      padding:20px;
+      display:none;
+    }
+    .sidebar.open{display:block;}
+    .mobile-bar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:16px 20px;
+      position:sticky; top:0; z-index:10;
+      background:var(--cream);
+      border-bottom:1px solid var(--line);
+    }
+    .mobile-bar button{
+      font-family:'DM Mono',monospace;
+      background:var(--beni);
+      color:var(--paper);
+      border:none;
+      padding:8px 14px;
+      border-radius:20px;
+      font-size:.78rem;
+      cursor:pointer;
+    }
+    .main{padding:28px 20px 80px 20px;}
+    .ov-grid, .conc-grid{grid-template-columns:1fr;}
+    .project-head{flex-direction:column; gap:6px;}
+  }
+</style>
+</head>
+<body>
+  <div class="mobile-bar">
+    <span class="brand">Ôn PV <span class="accent">Frontend</span></span>
+    <button onclick="document.getElementById('sidebar').classList.toggle('open')">Mục lục</button>
+  </div>
+  <div class="layout">
+    <nav class="sidebar" id="sidebar">
+      <div class="brand">Ôn phỏng vấn <span class="accent">Frontend</span></div>
+      <span class="brand-sub">3 project · luồng xử lý</span>
+      <div class="toc-group"><a class="toc-link" href="#tong-quan">Tổng quan chung</a></div>
+<div class="toc-group"><a class="toc-link toc-main" href="#capstone"><span class="toc-num">01</span>capstone_tailwind</a>
+<div class="toc-sub"><a class="toc-sublink" href="#capstone-t-ng-quan">Tổng quan</a><a class="toc-sublink" href="#capstone-c-u-tr-c-x-l-ch-nh">Cấu trúc xử lý chính</a><a class="toc-sublink" href="#capstone-lu-ng-theme-dark-light">Luồng theme dark/light</a><a class="toc-sublink" href="#capstone-lu-ng-header-khi-scroll">Luồng header khi scroll</a><a class="toc-sublink" href="#capstone-lu-ng-tab-content">Luồng tab content</a><a class="toc-sublink" href="#capstone-lu-ng-menu-mobile">Luồng menu mobile</a></div></div>
+<div class="toc-group"><a class="toc-link toc-main" href="#phonestore"><span class="toc-num">02</span>PhoneStore_JS-HTML-TAILWINDCSS</a>
+<div class="toc-sub"><a class="toc-sublink" href="#phonestore-t-ng-quan">Tổng quan</a><a class="toc-sublink" href="#phonestore-c-u-tr-c-ch-nh-user">Cấu trúc chính — User</a><a class="toc-sublink" href="#phonestore-c-u-tr-c-ch-nh-admin">Cấu trúc chính — Admin</a><a class="toc-sublink" href="#phonestore-d-li-u-l-u-u">Dữ liệu lưu ở đâu</a><a class="toc-sublink" href="#phonestore-lu-ng-ng-k">Luồng đăng ký</a><a class="toc-sublink" href="#phonestore-lu-ng-ng-nh-p">Luồng đăng nhập</a><a class="toc-sublink" href="#phonestore-lu-ng-l-y-v-hi-n-th-s-n-ph-m">Luồng lấy và hiển thị sản phẩm</a><a class="toc-sublink" href="#phonestore-lu-ng-search-filter-sort-ph-n-trang">Luồng search / filter / sort / phân trang</a><a class="toc-sublink" href="#phonestore-lu-ng-ch-n-option-mua-h-ng-th-m-gi">Luồng chọn option mua hàng / thêm giỏ</a><a class="toc-sublink" href="#phonestore-lu-ng-gi-h-ng">Luồng giỏ hàng</a><a class="toc-sublink" href="#phonestore-lu-ng-checkout">Luồng checkout</a><a class="toc-sublink" href="#phonestore-lu-ng-admin-crud-s-n-ph-m">Luồng admin CRUD sản phẩm</a><a class="toc-sublink" href="#phonestore-lu-ng-admin-user-order-kh-c">Luồng admin / user / order khác</a></div></div>
+<div class="toc-group"><a class="toc-link toc-main" href="#shoesstore"><span class="toc-num">03</span>ShoesStore_ReactJS</a>
+<div class="toc-sub"><a class="toc-sublink" href="#shoesstore-t-ng-quan">Tổng quan</a><a class="toc-sublink" href="#shoesstore-c-u-tr-c-ch-nh">Cấu trúc chính</a><a class="toc-sublink" href="#shoesstore-store-redux">Store Redux</a><a class="toc-sublink" href="#shoesstore-routing">Routing</a><a class="toc-sublink" href="#shoesstore-lu-ng-auth-login">Luồng auth / login</a><a class="toc-sublink" href="#shoesstore-lu-ng-register">Luồng register</a><a class="toc-sublink" href="#shoesstore-lu-ng-route-guard">Luồng route guard</a><a class="toc-sublink" href="#shoesstore-lu-ng-load-data-trong-app-jsx">Luồng load data trong App.jsx</a><a class="toc-sublink" href="#shoesstore-lu-ng-l-y-s-n-ph-m">Luồng lấy sản phẩm</a><a class="toc-sublink" href="#shoesstore-lu-ng-danh-s-ch-s-n-ph-m">Luồng danh sách sản phẩm</a><a class="toc-sublink" href="#shoesstore-lu-ng-chi-ti-t-s-n-ph-m">Luồng chi tiết sản phẩm</a><a class="toc-sublink" href="#shoesstore-lu-ng-cart-redux">Luồng cart Redux</a><a class="toc-sublink" href="#shoesstore-lu-ng-checkout">Luồng checkout</a><a class="toc-sublink" href="#shoesstore-lu-ng-order-redux">Luồng order Redux</a><a class="toc-sublink" href="#shoesstore-lu-ng-admin-qu-n-l-s-n-ph-m">Luồng admin quản lý sản phẩm</a><a class="toc-sublink" href="#shoesstore-lu-ng-admin-qu-n-l-n-h-ng">Luồng admin quản lý đơn hàng</a><a class="toc-sublink" href="#shoesstore-lu-ng-review-gift">Luồng review / gift</a></div></div>
+<div class="toc-group"><a class="toc-link" href="#so-sanh">So sánh nhanh</a></div>
+<div class="toc-group"><a class="toc-link" href="#ket-luan">Cách trình bày khi phỏng vấn</a></div>
+    </nav>
+    <main class="main">
+      
+    <section class="section-block" id="tong-quan">
+      <h2 class="block-title"><span class="block-eyebrow">Ôn phỏng vấn</span>Ba luồng xử lý — ba mức độ kiến trúc</h2>
+      <p class="lede">Từ landing page tĩnh, đến ứng dụng nghiệp vụ bằng JavaScript thuần, đến kiến trúc React với Redux Toolkit và React Query — mỗi project thể hiện một nấc thang kỹ năng khác nhau.</p>
+      <div class="ov-grid"><a class="ov-card" href="#capstone"><span class="ov-num">01</span><h3>capstone_tailwind</h3><p>Landing page tĩnh — HTML + Tailwind CSS</p></a><a class="ov-card" href="#phonestore"><span class="ov-num">02</span><h3>PhoneStore_JS-HTML-TAILWINDCSS</h3><p>E-commerce đa trang — HTML + Tailwind + JavaScript thuần</p></a><a class="ov-card" href="#shoesstore"><span class="ov-num">03</span><h3>ShoesStore_ReactJS</h3><p>React + Vite — Redux Toolkit, React Query, Formik/Yup</p></a></div>
+    </section>
+    
+      
+    <section class="project" id="capstone">
+      <div class="project-head">
+        <span class="pnum">01</span>
+        <div>
+          <h2>capstone_tailwind</h2>
+          <p class="psub">Landing page tĩnh — HTML + Tailwind CSS</p>
+        </div>
+      </div>
+    
+<div class="subsec" id="capstone-t-ng-quan"><h4>Tổng quan</h4><p>Project là landing page/static website dùng HTML + Tailwind CSS.</p>
+<p>Đường dẫn project: <code>CapstoneCyper/Tailwindcss/capstone_tailwind</code>.</p></div>
+<div class="subsec tech-block"><h4>Công nghệ sử dụng</h4><div class="chip-row"><span class="chip">HTML thuần</span><span class="chip">Tailwind CSS v4 qua @tailwindcss/cli</span><span class="chip">JavaScript DOM thuần</span><span class="chip">localStorage (theme sáng/tối)</span><span class="chip">Slick carousel (assets trong <code>lib</code>)</span><span class="chip">Không backend · không API · không Redux · không Formik/Yup</span></div></div>
+<div class="subsec" id="capstone-c-u-tr-c-x-l-ch-nh"><h4>Cấu trúc xử lý chính</h4><ul class="plain-list">
+<li><code>index.html</code>: giao diện landing page.</li>
+<li><code>src/css/input.css</code>, <code>src/css/output.css</code>: Tailwind input/output.</li>
+<li><code>src/js/index.js</code>: xử lý tương tác UI.</li>
+<li><code>src/html/*.html</code>: các trang phụ như blog, docs, sign in, sign up, support, error.</li>
+</ul></div>
+<div class="subsec" id="capstone-lu-ng-theme-dark-light"><h4>Luồng theme dark/light</h4><ol class="steps">
+<li>Khi trang load, JS kiểm tra localStorage key <code>color-theme</code>.</li>
+<li>Nếu <code>color-theme === "dark"</code> hoặc chưa có key nhưng hệ thống đang prefer dark mode thì thêm class <code>dark</code> vào <code>document.documentElement</code>.</li>
+<li>Icon mặt trời/mặt trăng được bật/tắt bằng class <code>hidden</code>.</li>
+<li>Khi click nút <code>#theme-toggle</code>:<ul class="sub"><li>Toggle icon.</li><li>Nếu hiện tại light thì add class <code>dark</code>, lưu <code>color-theme = "dark"</code>.</li><li>Nếu hiện tại dark thì remove class <code>dark</code>, lưu <code>color-theme = "light"</code>.</li></ul></li>
+<li>Tailwind dùng class <code>dark:</code> trong HTML để đổi màu nền, chữ, border, ảnh logo dark/light.</li>
+</ol></div>
+<div class="subsec" id="capstone-lu-ng-header-khi-scroll"><h4>Luồng header khi scroll</h4><ol class="steps">
+<li>JS bắt sự kiện <code>window.scroll</code>.</li>
+<li>Nếu <code>scrollY &gt; 100</code>:<ul class="sub"><li>Header bỏ padding lớn.</li><li>Thêm <code>shadow-xl</code>.</li><li>Giao diện header gọn lại khi cuộn.</li></ul></li>
+<li>Nếu quay lại đầu trang:<ul class="sub"><li>Khôi phục padding ban đầu.</li><li>Bỏ shadow.</li></ul></li>
+</ol></div>
+<div class="subsec" id="capstone-lu-ng-tab-content"><h4>Luồng tab content</h4><ol class="steps">
+<li>JS lấy danh sách <code>.tab-btn</code> và <code>.tab-content</code>.</li>
+<li>Khi click tab:<ul class="sub"><li>Lấy <code>data-tab</code>.</li><li>Ẩn toàn bộ content bằng class <code>hidden</code>.</li><li>Tìm content có <code>data-content</code> tương ứng và remove <code>hidden</code>.</li><li>Reset trạng thái gạch chân active của tất cả tab.</li><li>Bật active cho tab vừa click.</li></ul></li>
+<li>Có thêm nhóm <code>.btn-content</code> dùng chung logic <code>data-tab</code> / <code>data-content</code>.</li>
+</ol></div>
+<div class="subsec" id="capstone-lu-ng-menu-mobile"><h4>Luồng menu mobile</h4><ol class="steps">
+<li>Nút có <code>[data-collapse-toggle]</code>.</li>
+<li>Menu là <code>#navbar-sticky</code>.</li>
+<li>Khi click nút, JS toggle class <code>hidden</code>.</li>
+<li>Tailwind responsive class xử lý desktop/mobile.</li>
+</ol></div>
+<div class="callout"><h4>Điểm nên nói khi phỏng vấn</h4><ul class="plain-list">
+<li>Đây là project thiên về cắt giao diện landing page.</li>
+<li>Logic chủ yếu là DOM manipulation: theme, tab, header scroll, menu mobile.</li>
+<li>Tailwind giúp style nhanh bằng utility class.</li>
+<li>localStorage giúp giữ trạng thái dark/light sau khi reload.</li>
+<li>Không có flow nghiệp vụ như login thật, cart, CRUD backend.</li>
+</ul></div>
+</section>
+
+    <section class="project" id="phonestore">
+      <div class="project-head">
+        <span class="pnum">02</span>
+        <div>
+          <h2>PhoneStore_JS-HTML-TAILWINDCSS</h2>
+          <p class="psub">E-commerce đa trang — HTML + Tailwind + JavaScript thuần</p>
+        </div>
+      </div>
+    
+<div class="subsec" id="phonestore-t-ng-quan"><h4>Tổng quan</h4><p>Project là website bán điện thoại dùng HTML + Tailwind + JavaScript thuần.</p></div>
+<div class="subsec tech-block"><h4>Công nghệ sử dụng</h4><div class="chip-row"><span class="chip">HTML nhiều trang</span><span class="chip">Tailwind CSS</span><span class="chip">JavaScript ES modules</span><span class="chip">Axios + fetch gọi MockAPI</span><span class="chip">localStorage (user, login, cart, wishlist, order, brand)</span><span class="chip">xlsx (xuất Excel)</span><span class="chip">Không React · không Redux · không Formik/Yup</span><span class="chip">Validate bằng regex + JS thủ công</span></div></div>
+<div class="subsec" id="phonestore-c-u-tr-c-ch-nh-user"><h4>Cấu trúc chính — User</h4><ul class="plain-list">
+<li><code>src/js/userJS/core.js</code>: khai báo API, DOM element, state chung, localStorage key.</li>
+<li><code>login.js</code>: đăng nhập user/admin.</li>
+<li><code>register.js</code>: đăng ký user.</li>
+<li><code>product-flow.js</code>: lấy sản phẩm, render danh sách, phân trang, chọn option mua hàng.</li>
+<li><code>cart-flow.js</code>: giỏ hàng, tăng/giảm/xóa, chọn sản phẩm thanh toán.</li>
+<li><code>checkout-flow.js</code>: đặt hàng.</li>
+<li><code>order-flow.js</code>, <code>order-check-flow.js</code>: lưu và kiểm tra đơn hàng.</li>
+<li><code>filter-flow.js</code>: search/filter/sort.</li>
+<li><code>wishlist-popup.js</code>: yêu thích.</li>
+<li><code>review-flow.js</code>, <code>return-flow.js</code>: đánh giá, đổi trả.</li>
+</ul></div>
+<div class="subsec" id="phonestore-c-u-tr-c-ch-nh-admin"><h4>Cấu trúc chính — Admin</h4><ul class="plain-list">
+<li><code>src/js/adminJS/core.js</code>: API, DOM admin, state admin.</li>
+<li><code>crud-flow.js</code>: CRUD sản phẩm.</li>
+<li><code>order-flow.js</code>, <code>order-detail-flow.js</code>: quản lý đơn hàng.</li>
+<li><code>user-flow.js</code>: quản lý user.</li>
+<li><code>dashboard-flow.js</code>: thống kê.</li>
+<li><code>review-flow.js</code>, <code>return-flow.js</code>: quản lý đánh giá, đổi trả.</li>
+<li><code>profile-flow.js</code>: đổi mật khẩu admin.</li>
+</ul></div>
+<div class="subsec" id="phonestore-d-li-u-l-u-u"><h4>Dữ liệu lưu ở đâu</h4><ul class="plain-list">
+<li>API sản phẩm: <code>https://69f8c3e5f7044aa0103e73e0.mockapi.io/api/v1/productphone</code></li>
+<li>User: <code>HiKuPHONE_USERS</code></li>
+<li>Admin mặc định: <code>HiKuPHONE_ADMIN</code></li>
+<li>Trạng thái login: <code>isLoggedIn</code>, <code>username</code>, <code>role</code></li>
+<li>Cart theo user: <code>GIO_HANG_USER_${username}</code></li>
+<li>Wishlist theo user: <code>WISHLIST_USER_${username}</code></li>
+<li>Brand: <code>HiKuPHONE_BRANDS</code></li>
+<li>Sản phẩm được chọn checkout: <code>KP_CHECKOUT_SELECTED_CART_ITEMS</code></li>
+<li>Orders lưu localStorage qua order-flow.</li>
+</ul></div>
+<div class="subsec" id="phonestore-lu-ng-ng-k"><h4>Luồng đăng ký</h4><ol class="steps">
+<li>User nhập phone, email, username, password.</li>
+<li>File <code>register.js</code> bắt submit form.</li>
+<li>Validate thủ công:<ul class="sub"><li>Phone regex: 10 chữ số.</li><li>Email regex chuẩn email.</li><li>Password regex: có chữ thường, chữ hoa, số, ký tự đặc biệt, tối thiểu 6 ký tự.</li><li>Không được bỏ trống.</li></ul></li>
+<li>Kiểm tra trùng username và email trong <code>state.users</code>.</li>
+<li>Nếu hợp lệ:<ul class="sub"><li>Push user mới vào <code>state.users</code>.</li><li>User gồm id, username, password, phone, email, role user, status active, createdAt.</li><li>Gọi <code>luuUsers()</code> để lưu vào localStorage key <code>HiKuPHONE_USERS</code>.</li></ul></li>
+<li>Alert thành công và chuyển sang login.html.</li>
+</ol></div>
+<div class="subsec" id="phonestore-lu-ng-ng-nh-p"><h4>Luồng đăng nhập</h4><ol class="steps">
+<li>User nhập username/password.</li>
+<li><code>login.js</code> validate:<ul class="sub"><li>Không để trống.</li><li>Password phải đúng regex.</li></ul></li>
+<li>Kiểm tra admin trước:<ul class="sub"><li>Nếu localStorage chưa có admin thì tạo admin mặc định username <code>admin</code>, password <code>Admin123@</code>.</li><li>Nếu khớp admin: set <code>isLoggedIn = true</code>, <code>username = admin</code>, <code>role = admin</code>, chuyển sang <code>page-admin/dashboard.html</code>.</li></ul></li>
+<li>Nếu không phải admin:<ul class="sub"><li>Lấy danh sách <code>HiKuPHONE_USERS</code>.</li><li>Tìm user khớp username/password.</li><li>Nếu không có, báo tài khoản chưa đăng ký.</li><li>Nếu user status locked, báo tài khoản bị khóa.</li><li>Nếu hợp lệ: set <code>isLoggedIn = true</code>, <code>username</code>, <code>role = user</code>, chuyển về index.html.</li></ul></li>
+<li>Có login Google/Facebook demo:<ul class="sub"><li>set login state vào localStorage.</li><li>username là "Google User" hoặc "Facebook User".</li><li>role user.</li></ul></li>
+</ol></div>
+<div class="subsec" id="phonestore-lu-ng-l-y-v-hi-n-th-s-n-ph-m"><h4>Luồng lấy và hiển thị sản phẩm</h4><ol class="steps">
+<li><code>product-flow.js</code> gọi <code>axios.get(API)</code>.</li>
+<li>Dữ liệu trả về lưu vào <code>state.danhSachSP</code> và <code>state.activeList</code>.</li>
+<li>Render danh sách bằng <code>renderDanhSachSP(list)</code>.</li>
+<li>Hàm render:<ul class="sub"><li>Tính phân trang theo <code>state.currentPage</code>, <code>itemsPerPage = 8</code>.</li><li>Render card sản phẩm bằng template string.</li><li>Hiển thị giá, giá cũ, giảm giá, trả góp, rating, quà tặng, trạng thái hết hàng.</li><li>Nút Mua và Thêm giỏ mở popup chọn option.</li></ul></li>
+<li>Nếu API lỗi thì hiện lỗi kết nối API.</li>
+<li>Badge giỏ hàng được cập nhật bằng <code>capNhatSoLuongGioHang()</code>.</li>
+</ol></div>
+<div class="subsec" id="phonestore-lu-ng-search-filter-sort-ph-n-trang"><h4>Luồng search / filter / sort / phân trang</h4><ol class="steps">
+<li>Dữ liệu gốc nằm trong <code>state.danhSachSP</code>.</li>
+<li>Khi search/filter/sort:<ul class="sub"><li>Lọc theo keyword, hãng/type, giá hoặc điều kiện tương ứng.</li><li>Gán kết quả vào active list.</li><li>Reset <code>currentPage = 1</code>.</li><li>Render lại danh sách.</li></ul></li>
+<li>Phân trang:<ul class="sub"><li><code>changePage(page)</code> đổi <code>state.currentPage</code>.</li><li>Gọi lại <code>renderDanhSachSP(state.activeList)</code>.</li><li>Scroll về section sản phẩm.</li></ul></li>
+</ol></div>
+<div class="subsec" id="phonestore-lu-ng-ch-n-option-mua-h-ng-th-m-gi"><h4>Luồng chọn option mua hàng / thêm giỏ</h4><ol class="steps">
+<li>Khi click Mua hoặc Thêm giỏ:<ul class="sub"><li>Gọi <code>openProductOptionPopup(id, action)</code>.</li><li>Tìm product trong <code>state.danhSachSP</code>.</li><li>Reset quantity, selectedCapacity, selectedColor.</li><li>Hiển thị popup.</li></ul></li>
+<li>Trong popup:<ul class="sub"><li>User chọn dung lượng.</li><li>User chọn màu sắc.</li><li>User tăng/giảm số lượng.</li><li>Số lượng không được vượt tồn kho.</li></ul></li>
+<li>Submit popup:<ul class="sub"><li>Validate phải chọn dung lượng và màu.</li><li>Kiểm tra <code>isLoggedIn</code>.</li><li>Nếu chưa login thì mở popup yêu cầu đăng nhập.</li></ul></li>
+<li>Nếu action là <code>buy</code>: redirect sang checkout.html kèm query id, quantity, capacity, color.</li>
+<li>Nếu action là <code>cart</code>:<ul class="sub"><li>Tạo <code>cartId = productId_capacity_color</code>.</li><li>Nếu item đã có trong giỏ thì cộng số lượng.</li><li>Nếu chưa có thì push vào <code>state.gioHang</code>.</li><li>Lưu localStorage theo key <code>GIO_HANG_USER_${username}</code>.</li><li>Cập nhật badge và hiện toast.</li></ul></li>
+</ol></div>
+<div class="subsec" id="phonestore-lu-ng-gi-h-ng"><h4>Luồng giỏ hàng</h4><ol class="steps">
+<li>Cart được load từ localStorage theo user hiện tại.</li>
+<li>Mở cart popup bằng <code>renderGioHang()</code>.</li>
+<li>Mỗi item có id/cartId, name, image, price, selectedCapacity, selectedColor, soLuong.</li>
+<li>User có thể:<ul class="sub"><li>Tick chọn từng sản phẩm.</li><li>Chọn tất cả.</li><li>Xóa sản phẩm đã chọn.</li><li>Tăng/giảm số lượng.</li><li>Xóa từng sản phẩm.</li></ul></li>
+<li>Khi tăng số lượng:<ul class="sub"><li>Gọi fetch API sản phẩm theo id.</li><li>Kiểm tra tồn kho hiện tại.</li><li>Nếu vượt tồn kho thì alert.</li><li>Nếu hợp lệ thì tăng, lưu localStorage và render lại.</li></ul></li>
+<li>Khi thanh toán từ giỏ:<ul class="sub"><li>Kiểm tra giỏ không rỗng.</li><li>Kiểm tra đã tick ít nhất một sản phẩm.</li><li>Fetch toàn bộ API sản phẩm.</li><li>So sánh tồn kho từng sản phẩm được chọn.</li><li>Lưu selected cart ids vào <code>KP_CHECKOUT_SELECTED_CART_ITEMS</code>.</li><li>Redirect sang checkout.html?from=cart.</li></ul></li>
+</ol></div>
+<div class="subsec" id="phonestore-lu-ng-checkout"><h4>Luồng checkout</h4><ol class="steps">
+<li><code>checkout-flow.js</code> xác định nguồn checkout:<ul class="sub"><li>Nếu <code>from=cart</code>: lấy cart theo user và lọc các item đã chọn.</li><li>Nếu có <code>id</code>: fetch sản phẩm theo id, lấy option từ query.</li><li>Nếu không có gì: lấy toàn bộ cart hiện tại.</li></ul></li>
+<li>Render order summary: danh sách sản phẩm, giá, số lượng, dung lượng, màu, quà tặng nếu có, tổng tiền.</li>
+<li>Validate form:<ul class="sub"><li>Họ tên không trống.</li><li>SĐT regex 10 số.</li><li>Email đúng định dạng.</li><li>Nếu giao hàng tận nơi thì bắt buộc province, district, address.</li><li>Phải có sản phẩm checkout.</li></ul></li>
+<li>Trước khi đặt hàng: fetch API sản phẩm, kiểm tra tồn kho từng item.</li>
+<li>Tạo order gồm: id (<code>createOrderId()</code>), customer info, receiveMethod (nhận tại cửa hàng / giao tận nơi), địa chỉ hoặc store, paymentMethod, items, total, status "Đang xử lý", stockStatus "Chưa trừ kho", createdAt.</li>
+<li>Lưu order vào localStorage.</li>
+<li>Nếu checkout từ cart: xóa các sản phẩm đã chọn khỏi cart, remove <code>KP_CHECKOUT_SELECTED_CART_ITEMS</code>.</li>
+<li>Alert đặt hàng thành công và chuyển sang order-check.html.</li>
+</ol></div>
+<div class="subsec" id="phonestore-lu-ng-admin-crud-s-n-ph-m"><h4>Luồng admin CRUD sản phẩm</h4><ol class="steps">
+<li>Admin vào trang manage-product.</li>
+<li><code>crud-flow.js</code> gọi <code>fetchDanhSachSP()</code>.</li>
+<li>Fetch bằng <code>axios.get(API_URL)</code>.</li>
+<li>Lưu vào <code>state.danhSachSP</code>, render table.</li>
+<li>Thêm sản phẩm:<ul class="sub"><li>Validate form thủ công trong ui-flow.</li><li>Lấy dữ liệu bằng <code>getProductDataFromForm()</code>.</li><li><code>axios.post(API_URL)</code>.</li><li>Tạo review mặc định 5 sao.</li><li>Reset form, fetch lại danh sách.</li></ul></li>
+<li>Sửa sản phẩm:<ul class="sub"><li>Click <code>editProduct(id)</code>.</li><li>Tìm product trong state, đổ dữ liệu lên form.</li><li>Ẩn nút thêm, hiện nút update.</li><li>Click update gọi <code>axios.put(API_URL/id)</code>.</li><li>Fetch lại.</li></ul></li>
+<li>Xóa sản phẩm:<ul class="sub"><li>Confirm bằng shared-dialog.</li><li><code>axios.delete(API_URL/id)</code>.</li><li>Fetch lại.</li></ul></li>
+<li>Admin có quản lý hãng: brand lưu localStorage key <code>HiKuPHONE_BRANDS</code>, có default brand iPhone, Samsung, OPPO, Vivo, Realme, Asus, Nokia.</li>
+</ol></div>
+<div class="subsec" id="phonestore-lu-ng-admin-user-order-kh-c"><h4>Luồng admin / user / order khác</h4><ul class="plain-list">
+<li>Admin dashboard đọc sản phẩm, đơn hàng, user để thống kê.</li>
+<li>Admin quản lý user: khóa/mở khóa tài khoản.</li>
+<li>Admin quản lý order: xem chi tiết, cập nhật trạng thái, hủy đơn.</li>
+<li>User order-check đọc order trong localStorage để xem lịch sử, hủy đơn.</li>
+<li>Review/return flow lưu thông tin đánh giá và đổi trả vào dữ liệu sản phẩm/đơn hàng.</li>
+</ul></div>
+<div class="callout"><h4>Điểm nên nói khi phỏng vấn</h4><ul class="plain-list">
+<li>Đây là SPA giả lập bằng nhiều file HTML, không dùng framework.</li>
+<li>State được quản lý bằng object <code>state</code> trong JS module.</li>
+<li>Dữ liệu lâu dài dùng localStorage.</li>
+<li>Sản phẩm lấy từ MockAPI bằng axios/fetch.</li>
+<li>Validate bằng regex thủ công.</li>
+<li>Cart tách theo từng user bằng key localStorage có username.</li>
+<li>Admin CRUD thao tác trực tiếp với MockAPI.</li>
+</ul></div>
+</section>
+
+    <section class="project" id="shoesstore">
+      <div class="project-head">
+        <span class="pnum">03</span>
+        <div>
+          <h2>ShoesStore_ReactJS</h2>
+          <p class="psub">React + Vite — Redux Toolkit, React Query, Formik/Yup</p>
+        </div>
+      </div>
+    
+<div class="subsec" id="shoesstore-t-ng-quan"><h4>Tổng quan</h4><p>Project là web bán giày bằng React + Vite.</p></div>
+<div class="subsec tech-block"><h4>Công nghệ sử dụng</h4><div class="chip-row"><span class="chip">React · Vite</span><span class="chip">React Router DOM</span><span class="chip">Redux Toolkit + React Redux</span><span class="chip">TanStack React Query</span><span class="chip">Axios</span><span class="chip">Formik + Yup</span><span class="chip">Tailwind CSS</span><span class="chip">localStorage</span><span class="chip">xlsx</span><span class="chip">Embla Carousel</span></div></div>
+<div class="subsec" id="shoesstore-c-u-tr-c-ch-nh"><h4>Cấu trúc chính</h4><ul class="plain-list">
+<li><code>src/App.jsx</code>: khai báo routes, layout, load cart/order theo user, global alert/confirm/cart popup.</li>
+<li><code>src/main.jsx</code>: mount app.</li>
+<li><code>src/redux/store.js</code>: configureStore.</li>
+<li><code>src/redux/slices/authSlice.js</code>, <code>cartSlice.js</code>, <code>orderSlice.js</code>, <code>reviewSlice.js</code>, <code>giftSlice.js</code>.</li>
+<li><code>src/api/axiosClient.js</code>, <code>productApi.js</code>: API product.</li>
+<li><code>src/hooks/useProductsQuery.js</code>, <code>useProductQuery.js</code>: lấy sản phẩm bằng React Query.</li>
+<li><code>src/hooks/useProductMutations.js</code>: thêm/sửa/xóa/update stock bằng mutation.</li>
+<li><code>pages-auth</code>: Login, Register, ForgotPassword, ResetPassword.</li>
+<li><code>pages-user</code>: Home, Products, ProductDetail, Checkout, OrderCheck, Policy, Promotions.</li>
+<li><code>pages-admin</code>: Dashboard, ManageProducts, ManageOrders, ManageCustomers, ManageReviews, ManageGifts.</li>
+</ul></div>
+<div class="subsec" id="shoesstore-store-redux"><h4>Store Redux</h4><ul class="plain-list">
+<li><code>cartStore</code>: cartReducer</li>
+<li><code>authStore</code>: authReducer</li>
+<li><code>orderStore</code>: orderReducer</li>
+<li><code>reviewStore</code>: reviewReducer</li>
+<li><code>giftStore</code>: giftReducer</li>
+</ul></div>
+<div class="subsec" id="shoesstore-routing"><h4>Routing</h4><p>Auth: <code>/login</code> · <code>/register</code> · <code>/forgot-password</code> · <code>/reset-password</code></p>
+<p>UserLayout: <code>/</code> · <code>/products</code> · <code>/products/:id/:alias</code> · <code>/promotions</code> · <code>/policy</code> · <code>/policy/:type</code> · <code>/checkout</code> (ProtectedRoute) · <code>/order-check</code> (ProtectedRoute)</p>
+<p>Admin: <code>/admin</code> (AdminRoute) · <code>/admin/products</code> · <code>/admin/orders</code> · <code>/admin/orders/:id</code> · <code>/admin/customers</code> · <code>/admin/profile</code> · <code>/admin/reviews</code> · <code>/admin/reviews/:productId</code> · <code>/admin/gifts</code></p>
+<p>Not found: route <code>*</code> render 404.</p></div>
+<div class="subsec" id="shoesstore-lu-ng-auth-login"><h4>Luồng auth / login</h4><ol class="steps">
+<li><code>Login.jsx</code> dùng Formik quản lý form username/password.</li>
+<li>Yup validate: username required, password required.</li>
+<li>Khi submit:<ul class="sub"><li>Lấy admin account từ localStorage key <code>HiKushoes_admin_account</code>, fallback admin mặc định (username <code>admin</code>, password <code>Admin123@</code>, role <code>admin</code>).</li><li>Nếu khớp admin: dispatch <code>loginSuccess(adminUser)</code>, authSlice lưu user vào Redux state, localStorage set <code>HiKushoes_user</code>, navigate <code>/admin</code>.</li></ul></li>
+<li>Nếu không phải admin:<ul class="sub"><li>Tìm user bằng <code>findUserByUsername</code>.</li><li>Nếu không có: <code>setFieldError</code> username.</li><li>Nếu sai password: <code>setFieldError</code> password.</li><li>Nếu user bị locked: báo lỗi.</li><li>Nếu hợp lệ: dispatch <code>loginSuccess(user)</code>, lưu vào localStorage <code>HiKushoes_user</code>, navigate <code>/</code>.</li></ul></li>
+<li><code>authSlice</code>:<ul class="sub"><li>initialState đọc user từ localStorage.</li><li><code>loginSuccess</code> set state.user và localStorage.</li><li><code>logout</code> clear state.user và remove localStorage.</li></ul></li>
+</ol></div>
+<div class="subsec" id="shoesstore-lu-ng-register"><h4>Luồng register</h4><ol class="steps">
+<li><code>Register.jsx</code> dùng Formik.</li>
+<li>Yup validate:<ul class="sub"><li>username required.</li><li>email đúng định dạng và required.</li><li>phone đúng 10 số và required.</li><li>password tối thiểu 6 ký tự, có chữ thường, chữ hoa, số, ký tự đặc biệt.</li><li>confirmPassword phải trùng password.</li></ul></li>
+<li>Submit:<ul class="sub"><li>Kiểm tra trùng username/email/phone bằng userStorage.</li><li>Nếu trùng thì <code>setFieldError</code>.</li><li>Nếu hợp lệ thì <code>addUser</code> vào localStorage.</li><li>User gồm id, username, email, phone, password, role user, status active, createdAt.</li><li>Alert thành công và navigate <code>/login</code>.</li></ul></li>
+</ol></div>
+<div class="subsec" id="shoesstore-lu-ng-route-guard"><h4>Luồng route guard</h4><p><code>ProtectedRoute</code>:</p>
+<ol class="steps">
+<li>Đọc <code>HiKushoes_user</code> từ localStorage.</li>
+<li>Nếu chưa login thì Navigate về <code>/</code>.</li>
+<li>Nếu có user thì render children.</li>
+</ol>
+<p><code>AdminRoute</code>:</p>
+<ol class="steps">
+<li>Đọc <code>HiKushoes_user</code>.</li>
+<li>Nếu chưa login thì Navigate <code>/</code>.</li>
+<li>Nếu role khác admin thì Navigate <code>/</code>.</li>
+<li>Nếu role admin thì render admin layout.</li>
+</ol></div>
+<div class="subsec" id="shoesstore-lu-ng-load-data-trong-app-jsx"><h4>Luồng load data trong App.jsx</h4><ol class="steps">
+<li>App lấy user từ Redux <code>authStore.user</code>.</li>
+<li>Lấy cart từ Redux <code>cartStore.cart</code>.</li>
+<li>Gọi <code>useProductsQuery()</code> để lấy toàn bộ sản phẩm từ API.</li>
+<li>Lọc product chưa deleted.</li>
+<li>useEffect theo user:<ul class="sub"><li>Nếu chưa login: dispatch <code>loadCartByUser(null)</code>, dispatch <code>loadOrdersByUser(null)</code>.</li><li>Nếu đã login: dispatch <code>loadCartByUser(user.username)</code>; nếu admin dispatch <code>loadAllOrdersForAdmin()</code>, nếu user dispatch <code>loadOrdersByUser(user.username)</code>.</li></ul></li>
+<li>App override <code>window.alert</code> thành toast alert custom.</li>
+<li>App register confirm dialog custom qua <code>registerConfirmHandler</code>.</li>
+<li>Cart popup dùng Redux action tăng/giảm/xóa.</li>
+</ol></div>
+<div class="subsec" id="shoesstore-lu-ng-l-y-s-n-ph-m"><h4>Luồng lấy sản phẩm</h4><ol class="steps">
+<li><code>productApi</code> gọi axiosClient: <code>getAll</code> GET <code>/shoes</code>, <code>getById</code> GET <code>/shoes/:id</code>, <code>create</code> POST <code>/shoes</code>, <code>update</code> PUT <code>/shoes/:id</code>, <code>remove</code> DELETE <code>/shoes/:id</code>.</li>
+<li><code>useProductsQuery</code> dùng TanStack Query:<ul class="sub"><li>queryKey <code>['products']</code>.</li><li>queryFn gọi <code>productApi.getAll()</code>.</li><li>Normalize data: convert price, salePrice, oldPrice, discount, quantity về number; đảm bảo colors/sizes/reviews là array; set deleted, feature, hasGift boolean; tính rating/totalReviews.</li></ul></li>
+<li><code>useProductQuery</code> lấy chi tiết theo id.</li>
+<li>React Query cache data và tự quản lý loading/error.</li>
+<li><code>useProductMutations</code> dùng useMutation: addProductMutation, updateProductMutation, deleteProductMutation, decreaseStockMutation, increaseStockMutation — sau mutation gọi <code>invalidateQueries</code> để refetch products.</li>
+</ol></div>
+<div class="subsec" id="shoesstore-lu-ng-danh-s-ch-s-n-ph-m"><h4>Luồng danh sách sản phẩm</h4><ol class="steps">
+<li>Trang Products nhận products từ App.</li>
+<li>Dùng hook filter/sort để lọc theo keyword, brand, gender, giá, loại giày, khuyến mãi...</li>
+<li>Render bằng ProductList/ProductCard.</li>
+<li>Click card đi tới <code>/products/:id/:alias</code>.</li>
+</ol></div>
+<div class="subsec" id="shoesstore-lu-ng-chi-ti-t-s-n-ph-m"><h4>Luồng chi tiết sản phẩm</h4><ol class="steps">
+<li>ProductDetail lấy <code>id</code>, <code>alias</code> từ <code>useParams</code>.</li>
+<li>Gọi <code>useProductQuery(id)</code> và <code>useProductsQuery()</code>.</li>
+<li>Tìm product: ưu tiên product detail từ API, nếu không có thì fallback trong list theo id/alias.</li>
+<li>State nội bộ: selectedColorId, mainImage, avtImage, selectedSize, sizeError, buyQuantity, selectedGiftId, isLoginPopupOpen, zoom/album state.</li>
+<li>Khi product thay đổi: set màu đầu tiên, set ảnh chính, reset size, quantity, gift.</li>
+<li>User chọn màu: set selectedColorId, đổi ảnh chính theo màu.</li>
+<li>User chọn size: kiểm tra size có trong <code>product.sizes</code>, nếu không có thì báo lỗi size hết.</li>
+<li>User tăng/giảm quantity: tối thiểu 1, tối đa bằng <code>product.quantity</code>.</li>
+<li>Trước khi add cart/buy now: nếu chưa login mở LoginModal, nếu hết hàng báo lỗi, nếu chưa chọn size báo lỗi.</li>
+<li>Add cart: tạo cart product gồm product, selectedColor, selectedSize, cartQuantity, selectedGift, price sale; dispatch <code>addToCart</code>; alert thành công.</li>
+<li>Buy now: navigate <code>/checkout</code> và truyền state <code>checkoutItems: [cartProduct]</code>, <code>checkoutType: BUY_NOW</code>, <code>selectedGift</code>.</li>
+</ol></div>
+<div class="subsec" id="shoesstore-lu-ng-cart-redux"><h4>Luồng cart Redux</h4><ol class="steps">
+<li><code>cartSlice</code> lưu cart theo từng user bằng key <code>HiKuShoesCart_${username}</code>, guest dùng <code>HiKuShoesCart_guest</code>.</li>
+<li><code>loadCartByUser</code>: nhận username, đọc localStorage tương ứng, gán vào <code>state.cart</code>.</li>
+<li><code>addToCart</code>: tạo key item <code>id-selectedSize-selectedColorId</code>; nếu item đã có thì cộng cartQuantity, nếu chưa có thì push item; lưu localStorage.</li>
+<li><code>increaseCartItem</code>: tìm item theo key, tăng cartQuantity, lưu localStorage.</li>
+<li><code>decreaseCartItem</code>: giảm cartQuantity, nếu quantity &lt;= 0 thì remove, lưu localStorage.</li>
+<li><code>removeCartItem</code>: xóa khỏi cart, lưu localStorage.</li>
+<li><code>clearCart</code>: clear <code>state.cart</code>, remove localStorage key cart hiện tại.</li>
+</ol></div>
+<div class="subsec" id="shoesstore-lu-ng-checkout"><h4>Luồng checkout</h4><ol class="steps">
+<li>Checkout page được bọc ProtectedRoute nên cần login.</li>
+<li>Nguồn checkout: nếu Buy Now lấy <code>location.state.checkoutItems</code>, nếu từ cart lấy prop cart từ Redux.</li>
+<li>Formik quản lý form checkout.</li>
+<li>Yup validate:<ul class="sub"><li>fullName required.</li><li>phone bắt đầu 03/05/07/08/09 và đủ 10 số.</li><li>email required + đúng định dạng.</li><li>Nếu receiveMethod là store thì store required.</li><li>Nếu receiveMethod là delivery thì province, district, address required.</li></ul></li>
+<li>Trước submit:<ul class="sub"><li>Nếu chưa user thì alert và navigate login.</li><li>Nếu product đang loading thì chặn.</li><li>Kiểm tra tồn kho bằng data từ <code>useProductsQuery</code>: product không tồn tại, product deleted, quantity &lt;= 0, quantity nhỏ hơn số lượng trong cart.</li></ul></li>
+<li>Tạo order gồm id (<code>Date.now()</code>), orderCode (<code>generateOrderCode()</code>), ownerUsername, customer info, receiveMethod, deliveryInfo, paymentMethod, note, products checkoutItems, selectedGift/gift, totalPrice, status "Đang xử lý", stockStatus "Chưa trừ kho", createdAt, createdAtISO.</li>
+<li>dispatch <code>addOrder(newOrder)</code>.</li>
+<li>Nếu checkout từ cart: dispatch <code>removeCartItem</code> từng sản phẩm đã checkout.</li>
+<li>Alert đặt hàng thành công.</li>
+<li>Navigate <code>/order-check</code>.</li>
+</ol></div>
+<div class="subsec" id="shoesstore-lu-ng-order-redux"><h4>Luồng order Redux</h4><ol class="steps">
+<li><code>orderSlice</code> lưu order theo user với prefix <code>HiKushoes_orders_</code>, key <code>HiKushoes_orders_${username}</code>.</li>
+<li><code>loadOrdersByUser</code>: đọc order từ localStorage theo username.</li>
+<li><code>loadAllOrdersForAdmin</code>: duyệt toàn bộ localStorage, lấy key bắt đầu bằng <code>HiKushoes_orders_</code>, gộp tất cả order và sort mới nhất.</li>
+<li><code>addOrder</code>: normalize products, stockStatus mặc định "Chưa trừ kho", unshift order vào state, lưu localStorage.</li>
+<li><code>updateOrderStatus</code>: admin/user cập nhật status; nếu status "Đã giao hàng" và chưa record sold stats thì tăng sold stats trong <code>HiKushoes_sold_stats</code>; nếu hủy thì lưu cancelReason, cancelBy, cancelAt.</li>
+<li><code>cancelOrderByCustomer</code>: user tự hủy order, status "Đã bị hủy".</li>
+<li><code>requestReturnProduct</code>: user gửi yêu cầu đổi trả cho từng product trong order, lưu reason, files, status "Chờ duyệt", refundStatus.</li>
+<li><code>updateProductReturnRequest</code>: admin duyệt/từ chối đổi trả; nếu đã giao hàng, đổi trả được chấp nhận và đã hoàn tiền thì giảm sold stats.</li>
+<li><code>deleteOrder</code>: nếu admin xóa thì tìm owner và xóa ở localStorage của user đó; nếu user xóa thì xóa trong order của chính user.</li>
+</ol></div>
+<div class="subsec" id="shoesstore-lu-ng-admin-qu-n-l-s-n-ph-m"><h4>Luồng admin quản lý sản phẩm</h4><ol class="steps">
+<li>Admin vào <code>/admin/products</code>, được AdminRoute bảo vệ.</li>
+<li>Trang dùng React Query lấy products.</li>
+<li>Form thêm/sửa sản phẩm dùng state/Formik tùy component.</li>
+<li>Khi thêm: gọi <code>addProductMutation</code>, <code>productApi.create</code> POST <code>/shoes</code>, invalidate query <code>['products']</code>.</li>
+<li>Khi sửa: gọi <code>updateProductMutation</code>, PUT <code>/shoes/:id</code>, invalidate list và detail query.</li>
+<li>Khi xóa: gọi <code>deleteProductMutation</code>, DELETE <code>/shoes/:id</code>, remove detail query và invalidate list.</li>
+<li>Khi cập nhật tồn kho: <code>decreaseStockMutation</code> hoặc <code>increaseStockMutation</code>, PUT sản phẩm với quantity mới.</li>
+</ol></div>
+<div class="subsec" id="shoesstore-lu-ng-admin-qu-n-l-n-h-ng"><h4>Luồng admin quản lý đơn hàng</h4><ol class="steps">
+<li>Admin login role admin.</li>
+<li>App dispatch <code>loadAllOrdersForAdmin</code>.</li>
+<li>Admin thấy toàn bộ order từ mọi user.</li>
+<li>Khi cập nhật trạng thái: dispatch <code>updateOrderStatus</code>, orderSlice tìm ownerUsername, cập nhật order trong localStorage của user sở hữu, reload lại danh sách admin.</li>
+<li>Stock không trừ ngay khi user đặt hàng.</li>
+<li>Logic ghi chú trong Checkout: kho chỉ trừ khi admin chuyển đơn sang "Đang giao hàng" hoặc "Đã giao hàng".</li>
+</ol></div>
+<div class="subsec" id="shoesstore-lu-ng-review-gift"><h4>Luồng review / gift</h4><ul class="plain-list">
+<li><code>giftSlice</code> quản lý danh sách quà tặng.</li>
+<li>ProductDetail nếu <code>product.hasGift</code> thì cho chọn quà.</li>
+<li><code>selectedGift</code> được gắn vào cart product hoặc order.</li>
+<li><code>reviewSlice</code>/ProductReviews quản lý đánh giá sản phẩm.</li>
+<li>Admin có ManageReviews và ReviewDetail để quản lý review theo product.</li>
+</ul></div>
+<div class="callout"><h4>Điểm nên nói khi phỏng vấn</h4><ul class="plain-list">
+<li>Project React có kiến trúc rõ hơn PhoneStore: React Router quản lý route, Redux Toolkit quản lý auth/cart/order/review/gift, React Query quản lý server state sản phẩm, Formik/Yup quản lý form và validate, Axios gọi API, localStorage persist user/cart/order.</li>
+<li>Phân biệt rõ: server state (products từ API → React Query), client state (cart/auth/order → Redux), persistent local state (localStorage).</li>
+<li>Route guard bảo vệ checkout/admin.</li>
+<li>Cart và order được tách theo username.</li>
+<li>Admin có quyền xem tất cả order bằng cách duyệt localStorage theo prefix.</li>
+</ul></div>
+</section>
+      
+    <section class="section-block" id="so-sanh">
+      <h2 class="block-title"><span class="block-eyebrow">Tổng hợp</span>So sánh nhanh 3 project</h2>
+      <div class="table-wrap">
+      <table class="compare-table">
+        <thead><tr><th>Project</th><th>Nền tảng</th><th>Quản lý state</th><th>Dữ liệu người dùng</th><th>Nguồn dữ liệu sản phẩm</th></tr></thead>
+        <tbody><tr><td class="c-name">capstone_tailwind</td><td>HTML/Tailwind static</td><td>DOM JS thuần</td><td>Theme dark/light (localStorage)</td><td>Không có API</td></tr><tr><td class="c-name">PhoneStore_JS</td><td>HTML/Tailwind/JS thuần</td><td>State object trong module JS</td><td>User, cart, order, brand, wishlist</td><td>MockAPI (axios/fetch) + validate regex thủ công</td></tr><tr><td class="c-name">ShoesStore_ReactJS</td><td>React + Vite</td><td>Redux Toolkit + React Query</td><td>User/cart/order persist qua Redux</td><td>REST API + Axios, cache &amp; mutation qua React Query</td></tr></tbody>
+      </table>
+      </div>
+    </section>
+    
+      
+    <section class="section-block" id="ket-luan">
+      <h2 class="block-title"><span class="block-eyebrow">Kết luận</span>Cách trình bày khi phỏng vấn</h2>
+      <div class="conc-grid"><div class="conc-card"><h3>capstone_tailwind</h3><p>Nhấn mạnh kỹ năng cắt UI responsive, dark mode, và DOM interaction thuần (scroll, tab, toggle menu).</p></div><div class="conc-card"><h3>PhoneStore_JS</h3><p>Nhấn mạnh khả năng hiểu và tự dựng luồng nghiệp vụ e-commerce hoàn chỉnh bằng JS thuần: đăng nhập/đăng ký, giỏ hàng theo user, checkout, admin CRUD, kết nối MockAPI, và quản lý dữ liệu qua localStorage.</p></div><div class="conc-card"><h3>ShoesStore_ReactJS</h3><p>Nhấn mạnh bước nâng cấp kiến trúc bằng React: route guard cho khu vực cần đăng nhập/admin, Redux Toolkit cho client state, React Query cho server state (cache + invalidate), Formik/Yup cho form phức tạp, và tư duy tách bạch server state / client state / persistent state.</p></div></div>
+    </section>
+    
+      <footer class="page-footer">Tài liệu ôn tập cá nhân — capstone_tailwind · PhoneStore_JS · ShoesStore_ReactJS</footer>
+    </main>
+  </div>
+</body>
+</html>

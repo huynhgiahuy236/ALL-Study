@@ -58,5 +58,17 @@
     "slides": "6 Chương",
     "progress": 0,
     "href": "./interview.html"
+  },
+  {
+    "id": 6,
+    "title": "Projet WorkFlow",
+    "description": "Tổng hợp kiến thức luồng xử lí các project: JavaScript, React, TypeScript, Redux/TanStack Query, Next.js... chia rõ section, features",
+    "category": "Frontend Development",
+    "color": "#D4541A",
+    "badge": "Mới",
+    "badgeType": "new",
+    "slides": "6 Chương",
+    "progress": 0,
+    "href": "./WorkFlow-Project.html"
   }
 ]
