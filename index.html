@@ -37,10 +37,11 @@
         header {
             border-bottom: 1.5px solid var(--rule);
             padding: 0 48px;
-            height: 60px;
+            min-height: 60px;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            gap: 28px;
             background: var(--paper);
             position: sticky;
             top: 0;
@@ -66,6 +67,40 @@
             border: 1px solid var(--rule);
             border-radius: 20px;
             padding: 4px 12px;
+        }
+
+        .site-nav {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex: 1;
+            min-width: 0;
+            overflow-x: auto;
+            scrollbar-width: thin;
+        }
+
+        .site-nav a {
+            color: var(--muted);
+            text-decoration: none;
+            font-size: .76rem;
+            font-weight: 700;
+            white-space: nowrap;
+            border: 1px solid transparent;
+            border-radius: 999px;
+            padding: 7px 12px;
+            transition: color .18s ease, border-color .18s ease, background .18s ease;
+        }
+
+        .site-nav a:hover,
+        .site-nav a.active {
+            color: var(--ink);
+            border-color: var(--rule);
+            background: var(--warm);
+        }
+
+        .home-link {
+            color: inherit;
+            text-decoration: none;
         }
 
         .hero {
@@ -337,6 +372,54 @@
             margin-top: 24px;
         }
 
+        .course-shell {
+            min-height: calc(100vh - 60px);
+            background: var(--paper);
+        }
+
+        .outlet-bar {
+            min-height: 56px;
+            border-bottom: 1.5px solid var(--rule);
+            padding: 10px 48px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            background: var(--warm);
+        }
+
+        .outlet-title {
+            font-weight: 700;
+            letter-spacing: -.01em;
+        }
+
+        .outlet-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .outlet-button {
+            color: var(--ink);
+            text-decoration: none;
+            font-size: .76rem;
+            font-weight: 700;
+            border: 1.5px solid var(--rule);
+            border-radius: 999px;
+            padding: 7px 12px;
+            background: var(--card-bg);
+        }
+
+        .course-frame {
+            width: 100%;
+            height: calc(100vh - 116px);
+            min-height: 720px;
+            border: 0;
+            display: block;
+            background: #fff;
+        }
+
         footer {
             border-top: 1.5px solid var(--rule);
             padding: 24px 48px;
@@ -358,9 +441,22 @@
             header,
             .hero,
             .section,
+            .outlet-bar,
             footer {
                 padding-left: 20px;
                 padding-right: 20px;
+            }
+
+            header {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 10px;
+                padding-top: 14px;
+                padding-bottom: 14px;
+            }
+
+            .site-nav {
+                width: 100%;
             }
 
             .hero {
@@ -375,6 +471,16 @@
             .grid {
                 grid-template-columns: 1fr;
             }
+
+            .outlet-bar {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .course-frame {
+                height: calc(100vh - 170px);
+                min-height: 640px;
+            }
         }
     </style>
 </head>
@@ -382,11 +488,12 @@
 <body>
 
     <header>
-        <div class="logo">Huy<span>Learn</span></div>
+        <a class="logo home-link" href="#/">Huy<span>Learn</span></a>
+        <nav class="site-nav" id="course-nav" aria-label="Khóa học"></nav>
         <div class="header-tag">Tài liệu tự học</div>
     </header>
 
-    <main>
+    <main id="app-outlet">
         <div class="hero">
             <div>
                 <div class="hero-eyebrow">Personal Study Hub</div>
@@ -416,37 +523,79 @@
     </footer>
 
     <script>
-        // ── Render 1 card từ object course ──────────────────────────────
+        let courses = [];
+        const assetVersion = Date.now();
+
+        function escapeHtml(value) {
+            return String(value ?? '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        function routeFor(course) {
+            return `#/course/${encodeURIComponent(course.id)}`;
+        }
+
+        function versionedHref(href) {
+            const separator = href.includes('?') ? '&' : '?';
+            return `${href}${separator}_v=${assetVersion}`;
+        }
+
+        function getActiveCourse() {
+            const match = location.hash.match(/^#\/course\/(.+)$/);
+            if (!match) return null;
+            const id = decodeURIComponent(match[1]);
+            return courses.find(course => String(course.id) === id) || null;
+        }
+
+        function renderHeaderNav() {
+            const nav = document.getElementById('course-nav');
+            nav.innerHTML = courses.map(course => `
+                <a href="${routeFor(course)}" data-course-id="${escapeHtml(course.id)}">
+                    ${escapeHtml(course.title)}
+                </a>
+            `).join('');
+        }
+
+        function syncActiveNav() {
+            const activeCourse = getActiveCourse();
+            document.querySelectorAll('#course-nav a').forEach(link => {
+                link.classList.toggle('active', activeCourse && link.dataset.courseId === String(activeCourse.id));
+            });
+        }
+
         function renderCard(course) {
             const badgeClass = course.badgeType === 'new' ? 'badge-new' : 'badge-ready';
 
             return `
-      <a class="course-card" href="${course.href}">
-        <span class="badge ${badgeClass}">${course.badge}</span>
+      <a class="course-card" href="${routeFor(course)}">
+        <span class="badge ${badgeClass}">${escapeHtml(course.badge)}</span>
 
         <div class="card-tag">
-          <span class="card-dot" style="background:${course.color}"></span>
-          ${course.category}
+          <span class="card-dot" style="background:${escapeHtml(course.color)}"></span>
+          ${escapeHtml(course.category)}
         </div>
 
-        <div class="card-title">${course.title}</div>
-        <div class="card-desc">${course.description}</div>
+        <div class="card-title">${escapeHtml(course.title)}</div>
+        <div class="card-desc">${escapeHtml(course.description)}</div>
 
         <div class="progress-track">
           <div class="progress-fill"
-               style="width:${course.progress}%; background:${course.color}">
+               style="width:${Number(course.progress) || 0}%; background:${escapeHtml(course.color)}">
           </div>
         </div>
 
         <div class="card-footer">
-          <div class="card-meta">${course.slides}</div>
+          <div class="card-meta">${escapeHtml(course.slides)}</div>
           <div class="card-arrow">→</div>
         </div>
       </a>
     `;
         }
 
-        // ── Skeleton khi đang load ───────────────────────────────────────
         function renderSkeletons(n = 3) {
             return Array.from({ length: n }, () => `
       <div class="course-card" style="pointer-events:none">
@@ -458,36 +607,91 @@
     `).join('');
         }
 
-        // ── Main: fetch JSON → render ────────────────────────────────────
+        function renderHome() {
+            const outlet = document.getElementById('app-outlet');
+            outlet.innerHTML = `
+        <div class="hero">
+            <div>
+                <div class="hero-eyebrow">Personal Study Hub</div>
+                <h1 class="hero-title">Học gì<br>hôm nay, <em>Huy?</em></h1>
+                <p class="hero-sub">Kho tài liệu tự học của bạn — từ lập trình đến tiếng Anh. Chọn khóa, mở slide, bắt đầu.</p>
+            </div>
+            <div>
+                <div class="stat-num">${courses.length}</div>
+                <div class="stat-label">khóa học</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <div class="section-title">Tất cả khóa học</div>
+                <div class="section-count">${String(courses.length).padStart(2, '0')} courses</div>
+            </div>
+            <div class="grid">${courses.map(renderCard).join('')}</div>
+        </div>
+    `;
+            syncActiveNav();
+        }
+
+        function renderCourse(course) {
+            const outlet = document.getElementById('app-outlet');
+            outlet.innerHTML = `
+        <div class="course-shell">
+            <div class="outlet-bar">
+                <div>
+                    <div class="section-title">Đang học</div>
+                    <div class="outlet-title">${escapeHtml(course.title)}</div>
+                </div>
+                <div class="outlet-actions">
+                    <a class="outlet-button" href="#/">Trang chủ</a>
+                    <a class="outlet-button" href="${escapeHtml(course.href)}" target="_blank" rel="noopener">Mở tab mới</a>
+                </div>
+            </div>
+            <iframe class="course-frame" src="${escapeHtml(versionedHref(course.href))}" title="${escapeHtml(course.title)}"></iframe>
+        </div>
+    `;
+            syncActiveNav();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function renderRoute() {
+            const activeCourse = getActiveCourse();
+
+            if (location.hash.startsWith('#/course/') && !activeCourse) {
+                location.hash = '#/';
+                return;
+            }
+
+            if (activeCourse) {
+                renderCourse(activeCourse);
+            } else {
+                renderHome();
+            }
+        }
+
         async function loadCourses() {
             const grid = document.getElementById('course-grid');
-            const count = document.getElementById('course-count');
-            const sectionCount = document.getElementById('section-count');
-
-            // Hiện skeleton trước
-            grid.innerHTML = renderSkeletons();
+            if (grid) grid.innerHTML = renderSkeletons();
 
             try {
                 const res = await fetch('./courses.json');
-                const courses = await res.json();           // ← đọc file JSON
-
-                // Render cards
-                grid.innerHTML = courses.map(renderCard).join('');
-
-                // Cập nhật số đếm
-                const n = courses.length;
-                count.textContent = n;
-                sectionCount.textContent = String(n).padStart(2, '0') + ' courses';
-
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                courses = await res.json();
+                renderHeaderNav();
+                renderRoute();
             } catch (err) {
-                grid.innerHTML = `
-        <div style="padding:40px;color:var(--muted);font-size:.9rem;grid-column:1/-1">
-          ⚠️ Không load được courses.json — hãy chạy qua local server (Live Server / Vite).
+                const outlet = document.getElementById('app-outlet');
+                outlet.innerHTML = `
+        <div class="section">
+          <div style="padding:40px;color:var(--muted);font-size:.9rem">
+            ⚠️ Không load được courses.json — hãy chạy qua local server (Live Server / Vite).
+          </div>
         </div>`;
                 console.error(err);
             }
         }
 
+        window.addEventListener('hashchange', renderRoute);
         loadCourses();
     </script>
 </body>

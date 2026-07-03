@@ -1,0 +1,4685 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flutter Midterm Widget Assembly Guide</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap');
+
+    :root {
+      --ink: #0F0E0D;
+      --paper: #F5F2EC;
+      --warm: #EDE8DF;
+      --rule: #D8D0C4;
+      --accent: #D4541A;
+      --accent-soft: #F4DFD3;
+      --accent-strong: #A63F14;
+      --muted: #7A7268;
+      --card-bg: #FDFCF9;
+      --code-bg: #17120F;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box
+    }
+
+    html {
+      scroll-behavior: smooth
+    }
+
+    body {
+      font-family: 'Space Grotesk', 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+      background: var(--paper);
+      color: var(--ink);
+      line-height: 1.65;
+      font-size: 15.5px
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 272px minmax(0, 1fr);
+      max-width: 1400px;
+      margin: 0 auto
+    }
+
+    nav.toc {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      padding: 28px 18px;
+      border-right: 1px solid var(--rule);
+      background: var(--card-bg)
+    }
+
+    nav.toc .toc-brand {
+      font-weight: 800;
+      font-size: .95rem;
+      color: var(--accent);
+      letter-spacing: .02em;
+      margin-bottom: 4px
+    }
+
+    nav.toc .toc-sub {
+      font-size: .72rem;
+      color: var(--muted);
+      margin-bottom: 18px;
+      text-transform: uppercase;
+      letter-spacing: .1em
+    }
+
+    nav.toc a {
+      display: block;
+      color: var(--ink);
+      text-decoration: none;
+      font-size: .86rem;
+      padding: 6px 10px;
+      border-radius: 8px;
+      border-left: 2px solid transparent
+    }
+
+    nav.toc a:hover {
+      background: var(--warm);
+      color: var(--accent)
+    }
+
+    nav.toc details {
+      margin: 2px 0
+    }
+
+    nav.toc summary {
+      cursor: pointer;
+      font-size: .8rem;
+      color: var(--muted);
+      padding: 5px 10px;
+      list-style: none;
+      user-select: none
+    }
+
+    nav.toc summary::before {
+      content: "▸ ";
+      color: var(--accent)
+    }
+
+    nav.toc details[open] summary::before {
+      content: "▾ "
+    }
+
+    nav.toc details a {
+      font-size: .78rem;
+      padding: 3px 10px 3px 24px;
+      color: var(--muted)
+    }
+
+    main {
+      padding: 36px 42px 90px;
+      min-width: 0
+    }
+
+    .hero {
+      background: var(--card-bg);
+      border: 1px solid var(--rule);
+      border-radius: 16px;
+      padding: 52px 44px;
+      margin-bottom: 30px;
+      text-align: center
+    }
+
+    .hero .kicker {
+      display: inline-block;
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid var(--rule);
+      background: var(--warm);
+      padding: 5px 14px;
+      border-radius: 999px;
+      margin-bottom: 20px
+    }
+
+    .hero h1 {
+      font-size: 2.35rem;
+      font-weight: 800;
+      letter-spacing: -.02em;
+      line-height: 1.2;
+      color: var(--ink)
+    }
+
+    .hero .subtitle {
+      font-size: 1.05rem;
+      color: var(--muted);
+      margin-top: 12px;
+      max-width: 640px;
+      margin-left: auto;
+      margin-right: auto
+    }
+
+    .hero .intro {
+      font-size: .92rem;
+      color: var(--muted);
+      margin-top: 18px;
+      max-width: 620px;
+      margin-left: auto;
+      margin-right: auto
+    }
+
+    .hero .badges {
+      margin-top: 24px;
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      flex-wrap: wrap
+    }
+
+    .hero .badges span {
+      font-size: .75rem;
+      color: var(--ink);
+      background: var(--warm);
+      border-radius: 999px;
+      padding: 4px 12px
+    }
+
+    section.block {
+      background: var(--card-bg);
+      border: 1px solid var(--rule);
+      border-radius: 16px;
+      padding: 32px 34px;
+      margin-bottom: 30px
+    }
+
+    section.block>h2 {
+      font-size: 1.45rem;
+      font-weight: 800;
+      letter-spacing: -.01em;
+      color: var(--ink);
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--rule);
+      margin-bottom: 18px
+    }
+
+    section.block>h2 .no {
+      color: var(--accent);
+      font-weight: 800;
+      margin-right: 8px
+    }
+
+    h3 {
+      font-size: 1.08rem;
+      font-weight: 700;
+      color: var(--ink)
+    }
+
+    p {
+      margin: 8px 0
+    }
+
+    ul,
+    ol {
+      margin: 8px 0 8px 22px
+    }
+
+    li {
+      margin: 4px 0
+    }
+
+    strong {
+      color: var(--ink)
+    }
+
+    .lead {
+      color: var(--muted)
+    }
+
+    code.inline,
+    p code,
+    li code,
+    td code {
+      font-family: Consolas, 'Cascadia Code', Menlo, monospace;
+      font-size: .84em;
+      background: var(--warm);
+      color: var(--accent-strong);
+      padding: 1.5px 6px;
+      border-radius: 6px
+    }
+
+    pre {
+      position: relative;
+      background: var(--code-bg);
+      border-radius: 12px;
+      padding: 16px 18px;
+      overflow-x: auto;
+      margin: 8px 0 14px;
+      line-height: 1.55
+    }
+
+    pre code {
+      font-family: Consolas, 'Cascadia Code', Menlo, monospace;
+      font-size: .815rem;
+      color: #dbe4f0;
+      background: none;
+      padding: 0;
+      white-space: pre
+    }
+
+    .tk-k {
+      color: #c792ea
+    }
+
+    .tk-t {
+      color: #7dd3fc
+    }
+
+    .tk-s {
+      color: #a5e6a5
+    }
+
+    .tk-c {
+      color: #5b6b84;
+      font-style: italic
+    }
+
+    .tk-n {
+      color: #f7b46a
+    }
+
+    .copy-btn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: #1e293b;
+      color: #94a3b8;
+      border: 1px solid #334155;
+      border-radius: 7px;
+      font-size: .68rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      cursor: pointer;
+      font-family: inherit
+    }
+
+    .copy-btn:hover {
+      background: #334155;
+      color: #e2e8f0
+    }
+
+    .copy-btn.ok {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: var(--card-bg)
+    }
+
+    pre.tree {
+      background: var(--card-bg);
+      border: 1px solid var(--rule);
+      color: var(--ink);
+      font-family: Consolas, Menlo, monospace;
+      font-size: .82rem;
+      line-height: 1.6
+    }
+
+    pre.tree .d {
+      color: var(--accent);
+      font-weight: 700
+    }
+
+    pre.tree .cm {
+      color: var(--muted)
+    }
+
+    .label {
+      display: inline-block;
+      font-size: .68rem;
+      font-weight: 800;
+      letter-spacing: .09em;
+      text-transform: uppercase;
+      padding: 3px 11px;
+      border-radius: 999px;
+      margin: 14px 0 6px
+    }
+
+    .l-code {
+      background: #eef2ff;
+      color: #4338ca
+    }
+
+    .l-exp {
+      background: #ecfdf5;
+      color: #047857
+    }
+
+    .l-prev {
+      background: #FFF7ED;
+      color: #c2410c
+    }
+
+    .l-how {
+      background: #eff6ff;
+      color: #1d4ed8
+    }
+
+    .l-err {
+      background: #fef2f2;
+      color: #b91c1c
+    }
+
+    .l-reg {
+      background: #fdf4ff;
+      color: #a21caf
+    }
+
+    .duo {
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(0, .75fr);
+      gap: 8px 26px;
+      align-items: start
+    }
+
+    article.wcard {
+      border: 1px solid var(--rule);
+      border-radius: 14px;
+      padding: 24px 26px;
+      margin: 22px 0;
+      background: var(--card-bg)
+    }
+
+    article.wcard .whead {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 10px;
+      padding-bottom: 10px;
+      border-bottom: 1px dashed var(--rule);
+      margin-bottom: 10px
+    }
+
+    .path {
+      font-family: Consolas, Menlo, monospace;
+      font-size: .72rem;
+      color: var(--accent-strong);
+      background: var(--warm);
+      border: 1px solid var(--accent-soft);
+      border-radius: 6px;
+      padding: 2px 8px
+    }
+
+    .meta {
+      list-style: none;
+      margin: 8px 0;
+      font-size: .85rem;
+      color: var(--muted)
+    }
+
+    .meta li {
+      margin: 3px 0;
+      padding-left: 0
+    }
+
+    .meta b {
+      color: var(--ink);
+      font-weight: 600
+    }
+
+    .phone {
+      width: 232px;
+      border: 1.5px solid var(--rule);
+      border-radius: 20px;
+      overflow: hidden;
+      background: var(--card-bg);
+      font-size: 11px;
+      margin: 6px 0;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, .05)
+    }
+
+    .pv-appbar {
+      background: var(--accent);
+      color: var(--card-bg);
+      padding: 9px 12px;
+      font-weight: 600;
+      font-size: 11.5px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center
+    }
+
+    .pv-appbar .acts {
+      opacity: .85;
+      letter-spacing: 2px
+    }
+
+    .pv-body {
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-height: 100px
+    }
+
+    .pv-body.center {
+      align-items: center;
+      justify-content: center;
+      text-align: center
+    }
+
+    .pv-nav {
+      display: flex;
+      border-top: 1px solid var(--rule);
+      background: var(--card-bg)
+    }
+
+    .pv-nav span {
+      flex: 1;
+      text-align: center;
+      padding: 8px 0;
+      color: var(--muted);
+      font-size: 10px
+    }
+
+    .pv-nav .on {
+      color: var(--accent);
+      font-weight: 700
+    }
+
+    .pv-tabbar {
+      display: flex;
+      background: var(--accent);
+      color: var(--accent-soft);
+      font-size: 10.5px
+    }
+
+    .pv-tabbar span {
+      flex: 1;
+      text-align: center;
+      padding: 7px 0
+    }
+
+    .pv-tabbar .on {
+      color: var(--card-bg);
+      border-bottom: 2.5px solid var(--card-bg);
+      font-weight: 700
+    }
+
+    .pv-btn {
+      background: var(--accent);
+      color: var(--card-bg);
+      text-align: center;
+      padding: 8px;
+      border-radius: 9px;
+      font-weight: 700
+    }
+
+    .pv-btn.grey {
+      background: #e4e4e7;
+      color: var(--ink)
+    }
+
+    .pv-btn.orange {
+      background: #ea580c
+    }
+
+    .pv-field {
+      border: 1px solid var(--rule);
+      border-radius: 9px;
+      padding: 7px 9px;
+      color: var(--muted);
+      background: var(--card-bg)
+    }
+
+    .pv-field b {
+      color: var(--ink);
+      font-weight: 600
+    }
+
+    .pv-card {
+      border: 1px solid var(--rule);
+      border-radius: 11px;
+      padding: 9px 10px;
+      background: var(--card-bg)
+    }
+
+    .pv-row {
+      display: flex;
+      gap: 6px;
+      align-items: center
+    }
+
+    .pv-row>* {
+      flex: 1
+    }
+
+    .pv-title {
+      font-weight: 700;
+      font-size: 12px;
+      color: var(--ink)
+    }
+
+    .pv-big {
+      font-weight: 800;
+      font-size: 16px;
+      color: var(--ink)
+    }
+
+    .pv-muted {
+      color: var(--muted)
+    }
+
+    .pv-ok {
+      color: #047857;
+      font-weight: 600
+    }
+
+    .pv-error {
+      color: #b91c1c;
+      font-weight: 600
+    }
+
+    .pv-chip {
+      display: inline-block;
+      border: 1px solid var(--rule);
+      border-radius: 999px;
+      padding: 2px 9px;
+      margin: 1px;
+      color: var(--muted)
+    }
+
+    .pv-chip.on {
+      background: var(--accent);
+      color: var(--card-bg);
+      border-color: var(--accent)
+    }
+
+    .pv-avatar {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--accent-soft);
+      color: var(--accent-strong);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      flex: none
+    }
+
+    .pv-radio {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-right: 10px;
+      color: var(--ink)
+    }
+
+    .pv-dot {
+      width: 11px;
+      height: 11px;
+      border: 2px solid var(--accent);
+      border-radius: 50%;
+      display: inline-block
+    }
+
+    .pv-dot.on {
+      background: var(--accent);
+      box-shadow: inset 0 0 0 2px var(--card-bg)
+    }
+
+    .pv-img {
+      background: var(--warm);
+      border-radius: 9px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+      font-size: 18px
+    }
+
+    .pv-slider {
+      height: 4px;
+      background: #e4e4e7;
+      border-radius: 4px;
+      position: relative;
+      margin: 10px 4px
+    }
+
+    .pv-slider i {
+      position: absolute;
+      left: 45%;
+      top: -5px;
+      width: 14px;
+      height: 14px;
+      background: var(--accent);
+      border-radius: 50%
+    }
+
+    .pv-fab {
+      position: relative;
+      margin-left: auto;
+      width: 34px;
+      height: 34px;
+      background: var(--accent);
+      color: var(--card-bg);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 700
+    }
+
+    .callout {
+      border: 1px solid var(--rule);
+      border-left: 3px solid var(--accent);
+      background: var(--paper);
+      border-radius: 0 10px 10px 0;
+      padding: 12px 16px;
+      margin: 12px 0;
+      font-size: .9rem
+    }
+
+    .callout.warn {
+      border-left-color: #f59e0b;
+      background: #FFFBEB
+    }
+
+    .callout.bad {
+      border-left-color: #ef4444;
+      background: #fef2f2
+    }
+
+    .callout b:first-child {
+      display: block;
+      margin-bottom: 2px
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: .85rem;
+      margin: 12px 0
+    }
+
+    th {
+      text-align: left;
+      font-size: .72rem;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      color: var(--muted);
+      font-weight: 700;
+      padding: 9px 12px;
+      border-bottom: 2px solid var(--rule);
+      background: var(--paper)
+    }
+
+    td {
+      padding: 9px 12px;
+      border-bottom: 1px solid var(--rule);
+      vertical-align: top
+    }
+
+    tr:hover td {
+      background: var(--paper)
+    }
+
+    .table-wrap {
+      overflow-x: auto
+    }
+
+    .grid2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px
+    }
+
+    .grid3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+      gap: 14px
+    }
+
+    .mini {
+      border: 1px solid var(--rule);
+      border-radius: 12px;
+      padding: 16px 18px;
+      background: var(--card-bg)
+    }
+
+    .mini h4 {
+      font-size: .92rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 4px
+    }
+
+    .mini p {
+      font-size: .84rem;
+      color: var(--muted);
+      margin: 2px 0
+    }
+
+    .step {
+      display: flex;
+      gap: 14px;
+      margin: 12px 0;
+      align-items: flex-start
+    }
+
+    .step .n {
+      flex: none;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--warm);
+      color: var(--accent);
+      border: 1px solid var(--rule);
+      font-weight: 800;
+      font-size: .8rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 2px
+    }
+
+    .step .t {
+      min-width: 0;
+      flex: 1
+    }
+
+    .step .t b {
+      display: block;
+      color: var(--ink)
+    }
+
+    .step .t p {
+      font-size: .88rem;
+      color: var(--muted);
+      margin: 2px 0 4px
+    }
+
+    footer {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 20px 42px 40px;
+      color: var(--muted);
+      font-size: .8rem;
+      text-align: center
+    }
+
+    @media (max-width:980px) {
+      .layout {
+        grid-template-columns: 1fr
+      }
+
+      nav.toc {
+        position: static;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid var(--rule)
+      }
+
+      main {
+        padding: 24px 16px 60px
+      }
+
+      .duo {
+        grid-template-columns: 1fr
+      }
+
+      .grid2 {
+        grid-template-columns: 1fr
+      }
+
+      .hero {
+        padding: 36px 20px
+      }
+
+      .hero h1 {
+        font-size: 1.7rem
+      }
+
+      section.block {
+        padding: 22px 18px
+      }
+
+      article.wcard {
+        padding: 18px 14px
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="layout">
+
+    <nav class="toc" id="toc">
+      <div class="toc-brand">Flutter Midterm Guide</div>
+      <div class="toc-sub">Mục lục</div>
+      <a href="#sec1">1. Trang bìa</a>
+      <a href="#sec2">2. Kiến trúc dự án</a>
+      <a href="#sec3">3. Core App Files</a>
+      <a href="#sec4">4. Category Screens</a>
+      <details>
+        <summary>5. Widget hiện có (17)</summary>
+        <a href="#w-stateless">StatelessExamplePage</a>
+        <a href="#w-demohome">WidgetDemoHome</a>
+        <a href="#w-areaslider">AreaSliderPage</a>
+        <a href="#w-appbar">MyAppBarDemo</a>
+        <a href="#w-container">MyContainerDemo</a>
+        <a href="#w-scaffold">MyScaffoldDemo</a>
+        <a href="#w-text">MyTextDemo</a>
+        <a href="#w-shoes">ShoesAppDemo</a>
+        <a href="#w-calcdemo">CalculatorDemo</a>
+        <a href="#w-calcbtn">CalculatorTextButton</a>
+        <a href="#w-shapecalc">ShapeCalculatorDemo</a>
+        <a href="#w-shapeinputdemo">ShapeInputDemo</a>
+        <a href="#w-shapenavbar">ShapeNavbarDemo</a>
+        <a href="#w-shapebottom">ShapeBottomNavigate</a>
+        <a href="#w-shapetf">ShapeTextField</a>
+        <a href="#w-shapeinput">ShapeInput</a>
+        <a href="#w-shapebtn">ShapeActionButton</a>
+      </details>
+      <details>
+        <summary>6. Widget mới cho thi (11)</summary>
+        <a href="#n-inputfield">CustomInputField</a>
+        <a href="#n-primarybtn">CustomPrimaryButton</a>
+        <a href="#n-pagewrapper">PageWrapper</a>
+        <a href="#n-studentform">StudentInfoForm</a>
+        <a href="#n-studentcard">StudentInfoCard</a>
+        <a href="#n-rectangle">RectangleCalculator</a>
+        <a href="#n-circle">CircleCalculator</a>
+        <a href="#n-triangle">TriangleCalculator</a>
+        <a href="#n-counter">SimpleCounterWidget</a>
+        <a href="#n-product">ProductCardWidget</a>
+        <a href="#n-studentlist">StudentListWidget</a>
+      </details>
+      <a href="#sec7">7. Assembly Recipes</a>
+      <a href="#sec8">8. Cheat Sheet</a>
+      <a href="#sec9">9. Lỗi thường gặp</a>
+      <a href="#sec10">10. Ví dụ tổng hợp</a>
+    </nav>
+
+    <main>
+
+      <!-- ============ 1. TITLE PAGE ============ -->
+      <div class="hero" id="sec1">
+        <span class="kicker">Ôn thi giữa kỳ · Flutter</span>
+        <h1>Flutter Midterm Widget Assembly Guide</h1>
+        <p class="subtitle">Reusable widgets, launcher screens, bottom navigation, forms, calculators, and shape
+          exercises</p>
+        <p class="intro">Tài liệu này giúp bạn <strong>lắp ráp nhanh các widget nhỏ, tái sử dụng được thành một app
+            Flutter hoàn chỉnh</strong> trong phòng thi: chỉ cần tạo file widget → đăng ký vào category screen → chạy
+          app. Mọi đoạn code đều copy được 1 chạm.</p>
+        <div class="badges">
+          <span>6 core files</span><span>4 category screens</span><span>17 widget có sẵn</span><span>11 widget
+            mới</span><span>5 recipes</span><span>18 cheat sheet</span><span>10 lỗi hay gặp</span>
+        </div>
+      </div>
+
+      <!-- ============ 2. ARCHITECTURE ============ -->
+      <section class="block" id="sec2">
+        <h2><span class="no">2.</span>Kiến trúc dự án</h2>
+        <p class="lead">Toàn bộ dự án được tổ chức theo mô hình <strong>1 entry point → 1 App → 1 HomeScreen → nhiều
+            category screen → nhiều exercise widget</strong>. Nắm chắc sơ đồ này là bạn có thể thêm bài tập mới trong
+          chưa đầy 2 phút.</p>
+
+        <div class="duo">
+          <div>
+            <span class="label l-code">Cây thư mục</span>
+            <pre class="tree">
+lib/
+  <span class="d">main.dart</span>                <span class="cm">← entry point DUY NHẤT (runApp)</span>
+  <span class="d">app.dart</span>                 <span class="cm">← MaterialApp + theme + HomeScreen</span>
+  navigation/
+    bottom_navbar.dart     <span class="cm">← AppBottomNavBar dùng chung</span>
+  screens/                 <span class="cm">← các "trang danh mục" (launcher)</span>
+    home_screen.dart
+    midterm_screen.dart
+    buoi2_screen.dart
+    calculator_screen.dart
+    shape_calculator_screen.dart
+  widgets/                 <span class="cm">← widget dùng chung toàn app</span>
+    exercise_card.dart
+    exercise_launcher.dart
+  exercises/               <span class="cm">← MỖI BÀI TẬP = 1 widget riêng</span>
+    midterm/
+      widget_demo_home.dart
+      stateless_example_page.dart
+    buoi2/
+      my_app_bar_demo.dart
+      my_container_demo.dart
+      my_scaffold_demo.dart
+      my_text_demo.dart
+      shoes_app_demo.dart
+    calculator_app/
+      calculator_demo.dart
+      calculator_text_button.dart
+    calculator_shape/
+      shape_calculator_demo.dart
+      shape_input_demo.dart
+      shape_navbar_demo.dart
+      shape_bottom_navigate.dart
+      widgets/
+        shape_text_field.dart
+        shape_input.dart
+        shape_action_button.dart
+</pre>
+          </div>
+          <div>
+            <span class="label l-prev">Luồng hoạt động</span>
+            <div class="phone">
+              <div class="pv-appbar">Midterm <span class="acts">⌕ ⋮</span></div>
+              <div class="pv-body">
+                <div class="pv-card pv-row"><span class="pv-avatar">▦</span><span><span class="pv-title">Widget Demo
+                      Home</span><br><span class="pv-muted">TabBar + Slider</span></span><span class="pv-muted"
+                    style="flex:none">›</span></div>
+                <div class="pv-card pv-row"><span class="pv-avatar">◻</span><span><span class="pv-title">Stateless
+                      Example</span><br><span class="pv-muted">Widget cơ bản</span></span><span class="pv-muted"
+                    style="flex:none">›</span></div>
+              </div>
+              <div class="pv-nav"><span class="on">● Midterm</span><span>Buổi
+                  2</span><span>Calc</span><span>Shape</span></div>
+            </div>
+            <p style="font-size:.83rem;color:var(--muted)">HomeScreen giữ <code>BottomNavigationBar</code>; mỗi tab là một
+              category screen chứa danh sách thẻ bài tập; chạm vào thẻ sẽ <code>Navigator.push</code> mở widget bài tập.
+            </p>
+          </div>
+        </div>
+
+        <span class="label l-exp">Vai trò từng thư mục</span>
+        <div class="grid3">
+          <div class="mini">
+            <h4>main.dart</h4>
+            <p>Chỉ làm đúng 1 việc: <code>runApp(const App())</code>. Không chứa UI.</p>
+          </div>
+          <div class="mini">
+            <h4>app.dart</h4>
+            <p>Chứa <code>MaterialApp</code>, theme, và trỏ <code>home</code> vào HomeScreen.</p>
+          </div>
+          <div class="mini">
+            <h4>navigation/</h4>
+            <p>Widget điều hướng dùng chung (AppBottomNavBar) — tách riêng để HomeScreen gọn.</p>
+          </div>
+          <div class="mini">
+            <h4>screens/</h4>
+            <p>Các màn hình danh mục. <strong>Chỉ</strong> hiển thị danh sách thẻ bài tập, không chứa logic bài tập.</p>
+          </div>
+          <div class="mini">
+            <h4>widgets/</h4>
+            <p>Widget tái sử dụng toàn app: ExerciseCard, ExerciseLauncher (và sau này CustomInputField…).</p>
+          </div>
+          <div class="mini">
+            <h4>exercises/</h4>
+            <p>Mỗi bài tập là 1 file widget độc lập, gom theo buổi học / chủ đề.</p>
+          </div>
+        </div>
+
+        <span class="label l-exp">4 nguyên tắc vàng</span>
+        <div class="callout"><b>1. main.dart là entry point duy nhất.</b> Flutter chỉ chạy 1 hàm <code>main()</code>.
+          Nếu file bài tập cũng có <code>main()</code> + <code>runApp()</code>, bạn sẽ dễ chạy nhầm file, app "mất"
+          bottom navigation, và khi nộp bài project không nhất quán. Một entry point = một luồng khởi động duy nhất, dễ
+          debug.</div>
+        <div class="callout"><b>2. Widget bài tập KHÔNG được gọi runApp().</b> <code>runApp()</code> gắn widget làm gốc
+          của cả ứng dụng. Widget bài tập chỉ là một "trang" được mở bằng <code>Navigator.push</code> — nó phải trả về
+          UI từ <code>build()</code> để có thể cắm vào bất kỳ đâu: TabBarView, route mới, hay body của màn hình khác. Đó
+          chính là tính tái sử dụng.</div>
+        <div class="callout"><b>3. BottomNavigationBar nối các trang danh mục.</b> HomeScreen giữ
+          <code>_currentIndex</code> (state), <code>body</code> hiển thị <code>_screens[_currentIndex]</code>. Khi bấm
+          tab, <code>onTap</code> gọi <code>setState</code> đổi index → body đổi trang mà không cần push route mới.
+        </div>
+        <div class="callout"><b>4. ExerciseLauncher + ExerciseCard giúp dự án mở rộng vô hạn.</b> Mỗi category screen
+          chỉ cần khai báo 1 danh sách <code>ExerciseItem(title, subtitle, icon, page)</code>. ExerciseLauncher tự
+          render ListView các ExerciseCard và tự xử lý Navigator.push. <strong>Thêm bài mới = thêm 1 phần tử vào list.
+            Không sửa UI, không viết lại navigation.</strong></div>
+      </section>
+      <!-- ============ 3. CORE APP FILES ============ -->
+      <section class="block" id="sec3">
+        <h2><span class="no">3.</span>Core App Files</h2>
+        <p class="lead">6 file "xương sống" của app. Vào phòng thi, hãy gõ (hoặc dán) 6 file này <strong>đầu
+            tiên</strong> — có chúng là app chạy được ngay, sau đó chỉ việc cắm bài tập vào.</p>
+
+        <!-- main.dart -->
+        <article class="wcard">
+          <div class="whead">
+            <h3>1) Entry point</h3><span class="path">lib/main.dart</span>
+          </div>
+          <div class="duo">
+            <div>
+              <span class="label l-code">Code</span>
+              <pre><code>import 'package:flutter/material.dart';
+import 'app.dart';
+
+void main() {
+  runApp(const App());
+}</code></pre>
+              <span class="label l-exp">Giải thích từng dòng</span>
+              <ul>
+                <li><code>import 'package:flutter/material.dart'</code> — nạp toàn bộ Material widgets (Scaffold,
+                  AppBar, Text…). File Flutter nào cũng cần dòng này.</li>
+                <li><code>import 'app.dart'</code> — nạp class <code>App</code> từ file cùng thư mục <code>lib/</code>.
+                </li>
+                <li><code>void main()</code> — hàm khởi động duy nhất của chương trình Dart.</li>
+                <li><code>runApp(const App())</code> — gắn <code>App</code> làm widget gốc. <code>const</code> vì App
+                  không có tham số thay đổi.</li>
+              </ul>
+            </div>
+            <div>
+              <span class="label l-prev">Preview</span>
+              <div class="phone">
+                <div class="pv-body center" style="min-height:130px">
+                  <div class="pv-muted">main() → runApp()</div>
+                  <div class="pv-big" style="color:var(--accent)">App()</div>
+                  <div class="pv-muted">→ MaterialApp → HomeScreen</div>
+                </div>
+              </div>
+              <div class="callout warn" style="font-size:.82rem"><b>Lưu ý thi:</b> Cả project chỉ có ĐÚNG 1 hàm
+                <code>main()</code>, nằm ở file này.</div>
+            </div>
+          </div>
+        </article>
+
+        <!-- app.dart -->
+        <article class="wcard">
+          <div class="whead">
+            <h3>2) App + Theme</h3><span class="path">lib/app.dart</span>
+          </div>
+          <div class="duo">
+            <div>
+              <span class="label l-code">Code</span>
+              <pre><code>import 'package:flutter/material.dart';
+import 'screens/home_screen.dart';
+
+class App extends StatelessWidget {
+  const App({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Midterm',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        colorSchemeSeed: Colors.teal,
+        useMaterial3: true,
+      ),
+      home: const HomeScreen(),
+    );
+  }
+}</code></pre>
+              <span class="label l-exp">Giải thích</span>
+              <ul>
+                <li><code>class App extends StatelessWidget</code> — App không có state riêng, chỉ cấu hình.</li>
+                <li><code>const App({super.key})</code> — constructor const, truyền key lên lớp cha.</li>
+                <li><code>MaterialApp</code> — widget gốc cung cấp theme, điều hướng (Navigator), tiêu đề.</li>
+                <li><code>debugShowCheckedModeBanner: false</code> — tắt băng đỏ DEBUG (ăn điểm trình bày).</li>
+                <li><code>colorSchemeSeed</code> — sinh cả bảng màu từ 1 màu gốc; đổi 1 chỗ là đổi cả app.</li>
+                <li><code>home: const HomeScreen()</code> — màn hình đầu tiên khi mở app.</li>
+              </ul>
+            </div>
+            <div>
+              <span class="label l-prev">Preview</span>
+              <div class="phone">
+                <div class="pv-appbar">Flutter Midterm</div>
+                <div class="pv-body center">
+                  <div class="pv-muted">theme màu teal, Material 3<br>không còn banner DEBUG</div>
+                </div>
+                <div class="pv-nav"><span class="on">● Tab 1</span><span>Tab 2</span><span>Tab 3</span><span>Tab
+                    4</span></div>
+              </div>
+              <div class="callout" style="font-size:.82rem"><b>Vì sao tách app.dart?</b> Để main.dart tối giản và mọi
+                cấu hình toàn cục (theme, title, route) nằm ở một chỗ dễ tìm.</div>
+            </div>
+          </div>
+        </article>
+
+        <!-- home_screen.dart -->
+        <article class="wcard">
+          <div class="whead">
+            <h3>3) HomeScreen — bộ khung chính</h3><span class="path">lib/screens/home_screen.dart</span>
+          </div>
+          <div class="duo">
+            <div>
+              <span class="label l-code">Code</span>
+              <pre><code>import 'package:flutter/material.dart';
+import '../navigation/bottom_navbar.dart';
+import 'midterm_screen.dart';
+import 'buoi2_screen.dart';
+import 'calculator_screen.dart';
+import 'shape_calculator_screen.dart';
+
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
+  @override
+  State&lt;HomeScreen&gt; createState() =&gt; _HomeScreenState();
+}
+
+class _HomeScreenState extends State&lt;HomeScreen&gt; {
+  int _currentIndex = 0;
+
+  final List&lt;Widget&gt; _screens = const [
+    MidtermScreen(),
+    Buoi2Screen(),
+    CalculatorScreen(),
+    ShapeCalculatorScreen(),
+  ];
+
+  final List&lt;String&gt; _titles = const [
+    'Midterm',
+    'Buổi 2',
+    'Calculator',
+    'Shape Calculator',
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(_titles[_currentIndex]),
+        centerTitle: true,
+      ),
+      body: _screens[_currentIndex],
+      bottomNavigationBar: AppBottomNavBar(
+        currentIndex: _currentIndex,
+        onTap: (i) =&gt; setState(() =&gt; _currentIndex = i),
+      ),
+    );
+  }
+}</code></pre>
+            </div>
+            <div>
+              <span class="label l-exp">Giải thích</span>
+              <ul>
+                <li><strong>StatefulWidget</strong> vì cần nhớ tab đang chọn (<code>_currentIndex</code>).</li>
+                <li><code>_screens</code> — danh sách 4 trang danh mục, <strong>cùng thứ tự</strong> với item của
+                  navbar.</li>
+                <li><code>_titles</code> — tiêu đề AppBar đổi theo tab, cùng thứ tự với <code>_screens</code>.</li>
+                <li><code>body: _screens[_currentIndex]</code> — đổi index là đổi trang, không cần push route.</li>
+                <li><code>onTap: (i) =&gt; setState(...)</code> — navbar báo index mới → <code>setState</code> vẽ lại
+                  UI.</li>
+              </ul>
+              <span class="label l-prev">Preview</span>
+              <div class="phone">
+                <div class="pv-appbar" style="justify-content:center">Buổi 2</div>
+                <div class="pv-body">
+                  <div class="pv-card pv-row"><span class="pv-avatar">A</span><span><span class="pv-title">My AppBar
+                        Demo</span><br><span class="pv-muted">AppBar + actions</span></span></div>
+                  <div class="pv-card pv-row"><span class="pv-avatar">C</span><span><span class="pv-title">My Container
+                        Demo</span><br><span class="pv-muted">Box decoration</span></span></div>
+                </div>
+                <div class="pv-nav"><span>Midterm</span><span class="on">● Buổi
+                    2</span><span>Calc</span><span>Shape</span></div>
+              </div>
+              <div class="callout warn" style="font-size:.82rem"><b>Quy tắc 3 danh sách:</b> <code>_screens</code>,
+                <code>_titles</code> và <code>items</code> của navbar phải luôn <strong>bằng nhau về số lượng và thứ
+                  tự</strong>. Thêm tab mới là thêm đủ cả 3 chỗ.</div>
+            </div>
+          </div>
+        </article>
+
+        <!-- bottom_navbar.dart -->
+        <article class="wcard">
+          <div class="whead">
+            <h3>4) AppBottomNavBar</h3><span class="path">lib/navigation/bottom_navbar.dart</span>
+          </div>
+          <div class="duo">
+            <div>
+              <span class="label l-code">Code</span>
+              <pre><code>import 'package:flutter/material.dart';
+
+class AppBottomNavBar extends StatelessWidget {
+  final int currentIndex;
+  final ValueChanged&lt;int&gt; onTap;
+
+  const AppBottomNavBar({
+    super.key,
+    required this.currentIndex,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BottomNavigationBar(
+      currentIndex: currentIndex,
+      onTap: onTap,
+      type: BottomNavigationBarType.fixed,
+      selectedItemColor: Colors.teal,
+      unselectedItemColor: Colors.grey,
+      items: const [
+        BottomNavigationBarItem(
+            icon: Icon(Icons.school), label: 'Midterm'),
+        BottomNavigationBarItem(
+            icon: Icon(Icons.menu_book), label: 'Buổi 2'),
+        BottomNavigationBarItem(
+            icon: Icon(Icons.calculate), label: 'Calc'),
+        BottomNavigationBarItem(
+            icon: Icon(Icons.category), label: 'Shape'),
+      ],
+    );
+  }
+}</code></pre>
+            </div>
+            <div>
+              <span class="label l-exp">Giải thích</span>
+              <ul>
+                <li>Navbar là <strong>StatelessWidget</strong>: không tự giữ index mà nhận từ cha
+                  (<code>currentIndex</code>) và báo lên cha qua callback <code>onTap</code>. Đây là pattern "state ở
+                  cha, con chỉ hiển thị".</li>
+                <li><code>ValueChanged&lt;int&gt;</code> = hàm nhận 1 tham số int, viết gọn của
+                  <code>void Function(int)</code>.</li>
+                <li><code>type: fixed</code> — bắt buộc khi có ≥ 4 item, nếu không item sẽ trôi/ẩn label.</li>
+                <li>Muốn thêm tab: thêm 1 <code>BottomNavigationBarItem</code> tại đây + 1 screen + 1 title ở
+                  HomeScreen.</li>
+              </ul>
+              <span class="label l-prev">Preview</span>
+              <div class="phone">
+                <div class="pv-nav" style="border-top:none"><span class="on">🎓<br>Midterm</span><span>📖<br>Buổi
+                    2</span><span>🧮<br>Calc</span><span>◼<br>Shape</span></div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- exercise_card.dart -->
+        <article class="wcard">
+          <div class="whead">
+            <h3>5) ExerciseCard — thẻ bài tập</h3><span class="path">lib/widgets/exercise_card.dart</span>
+          </div>
+          <div class="duo">
+            <div>
+              <span class="label l-code">Code</span>
+              <pre><code>import 'package:flutter/material.dart';
+
+class ExerciseCard extends StatelessWidget {
+  final String title;
+  final String subtitle;
+  final IconData icon;
+  final VoidCallback onTap;
+
+  const ExerciseCard({
+    super.key,
+    required this.title,
+    required this.subtitle,
+    required this.icon,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: const EdgeInsets.symmetric(
+          horizontal: 12, vertical: 6),
+      child: ListTile(
+        leading: CircleAvatar(child: Icon(icon)),
+        title: Text(title,
+            style: const TextStyle(
+                fontWeight: FontWeight.bold)),
+        subtitle: Text(subtitle),
+        trailing: const Icon(Icons.chevron_right),
+        onTap: onTap,
+      ),
+    );
+  }
+}</code></pre>
+            </div>
+            <div>
+              <span class="label l-exp">Giải thích</span>
+              <ul>
+                <li>Gói <code>Card + ListTile</code> thành 1 widget: mọi thẻ bài tập trong app đều đồng bộ giao diện.
+                </li>
+                <li>4 thuộc tính <code>final</code> + constructor <code>required</code>: buộc nơi gọi truyền đủ dữ liệu.
+                </li>
+                <li><code>VoidCallback</code> = hàm không tham số, không trả về — dùng cho sự kiện chạm.</li>
+                <li><code>onTap</code> được chuyển thẳng vào <code>ListTile.onTap</code> — thẻ không tự quyết định mở
+                  gì, nơi gọi quyết định.</li>
+              </ul>
+              <span class="label l-prev">Preview</span>
+              <div class="phone">
+                <div class="pv-body">
+                  <div class="pv-card pv-row"><span class="pv-avatar">🧮</span><span><span class="pv-title">Calculator
+                        Demo</span><br><span class="pv-muted">Cộng trừ nhân chia</span></span><span class="pv-muted"
+                      style="flex:none">›</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- exercise_launcher.dart -->
+        <article class="wcard">
+          <div class="whead">
+            <h3>6) ExerciseLauncher + ExerciseItem</h3><span class="path">lib/widgets/exercise_launcher.dart</span>
+          </div>
+          <div class="duo">
+            <div>
+              <span class="label l-code">Code</span>
+              <pre><code>import 'package:flutter/material.dart';
+import 'exercise_card.dart';
+
+/// Mô tả 1 bài tập: hiển thị gì + mở trang nào
+class ExerciseItem {
+  final String title;
+  final String subtitle;
+  final IconData icon;
+  final Widget page;
+
+  const ExerciseItem({
+    required this.title,
+    required this.subtitle,
+    required this.icon,
+    required this.page,
+  });
+}
+
+/// Nhận list bài tập, render ListView các ExerciseCard
+class ExerciseLauncher extends StatelessWidget {
+  final List&lt;ExerciseItem&gt; items;
+
+  const ExerciseLauncher({super.key, required this.items});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      itemCount: items.length,
+      itemBuilder: (context, index) {
+        final item = items[index];
+        return ExerciseCard(
+          title: item.title,
+          subtitle: item.subtitle,
+          icon: item.icon,
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) =&gt; item.page),
+            );
+          },
+        );
+      },
+    );
+  }
+}</code></pre>
+            </div>
+            <div>
+              <span class="label l-exp">Giải thích</span>
+              <ul>
+                <li><code>ExerciseItem</code> là <strong>class dữ liệu thuần</strong> (không phải widget): mô tả tiêu
+                  đề, mô tả, icon và trang cần mở.</li>
+                <li><code>ListView.builder</code> chỉ build item khi cuộn tới → hiệu quả với danh sách dài.</li>
+                <li><code>Navigator.push + MaterialPageRoute</code> — mở widget bài tập như một trang mới, tự có nút
+                  back.</li>
+                <li><code>builder: (_) =&gt; item.page</code> — dấu <code>_</code> nghĩa là "không dùng context này".
+                </li>
+                <li>Đây là lý do widget bài tập <strong>không cần main()/runApp()</strong>: nó chỉ được push lên làm một
+                  route.</li>
+              </ul>
+              <span class="label l-prev">Preview</span>
+              <div class="phone">
+                <div class="pv-body">
+                  <div class="pv-card pv-row"><span class="pv-avatar">1</span><span><span class="pv-title">Bài tập
+                        1</span><br><span class="pv-muted">chạm để mở ›</span></span></div>
+                  <div class="pv-card pv-row"><span class="pv-avatar">2</span><span><span class="pv-title">Bài tập
+                        2</span><br><span class="pv-muted">chạm để mở ›</span></span></div>
+                  <div class="pv-card pv-row"><span class="pv-avatar">3</span><span><span class="pv-title">Bài tập
+                        3</span><br><span class="pv-muted">chạm để mở ›</span></span></div>
+                </div>
+              </div>
+              <div class="callout" style="font-size:.82rem"><b>Sức mạnh mở rộng:</b> thêm bài tập mới = thêm 1
+                <code>ExerciseItem</code> vào list của category screen. Không đụng vào file nào khác.</div>
+            </div>
+          </div>
+        </article>
+      </section>
+      <!-- ============ 4. CATEGORY SCREENS ============ -->
+      <section class="block" id="sec4">
+        <h2><span class="no">4.</span>Category Screens — 4 trang danh mục</h2>
+        <p class="lead">Cả 4 màn hình có <strong>cùng một khuôn</strong>: StatelessWidget trả về
+          <code>ExerciseLauncher(items: [...])</code>. Không logic, không state — chỉ là "bảng chỉ mục" của các bài tập.
+          Học thuộc khuôn này 1 lần là viết được cả 4.</p>
+
+        <div class="callout"><b>Cách ExerciseItem hoạt động trong màn hình danh mục:</b> mỗi <code>ExerciseItem</code>
+          khai báo sẵn <code>page</code> (widget bài tập). Khi người dùng chạm thẻ, ExerciseLauncher gọi
+          <code>Navigator.push(context, MaterialPageRoute(builder: (_) =&gt; item.page))</code> — Flutter đẩy trang bài
+          tập lên trên HomeScreen, AppBar của trang bài tập tự có nút back để quay lại.</div>
+
+        <!-- MidtermScreen -->
+        <article class="wcard">
+          <div class="whead">
+            <h3>MidtermScreen</h3><span class="path">lib/screens/midterm_screen.dart</span>
+          </div>
+          <div class="duo">
+            <div>
+              <span class="label l-code">Code</span>
+              <pre><code>import 'package:flutter/material.dart';
+import '../widgets/exercise_launcher.dart';
+import '../exercises/midterm/widget_demo_home.dart';
+import '../exercises/midterm/stateless_example_page.dart';
+
+class MidtermScreen extends StatelessWidget {
+  const MidtermScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ExerciseLauncher(
+      items: const [
+        ExerciseItem(
+          title: 'Widget Demo Home',
+          subtitle: 'TabBar: Stateless + Area Slider',
+          icon: Icons.tab,
+          page: WidgetDemoHome(),
+        ),
+        ExerciseItem(
+          title: 'Stateless Example',
+          subtitle: 'StatelessWidget cơ bản',
+          icon: Icons.widgets,
+          page: StatelessExamplePage(),
+        ),
+      ],
+    );
+  }
+}</code></pre>
+            </div>
+            <div>
+              <span class="label l-prev">Preview</span>
+              <div class="phone">
+                <div class="pv-appbar" style="justify-content:center">Midterm</div>
+                <div class="pv-body">
+                  <div class="pv-card pv-row"><span class="pv-avatar">▦</span><span><span class="pv-title">Widget Demo
+                        Home</span><br><span class="pv-muted">TabBar: Stateless + Slider</span></span><span
+                      class="pv-muted" style="flex:none">›</span></div>
+                  <div class="pv-card pv-row"><span class="pv-avatar">◻</span><span><span class="pv-title">Stateless
+                        Example</span><br><span class="pv-muted">StatelessWidget cơ bản</span></span><span
+                      class="pv-muted" style="flex:none">›</span></div>
+                </div>
+                <div class="pv-nav"><span class="on">● Midterm</span><span>Buổi
+                    2</span><span>Calc</span><span>Shape</span></div>
+              </div>
+              <span class="label l-how">Thêm 1 bài tập mới</span>
+              <ol style="font-size:.86rem">
+                <li>Tạo file <code>lib/exercises/midterm/my_new_demo.dart</code> chứa widget <code>MyNewDemo</code>.
+                </li>
+                <li>Thêm <code>import '../exercises/midterm/my_new_demo.dart';</code></li>
+                <li>Thêm vào
+                  list:<br><code>ExerciseItem(title: 'My New Demo', subtitle: '...', icon: Icons.star, page: MyNewDemo())</code>
+                </li>
+              </ol>
+            </div>
+          </div>
+        </article>
+
+        <!-- Buoi2Screen -->
+        <article class="wcard">
+          <div class="whead">
+            <h3>Buoi2Screen</h3><span class="path">lib/screens/buoi2_screen.dart</span>
+          </div>
+          <div class="duo">
+            <div>
+              <span class="label l-code">Code</span>
+              <pre><code>import 'package:flutter/material.dart';
+import '../widgets/exercise_launcher.dart';
+import '../exercises/buoi2/my_app_bar_demo.dart';
+import '../exercises/buoi2/my_container_demo.dart';
+import '../exercises/buoi2/my_scaffold_demo.dart';
+import '../exercises/buoi2/my_text_demo.dart';
+import '../exercises/buoi2/shoes_app_demo.dart';
+
+class Buoi2Screen extends StatelessWidget {
+  const Buoi2Screen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ExerciseLauncher(
+      items: const [
+        ExerciseItem(
+          title: 'My AppBar',
+          subtitle: 'AppBar với leading và actions',
+          icon: Icons.web_asset,
+          page: MyAppBarDemo(),
+        ),
+        ExerciseItem(
+          title: 'My Container',
+          subtitle: 'BoxDecoration, gradient, bo góc',
+          icon: Icons.crop_square,
+          page: MyContainerDemo(),
+        ),
+        ExerciseItem(
+          title: 'My Scaffold',
+          subtitle: 'Scaffold + FAB',
+          icon: Icons.layers,
+          page: MyScaffoldDemo(),
+        ),
+        ExerciseItem(
+          title: 'My Text',
+          subtitle: 'Các kiểu TextStyle',
+          icon: Icons.text_fields,
+          page: MyTextDemo(),
+        ),
+        ExerciseItem(
+          title: 'Shoes App',
+          subtitle: 'UI sản phẩm giày',
+          icon: Icons.shopping_bag,
+          page: ShoesAppDemo(),
+        ),
+      ],
+    );
+  }
+}</code></pre>
+            </div>
+            <div>
+              <span class="label l-prev">Preview</span>
+              <div class="phone">
+                <div class="pv-appbar" style="justify-content:center">Buổi 2</div>
+                <div class="pv-body">
+                  <div class="pv-card pv-row"><span class="pv-avatar">▭</span><span><span class="pv-title">My
+                        AppBar</span><br><span class="pv-muted">leading + actions</span></span></div>
+                  <div class="pv-card pv-row"><span class="pv-avatar">◻</span><span><span class="pv-title">My
+                        Container</span><br><span class="pv-muted">gradient, bo góc</span></span></div>
+                  <div class="pv-card pv-row"><span class="pv-avatar">👟</span><span><span class="pv-title">Shoes
+                        App</span><br><span class="pv-muted">UI sản phẩm</span></span></div>
+                </div>
+                <div class="pv-nav"><span>Midterm</span><span class="on">● Buổi
+                    2</span><span>Calc</span><span>Shape</span></div>
+              </div>
+              <span class="label l-exp">Ghi nhớ</span>
+              <ul style="font-size:.86rem">
+                <li>Import đủ mọi file bài tập được nhắc tới trong list — thiếu import là lỗi compile đầu tiên bạn gặp.
+                </li>
+                <li>List để <code>const</code> được vì mọi ExerciseItem và page đều có constructor const → hiệu năng tốt
+                  hơn.</li>
+              </ul>
+            </div>
+          </div>
+        </article>
+
+        <!-- CalculatorScreen -->
+        <article class="wcard">
+          <div class="whead">
+            <h3>CalculatorScreen</h3><span class="path">lib/screens/calculator_screen.dart</span>
+          </div>
+          <div class="duo">
+            <div>
+              <span class="label l-code">Code</span>
+              <pre><code>import 'package:flutter/material.dart';
+import '../widgets/exercise_launcher.dart';
+import '../exercises/calculator_app/calculator_demo.dart';
+
+class CalculatorScreen extends StatelessWidget {
+  const CalculatorScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ExerciseLauncher(
+      items: const [
+        ExerciseItem(
+          title: 'Calculator',
+          subtitle: 'Cộng, trừ, nhân, chia 2 số',
+          icon: Icons.calculate,
+          page: CalculatorDemo(),
+        ),
+      ],
+    );
+  }
+}</code></pre>
+            </div>
+            <div>
+              <span class="label l-prev">Preview</span>
+              <div class="phone">
+                <div class="pv-appbar" style="justify-content:center">Calculator</div>
+                <div class="pv-body">
+                  <div class="pv-card pv-row"><span class="pv-avatar">🧮</span><span><span
+                        class="pv-title">Calculator</span><br><span class="pv-muted">Cộng, trừ, nhân, chia 2
+                        số</span></span><span class="pv-muted" style="flex:none">›</span></div>
+                </div>
+                <div class="pv-nav"><span>Midterm</span><span>Buổi 2</span><span class="on">●
+                    Calc</span><span>Shape</span></div>
+              </div>
+              <span class="label l-how">Mở rộng</span>
+              <p style="font-size:.86rem">Khi cô cho thêm bài "máy tính BMI" hay "đổi tiền tệ", chỉ cần tạo widget mới
+                trong <code>exercises/calculator_app/</code> rồi thêm 1 ExerciseItem ở đây.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- ShapeCalculatorScreen -->
+        <article class="wcard">
+          <div class="whead">
+            <h3>ShapeCalculatorScreen</h3><span class="path">lib/screens/shape_calculator_screen.dart</span>
+          </div>
+          <div class="duo">
+            <div>
+              <span class="label l-code">Code</span>
+              <pre><code>import 'package:flutter/material.dart';
+import '../widgets/exercise_launcher.dart';
+import '../exercises/calculator_shape/shape_calculator_demo.dart';
+import '../exercises/calculator_shape/shape_input_demo.dart';
+
+class ShapeCalculatorScreen extends StatelessWidget {
+  const ShapeCalculatorScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ExerciseLauncher(
+      items: const [
+        ExerciseItem(
+          title: 'Shape Calculator',
+          subtitle: 'App tính hình có bottom nav riêng',
+          icon: Icons.category,
+          page: ShapeCalculatorDemo(),
+        ),
+        ExerciseItem(
+          title: 'Shape Input',
+          subtitle: 'Form nhập kích thước hình chữ nhật',
+          icon: Icons.input,
+          page: ShapeInputDemo(),
+        ),
+      ],
+    );
+  }
+}</code></pre>
+            </div>
+            <div>
+              <span class="label l-prev">Preview</span>
+              <div class="phone">
+                <div class="pv-appbar" style="justify-content:center">Shape Calculator</div>
+                <div class="pv-body">
+                  <div class="pv-card pv-row"><span class="pv-avatar">◼</span><span><span class="pv-title">Shape
+                        Calculator</span><br><span class="pv-muted">bottom nav riêng</span></span></div>
+                  <div class="pv-card pv-row"><span class="pv-avatar">⌨</span><span><span class="pv-title">Shape
+                        Input</span><br><span class="pv-muted">form hình chữ nhật</span></span></div>
+                </div>
+                <div class="pv-nav"><span>Midterm</span><span>Buổi 2</span><span>Calc</span><span class="on">●
+                    Shape</span></div>
+              </div>
+              <span class="label l-exp">Điểm hay</span>
+              <p style="font-size:.86rem">ShapeCalculatorDemo là một "app con" có BottomNavigationBar riêng — nhưng vì
+                nó chỉ là widget bình thường, vẫn push mở như mọi bài tập khác. Đây là minh chứng widget tái sử dụng
+                mạnh thế nào.</p>
+            </div>
+          </div>
+        </article>
+      </section>
+      <!-- ============ 5. EXISTING EXERCISE WIDGETS ============ -->
+      <section class="block" id="sec5">
+        <h2><span class="no">5.</span>Widget bài tập hiện có</h2>
+        <p class="lead">17 widget đã có trong project, kèm phiên bản code chuẩn hoá (const, tên rõ nghĩa, không
+          main/runApp). Mỗi widget: công dụng → khi nào dùng trong bài thi → code → cách gọi → lỗi hay gặp.</p>
+
+        <!-- StatelessExamplePage -->
+        <article class="wcard" id="w-stateless">
+          <div class="whead">
+            <h3>StatelessExamplePage</h3><span class="path">lib/exercises/midterm/stateless_example_page.dart</span>
+          </div>
+          <ul class="meta">
+            <li><b>Công dụng:</b> Trang tĩnh minh hoạ StatelessWidget — UI không đổi theo thời gian.</li>
+            <li><b>Dùng khi thi:</b> Đề yêu cầu "tạo một trang giới thiệu / hiển thị thông tin tĩnh".</li>
+            <li><b>Import cần:</b> <code>package:flutter/material.dart</code></li>
+            <li><b>Gọi từ file khác:</b> <code>page: StatelessExamplePage()</code> trong ExerciseItem, hoặc đặt vào
+              <code>TabBarView</code>.</li>
+            <li><b>Đăng ký tại:</b> MidtermScreen.</li>
+          </ul>
+          <div class="duo">
+            <div>
+              <span class="label l-code">Code</span>
+              <pre><code>import 'package:flutter/material.dart';
+
+class StatelessExamplePage extends StatelessWidget {
+  const StatelessExamplePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Stateless Example')),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: const [
+            Icon(Icons.flutter_dash,
+                size: 72, color: Colors.teal),
+            SizedBox(height: 16),
+            Text(
+              'Đây là StatelessWidget',
+              style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 8),
+            Text('UI không thay đổi theo thời gian'),
+          ],
+        ),
+      ),
+    );
+  }
+}</code></pre>
+            </div>
+            <div>
+              <span class="label l-prev">Preview</span>
+              <div class="phone">
+                <div class="pv-appbar">‹ Stateless Example</div>
+                <div class="pv-body center" style="min-height:120px">
+                  <div style="font-size:26px;color:var(--accent)">🐦</div>
+                  <div class="pv-title">Đây là StatelessWidget</div>
+                  <div class="pv-muted">UI không thay đổi theo thời gian</div>
+                </div>
+              </div>
+              <span class="label l-err">Lỗi thường gặp</span>
+              <ul style="font-size:.85rem">
+                <li>Quên <code>const</code> ở list children khi mọi phần tử đều const.</li>
+                <li>Đặt <code>main()</code> trong file này để "chạy thử" rồi quên xoá → app có 2 main.</li>
+              </ul>
+            </div>
+          </div>
+        </article>
+
+        <!-- WidgetDemoHome -->
+        <article class="wcard" id="w-demohome">
+          <div class="whead">
+            <h3>WidgetDemoHome — TabBar</h3><span class="path">lib/exercises/midterm/widget_demo_home.dart</span>
+          </div>
+          <ul class="meta">
+            <li><b>Công dụng:</b> Gom nhiều trang demo vào 1 màn hình bằng TabBar + TabBarView.</li>
+            <li><b>Dùng khi thi:</b> Đề yêu cầu "app có 2–3 tab" — đây là khuôn nhanh nhất (không cần StatefulWidget nhờ
+              <code>DefaultTabController</code>).</li>
+            <li><b>Import cần:</b> material + 2 file trang con.</li>
+            <li><b>Gọi từ file khác:</b> <code>page: WidgetDemoHome()</code>.</li>
+            <li><b>Đăng ký tại:</b> MidtermScreen.</li>
+          </ul>
+          <div class="duo">
+            <div>
+              <span class="label l-code">Code</span>
+              <pre><code>import 'package:flutter/material.dart';
+import 'stateless_example_page.dart';
+import 'area_slider_page.dart';
+
+class WidgetDemoHome extends StatelessWidget {
+  const WidgetDemoHome({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return DefaultTabController(
+      length: 2, // PHẢI bằng số Tab và số trang
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Widget Demo'),
+          bottom: const TabBar(
+            tabs: [
+              Tab(icon: Icon(Icons.widgets),
+                  text: 'Stateless'),
+              Tab(icon: Icon(Icons.straighten),
+                  text: 'Slider'),
+            ],
+          ),
+        ),
+        body: const TabBarView(
+          children: [
+            StatelessExamplePage(),
+            AreaSliderPage(),
+          ],
+        ),
+      ),
+    );
+  }
+}</code></pre>
+            </div>
+            <div>
+              <span class="label l-prev">Preview</span>
+              <div class="phone">
+                <div class="pv-appbar">‹ Widget Demo</div>
+                <div class="pv-tabbar"><span class="on">▦ Stateless</span><span>📏 Slider</span></div>
+                <div class="pv-body center">
+                  <div class="pv-muted">Nội dung tab đang chọn<br>(vuốt ngang để đổi tab)</div>
+                </div>
+              </div>
+              <span class="label l-err">Lỗi thường gặp</span>
+              <ul style="font-size:.85rem">
+                <li><code>length</code> ≠ số <code>Tab</code> ≠ số children của TabBarView → crash ngay khi mở.</li>
+                <li>Trang con đã có Scaffold + AppBar riêng → xuất hiện 2 AppBar chồng nhau. Khi nhét vào TabBarView,
+                  nên dùng bản widget chỉ có phần body.</li>
+              </ul>
+            </div>
+          </div>
+        </article>
+
+        <!-- AreaSliderPage -->
+        <article class="wcard" id="w-areaslider">
+          <div class="whead">
+            <h3>AreaSliderPage</h3><span class="path">lib/exercises/midterm/area_slider_page.dart</span>
+          </div>
+          <ul class="meta">
+            <li><b>Công dụng:</b> Kéo Slider đổi độ dài cạnh → tự tính diện tích hình vuông. Minh hoạ chuẩn
+              StatefulWidget + setState.</li>
+            <li><b>Dùng khi thi:</b> Đề có "dùng Slider" hoặc "giá trị thay đổi theo thao tác kéo".</li>
+            <li><b>Import cần:</b> <code>package:flutter/material.dart</code></li>
+            <li><b>Gọi từ file khác:</b> <code>page: AreaSliderPage()</code> hoặc làm 1 tab trong WidgetDemoHome.</li>
+            <li><b>Đăng ký tại:</b> MidtermScreen (trực tiếp hoặc qua WidgetDemoHome).</li>
+          </ul>
+          <div class="duo">
+            <div>
+              <span class="label l-code">Code</span>
+              <pre><code>import 'package:flutter/material.dart';
+
+class AreaSliderPage extends StatefulWidget {
+  const AreaSliderPage({super.key});
+
+  @override
+  State&lt;AreaSliderPage&gt; createState() =&gt;
+      _AreaSliderPageState();
+}
+
+class _AreaSliderPageState extends State&lt;AreaSliderPage&gt; {
+  double _side = 5;
+
+  @override
+  Widget build(BuildContext context) {
+    final double area = _side * _side;
+
+    return Scaffold(
+      appBar: AppBar(title: const Text('Area Slider')),
+      body: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          children: [
+            Text('Cạnh hình vuông: '
+                '${_side.toStringAsFixed(1)}'),
+            Slider(
+              value: _side,
+              min: 1,
+              max: 20,
+              divisions: 38,
+              label: _side.toStringAsFixed(1),
+              onChanged: (value) {
+                setState(() =&gt; _side = value);
+              },
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'Diện tích: ${area.toStringAsFixed(2)}',
+              style: const TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.teal),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}</code></pre>
+            </div>
+            <div>
+              <span class="label l-prev">Preview</span>
+              <div class="phone">
+                <div class="pv-appbar">‹ Area Slider</div>
+                <div class="pv-body">
+                  <div class="pv-muted">Cạnh hình vuông: 9.5</div>
+                  <div class="pv-slider"><i></i></div>
+                  <div class="pv-big" style="color:var(--accent)">Diện tích: 90.25</div>
+                </div>
+              </div>
+              <span class="label l-exp">Điểm chấm</span>
+              <ul style="font-size:.85rem">
+                <li>Biến state <code>_side</code> nằm trong class State, có dấu <code>_</code> (private).</li>
+                <li>Chỉ đổi giá trị bên trong <code>setState</code> — quên setState thì UI đứng im.</li>
+                <li><code>area</code> tính lại mỗi lần build → luôn khớp giá trị slider.</li>
+              </ul>
+            </div>
+          </div>
+        </article>
+
+        <!-- MyAppBarDemo -->
+        <article class="wcard" id="w-appbar">
+          <div class="whead">
+            <h3>MyAppBarDemo</h3><span class="path">lib/exercises/buoi2/my_app_bar_demo.dart</span>
+          </div>
+          <ul class="meta">
+            <li><b>Công dụng:</b> AppBar đầy đủ: màu nền, tiêu đề giữa, leading, actions.</li>
+            <li><b>Dùng khi thi:</b> Đề yêu cầu "AppBar có icon menu/search" — copy khuôn này.</li>
+            <li><b>Đăng ký tại:</b> Buoi2Screen.</li>
+          </ul>
+          <div class="duo">
+            <div>
+              <span class="label l-code">Code</span>
+              <pre><code>import 'package:flutter/material.dart';
+
+class MyAppBarDemo extends StatelessWidget {
+  const MyAppBarDemo({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.teal,
+        foregroundColor: Colors.white,
+        centerTitle: true,
+        title: const Text('My AppBar'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.search),
+            onPressed: () {},
+          ),
+          IconButton(
+            icon: const Icon(Icons.more_vert),
+            onPressed: () {},
+          ),
+        ],
+      ),
+      body: const Center(
+        child: Text('Demo AppBar với actions'),
+      ),
+    );
+  }
+}</code></pre>
+            </div>
+            <div>
+              <span class="label l-prev">Preview</span>
+              <div class="phone">
+                <div class="pv-appbar"><span>‹</span><span>My AppBar</span><span class="acts">⌕ ⋮</span></div>
+                <div class="pv-body center"><span class="pv-muted">Demo AppBar với actions</span></div>
+              </div>
+              <span class="label l-err">Lỗi thường gặp</span>
+              <ul style="font-size:.85rem">
+                <li><code>actions</code> không để <code>const</code> được nếu <code>onPressed</code> là closure — cứ để
+                  list thường.</li>
+                <li>Không tự thêm nút back: khi được push, Flutter tự thêm leading back.</li>
+              </ul>
+            </div>
+          </div>
+        </article>
+
+        <!-- MyContainerDemo -->
+        <article class="wcard" id="w-container">
+          <div class="whead">
+            <h3>MyContainerDemo</h3><span class="path">lib/exercises/buoi2/my_container_demo.dart</span>
+          </div>
+          <ul class="meta">
+            <li><b>Công dụng:</b> Container với BoxDecoration: gradient, bo góc, đổ bóng, viền.</li>
+            <li><b>Dùng khi thi:</b> Đề yêu cầu "hộp màu / thẻ trang trí" — mọi kiểu trang trí hộp đều ở đây.</li>
+            <li><b>Đăng ký tại:</b> Buoi2Screen.</li>
+          </ul>
+          <div class="duo">
+            <div>
+              <span class="label l-code">Code</span>
+              <pre><code>import 'package:flutter/material.dart';
+
+class MyContainerDemo extends StatelessWidget {
+  const MyContainerDemo({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('My Container')),
+      body: Center(
+        child: Container(
+          width: 260,
+          height: 160,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            gradient: const LinearGradient(
+              colors: [Colors.teal, Colors.cyan],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(
+                color: Colors.white, width: 2),
+            boxShadow: const [
+              BoxShadow(
+                color: Colors.black26,
+                blurRadius: 10,
+                offset: Offset(0, 6),
+              ),
+            ],
+          ),
+          child: const Text(
+            'Hello Container',
+            style: TextStyle(
+                color: Colors.white,
+                fontSize: 20,
+                fontWeight: FontWeight.bold),
+          ),
+        ),
+      ),
+    );
+  }
+}</code></pre>
+            </div>
+            <div>
+              <span class="label l-prev">Preview</span>
+              <div class="phone">
+                <div class="pv-appbar">‹ My Container</div>
+                <div class="pv-body center" style="min-height:120px">
+                  <div
+                    style="background:linear-gradient(135deg,var(--accent),#F7B731);color:var(--card-bg);border-radius:14px;padding:22px 26px;font-weight:700;box-shadow:0 5px 10px rgba(0,0,0,.18)">
+                    Hello Container</div>
+                </div>
+              </div>
+              <span class="label l-err">Lỗi thường gặp</span>
+              <ul style="font-size:.85rem">
+                <li>Đặt cả <code>color:</code> của Container lẫn <code>decoration:</code> → lỗi assert. Màu phải nằm
+                  <strong>trong</strong> BoxDecoration.</li>
+              </ul>
+            </div>
+          </div>
+        </article>
+
+        <!-- MyScaffoldDemo -->
+        <article class="wcard" id="w-scaffold">
+          <div class="whead">
+            <h3>MyScaffoldDemo</h3><span class="path">lib/exercises/buoi2/my_scaffold_demo.dart</span>
+          </div>
+          <ul class="meta">
+            <li><b>Công dụng:</b> Bộ khung Scaffold đủ 3 phần: AppBar + body + FloatingActionButton (kèm SnackBar).</li>
+            <li><b>Dùng khi thi:</b> Khuôn khởi đầu cho MỌI trang mới; đề nào có "nút nổi" là dùng.</li>
+            <li><b>Đăng ký tại:</b> Buoi2Screen.</li>
+          </ul>
+          <div class="duo">
+            <div>
+              <span class="label l-code">Code</span>
+              <pre><code>import 'package:flutter/material.dart';
+
+class MyScaffoldDemo extends StatelessWidget {
+  const MyScaffoldDemo({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('My Scaffold')),
+      body: const Center(
+        child: Text('Body của Scaffold'),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+                content: Text('Bạn vừa bấm FAB!')),
+          );
+        },
+        child: const Icon(Icons.add),
+      ),
+    );
+  }
+}</code></pre>
+            </div>
+            <div>
+              <span class="label l-prev">Preview</span>
+              <div class="phone">
+                <div class="pv-appbar">‹ My Scaffold</div>
+                <div class="pv-body" style="min-height:110px">
+                  <div class="pv-muted" style="text-align:center;margin-top:14px">Body của Scaffold</div>
+                  <div class="pv-fab">+</div>
+                </div>
+              </div>
+              <span class="label l-err">Lỗi thường gặp</span>
+              <ul style="font-size:.85rem">
+                <li><code>ScaffoldMessenger.of(context)</code> cần context <strong>bên dưới</strong> MaterialApp — trong
+                  cấu trúc này luôn đúng vì MaterialApp nằm ở app.dart.</li>
+              </ul>
+            </div>
+          </div>
+        </article>
+
+        <!-- MyTextDemo -->
+        <article class="wcard" id="w-text">
+          <div class="whead">
+            <h3>MyTextDemo</h3><span class="path">lib/exercises/buoi2/my_text_demo.dart</span>
+          </div>
+          <ul class="meta">
+            <li><b>Công dụng:</b> Trưng bày các TextStyle: cỡ chữ, đậm, nghiêng, màu, gạch chân, cắt dòng.</li>
+            <li><b>Dùng khi thi:</b> Tra nhanh cú pháp TextStyle khi đề yêu cầu định dạng chữ.</li>
+            <li><b>Đăng ký tại:</b> Buoi2Screen.</li>
+          </ul>
+          <div class="duo">
+            <div>
+              <span class="label l-code">Code</span>
+              <pre><code>import 'package:flutter/material.dart';
+
+class MyTextDemo extends StatelessWidget {
+  const MyTextDemo({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('My Text')),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: const [
+            Text('Chữ thường mặc định'),
+            Text('Chữ to đậm',
+                style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold)),
+            Text('Chữ nghiêng màu teal',
+                style: TextStyle(
+                    fontStyle: FontStyle.italic,
+                    color: Colors.teal)),
+            Text('Gạch chân + giãn chữ',
+                style: TextStyle(
+                    decoration: TextDecoration.underline,
+                    letterSpacing: 2)),
+            Text(
+              'Đoạn văn rất dài sẽ bị cắt bớt khi '
+              'vượt quá số dòng cho phép của widget Text',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}</code></pre>
+            </div>
+            <div>
+              <span class="label l-prev">Preview</span>
+              <div class="phone">
+                <div class="pv-appbar">‹ My Text</div>
+                <div class="pv-body">
+                  <div>Chữ thường mặc định</div>
+                  <div style="font-size:15px;font-weight:800">Chữ to đậm</div>
+                  <div style="font-style:italic;color:var(--accent)">Chữ nghiêng màu teal</div>
+                  <div style="text-decoration:underline;letter-spacing:1.5px">Gạch chân + giãn chữ</div>
+                  <div class="pv-muted">Đoạn văn rất dài sẽ bị cắt bớ…</div>
+                </div>
+              </div>
+              <span class="label l-err">Lỗi thường gặp</span>
+              <ul style="font-size:.85rem">
+                <li>Quên <code>overflow: TextOverflow.ellipsis</code> khi text dài trong Row → sọc vàng đen overflow.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </article>
+
+        <!-- ShoesAppDemo -->
+        <article class="wcard" id="w-shoes">
+          <div class="whead">
+            <h3>ShoesAppDemo</h3><span class="path">lib/exercises/buoi2/shoes_app_demo.dart</span>
+          </div>
+          <ul class="meta">
+            <li><b>Công dụng:</b> Trang chi tiết sản phẩm: ảnh, tên, giá, chọn size (chip), nút mua. Bài tổng hợp
+              Row/Column/Container.</li>
+            <li><b>Dùng khi thi:</b> Mọi đề "thiết kế UI sản phẩm / trang chi tiết" đều theo khuôn này.</li>
+            <li><b>Đăng ký tại:</b> Buoi2Screen.</li>
+          </ul>
+          <div class="duo">
+            <div>
+              <span class="label l-code">Code</span>
+              <pre><code>import 'package:flutter/material.dart';
+
+class ShoesAppDemo extends StatelessWidget {
+  const ShoesAppDemo({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Shoes App')),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Ảnh sản phẩm (placeholder)
+            Container(
+              height: 180,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.teal.shade50,
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: const Icon(Icons.directions_run,
+                  size: 90, color: Colors.teal),
+            ),
+            const SizedBox(height: 16),
+            Row(
+              mainAxisAlignment:
+                  MainAxisAlignment.spaceBetween,
+              children: const [
+                Text('Nike Air Zoom',
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold)),
+                Text('1.290.000đ',
+                    style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.teal,
+                        fontWeight: FontWeight.w600)),
+              ],
+            ),
+            const SizedBox(height: 12),
+            Wrap(
+              spacing: 8,
+              children: const [
+                Chip(label: Text('38')),
+                Chip(label: Text('39')),
+                Chip(label: Text('40')),
+                Chip(label: Text('41')),
+              ],
+            ),
+            const Spacer(),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton.icon(
+                onPressed: () {},
+                icon: const Icon(Icons.shopping_cart),
+                label: const Text('Thêm vào giỏ hàng'),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}</code></pre>
+            </div>
+            <div>
+              <span class="label l-prev">Preview</span>
+              <div class="phone">
+                <div class="pv-appbar">‹ Shoes App</div>
+                <div class="pv-body">
+                  <div class="pv-img" style="height:64px;font-size:26px">👟</div>
+                  <div class="pv-row"><span class="pv-title">Nike Air Zoom</span><span class="pv-ok"
+                      style="flex:none">1.290.000đ</span></div>
+                  <div><span class="pv-chip">38</span><span class="pv-chip on">39</span><span
+                      class="pv-chip">40</span><span class="pv-chip">41</span></div>
+                  <div class="pv-btn">🛒 Thêm vào giỏ hàng</div>
+                </div>
+              </div>
+              <span class="label l-err">Lỗi thường gặp</span>
+              <ul style="font-size:.85rem">
+                <li><code>Spacer()</code> chỉ dùng được trong Column/Row có chiều cao hữu hạn; nếu bọc trong ListView sẽ
+                  lỗi — khi đó thay bằng <code>SizedBox(height: 24)</code>.</li>
+                <li>Dùng ảnh mạng khi phòng thi không có internet — dùng Icon/Container placeholder như trên cho an
+                  toàn.</li>
+              </ul>
+            </div>
+          </div>
+        </article>
+      </section>
+      <section class="block">
+        <h2><span class="no">5b.</span>Widget hiện có — Calculator &amp; Shape</h2>
+
+        <!-- CalculatorTextButton -->
+        <article class="wcard" id="w-calcbtn">
+          <div class="whead">
+            <h3>CalculatorTextButton</h3><span
+              class="path">lib/exercises/calculator_app/calculator_text_button.dart</span>
+          </div>
+          <ul class="meta">
+            <li><b>Công dụng:</b> Nút bấm tái sử dụng cho máy tính: text + màu + callback. Viết 1 lần, dùng cho mọi
+              phím.</li>
+            <li><b>Dùng khi thi:</b> Bất cứ khi nào cần ≥ 3 nút giống nhau chỉ khác chữ/màu — tách nút riêng thế này để
+              ăn điểm "reusable widget".</li>
+            <li><b>Gọi từ file khác:</b> <code>CalculatorTextButton(text: '+', onPressed: _add)</code></li>
+            <li><b>Đăng ký tại:</b> Không đăng ký trực tiếp — là widget con của CalculatorDemo.</li>
+          </ul>
+          <div class="duo">
+            <div>
+              <span class="label l-code">Code</span>
+              <pre><code>import 'package:flutter/material.dart';
+
+class CalculatorTextButton extends StatelessWidget {
+  final String text;
+  final Color color;
+  final VoidCallback onPressed;
+
+  const CalculatorTextButton({
+    super.key,
+    required this.text,
+    this.color = Colors.teal,
+    required this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: color,
+        foregroundColor: Colors.white,
+        padding: const EdgeInsets.symmetric(vertical: 16),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+      ),
+      onPressed: onPressed,
+      child: Text(text,
+          style: const TextStyle(fontSize: 20)),
+    );
+  }
+}</code></pre>
+            </div>
+            <div>
+              <span class="label l-prev">Preview</span>
+              <div class="phone">
+                <div class="pv-body">
+                  <div class="pv-row"><span class="pv-btn">+</span><span class="pv-btn">−</span><span
+                      class="pv-btn">×</span><span class="pv-btn">÷</span></div>
+                </div>
+              </div>
+              <span class="label l-exp">Vì sao đặt tên dài?</span>
+              <p style="font-size:.85rem">Đặt <code>CalculatorTextButton</code> thay vì <code>CustomButton</code> để
+                không đụng tên với <code>ShapeActionButton</code> — 2 file cùng khai báo <code>CustomButton</code> sẽ
+                gây lỗi "name is defined in both libraries" khi import chung.</p>
+              <span class="label l-err">Lỗi thường gặp</span>
+              <ul style="font-size:.85rem">
+                <li>Quên <code>this.color = Colors.teal</code> (giá trị mặc định) mà vẫn để không required → lỗi null.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </article>
+
+        <!-- CalculatorDemo -->
+        <article class="wcard" id="w-calcdemo">
+          <div class="whead">
+            <h3>CalculatorDemo</h3><span class="path">lib/exercises/calculator_app/calculator_demo.dart</span>
+          </div>
+          <ul class="meta">
+            <li><b>Công dụng:</b> Nhập 2 số, bấm phép tính, hiện kết quả. Khuôn chuẩn: TextEditingController + parse +
+              setState.</li>
+            <li><b>Dùng khi thi:</b> Đề "máy tính 2 số" gần như chắc chắn có. Thuộc lòng khuôn này.</li>
+            <li><b>Import cần:</b> material + <code>calculator_text_button.dart</code>.</li>
+            <li><b>Đăng ký tại:</b> CalculatorScreen.</li>
+          </ul>
+          <div class="duo">
+            <div>
+              <span class="label l-code">Code</span>
+              <pre><code>import 'package:flutter/material.dart';
+import 'calculator_text_button.dart';
+
+class CalculatorDemo extends StatefulWidget {
+  const CalculatorDemo({super.key});
+
+  @override
+  State&lt;CalculatorDemo&gt; createState() =&gt;
+      _CalculatorDemoState();
+}
+
+class _CalculatorDemoState extends State&lt;CalculatorDemo&gt; {
+  final TextEditingController _aCtrl =
+      TextEditingController();
+  final TextEditingController _bCtrl =
+      TextEditingController();
+  String _result = '';
+
+  @override
+  void dispose() {
+    _aCtrl.dispose();
+    _bCtrl.dispose();
+    super.dispose();
+  }
+
+  void _calc(String op) {
+    final double? a = double.tryParse(_aCtrl.text);
+    final double? b = double.tryParse(_bCtrl.text);
+    if (a == null || b == null) {
+      setState(() =&gt; _result = 'Vui lòng nhập số hợp lệ');
+      return;
+    }
+    double r = 0;
+    switch (op) {
+      case '+': r = a + b; break;
+      case '-': r = a - b; break;
+      case 'x': r = a * b; break;
+      case '/':
+        if (b == 0) {
+          setState(() =&gt; _result = 'Không chia được cho 0');
+          return;
+        }
+        r = a / b;
+    }
+    setState(() =&gt;
+        _result = 'Kết quả: ${r.toStringAsFixed(2)}');
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Calculator')),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            TextField(
+              controller: _aCtrl,
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(
+                  labelText: 'Số thứ nhất',
+                  border: OutlineInputBorder()),
+            ),
+            const SizedBox(height: 12),
+            TextField(
+              controller: _bCtrl,
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(
+                  labelText: 'Số thứ hai',
+                  border: OutlineInputBorder()),
+            ),
+            const SizedBox(height: 16),
+            Row(
+              children: [
+                Expanded(
+                    child: CalculatorTextButton(
+                        text: '+',
+                        onPressed: () =&gt; _calc('+'))),
+                const SizedBox(width: 8),
+                Expanded(
+                    child: CalculatorTextButton(
+                        text: '−',
+                        onPressed: () =&gt; _calc('-'))),
+                const SizedBox(width: 8),
+                Expanded(
+                    child: CalculatorTextButton(
+                        text: '×',
+                        onPressed: () =&gt; _calc('x'))),
+                const SizedBox(width: 8),
+                Expanded(
+                    child: CalculatorTextButton(
+                        text: '÷',
+                        color: Colors.orange,
+                        onPressed: () =&gt; _calc('/'))),
+              ],
+            ),
+            const SizedBox(height: 20),
+            Text(_result,
+                style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold)),
+          ],
+        ),
+      ),
+    );
+  }
+}</code></pre>
+            </div>
+            <div>
+              <span class="label l-prev">Preview</span>
+              <div class="phone">
+                <div class="pv-appbar">‹ Calculator</div>
+                <div class="pv-body">
+                  <div class="pv-field"><b>12</b> — Số thứ nhất</div>
+                  <div class="pv-field"><b>5</b> — Số thứ hai</div>
+                  <div class="pv-row"><span class="pv-btn">+</span><span class="pv-btn">−</span><span
+                      class="pv-btn">×</span><span class="pv-btn orange">÷</span></div>
+                  <div class="pv-big">Kết quả: 17.00</div>
+                </div>
+              </div>
+              <span class="label l-exp">Điểm chấm</span>
+              <ul style="font-size:.85rem">
+                <li><code>double.tryParse</code> trả về <code>null</code> nếu nhập chữ → bắt lỗi thay vì crash.</li>
+                <li>Chặn chia cho 0.</li>
+                <li><code>dispose()</code> giải phóng controller — giám khảo hay soi chỗ này.</li>
+                <li><code>Expanded</code> chia đều 4 nút trong Row, tránh overflow.</li>
+              </ul>
+            </div>
+          </div>
+        </article>
+
+        <!-- ShapeTextField -->
+        <article class="wcard" id="w-shapetf">
+          <div class="whead">
+            <h3>ShapeTextField</h3><span
+              class="path">lib/exercises/calculator_shape/widgets/shape_text_field.dart</span>
+          </div>
+          <ul class="meta">
+            <li><b>Công dụng:</b> TextField bo góc + bàn phím số, dùng chung cho mọi ô nhập của app tính hình.</li>
+            <li><b>Dùng khi thi:</b> Khi form có nhiều ô nhập giống nhau — gói TextField lại thế này.</li>
+            <li><b>Đăng ký tại:</b> Không — là widget con, được ShapeInput/ShapeInputDemo dùng.</li>
+          </ul>
+          <div class="duo">
+            <div>
+              <span class="label l-code">Code</span>
+              <pre><code>import 'package:flutter/material.dart';
+
+class ShapeTextField extends StatelessWidget {
+  final TextEditingController controller;
+  final String label;
+  final IconData? icon;
+
+  const ShapeTextField({
+    super.key,
+    required this.controller,
+    required this.label,
+    this.icon,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      controller: controller,
+      keyboardType: TextInputType.number,
+      decoration: InputDecoration(
+        labelText: label,
+        prefixIcon: icon != null ? Icon(icon) : null,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+      ),
+    );
+  }
+}</code></pre>
+            </div>
+            <div>
+              <span class="label l-prev">Preview</span>
+              <div class="phone">
+                <div class="pv-body">
+                  <div class="pv-field">📏 Chiều dài</div>
+                  <div class="pv-field">📐 Chiều rộng</div>
+                </div>
+              </div>
+              <span class="label l-exp">Chi tiết đáng nhớ</span>
+              <ul style="font-size:.85rem">
+                <li><code>IconData?</code> — icon là tuỳ chọn; <code>icon != null ? Icon(icon) : null</code> để bỏ trống
+                  được.</li>
+                <li>Controller do <strong>widget cha</strong> tạo và dispose — widget con chỉ nhận vào dùng.</li>
+              </ul>
+            </div>
+          </div>
+        </article>
+
+        <!-- ShapeInput -->
+        <article class="wcard" id="w-shapeinput">
+          <div class="whead">
+            <h3>ShapeInput</h3><span class="path">lib/exercises/calculator_shape/widgets/shape_input.dart</span>
+          </div>
+          <ul class="meta">
+            <li><b>Công dụng:</b> Nhãn tiêu đề + ShapeTextField, cách nhau chuẩn 6px, margin dưới 12px — 1 "dòng form"
+              hoàn chỉnh.</li>
+            <li><b>Dùng khi thi:</b> Form nhiều dòng: mỗi dòng chỉ cần 1 dòng code <code>ShapeInput(...)</code>.</li>
+            <li><b>Đăng ký tại:</b> Không — widget con của ShapeInputDemo.</li>
+          </ul>
+          <div class="duo">
+            <div>
+              <span class="label l-code">Code</span>
+              <pre><code>import 'package:flutter/material.dart';
+import 'shape_text_field.dart';
+
+class ShapeInput extends StatelessWidget {
+  final String title;
+  final TextEditingController controller;
+  final IconData? icon;
+
+  const ShapeInput({
+    super.key,
+    required this.title,
+    required this.controller,
+    this.icon,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(title,
+              style: const TextStyle(
+                  fontWeight: FontWeight.w600)),
+          const SizedBox(height: 6),
+          ShapeTextField(
+            controller: controller,
+            label: 'Nhập $title',
+            icon: icon,
+          ),
+        ],
+      ),
+    );
+  }
+}</code></pre>
+            </div>
+            <div>
+              <span class="label l-prev">Preview</span>
+              <div class="phone">
+                <div class="pv-body">
+                  <div class="pv-title" style="font-size:11px">Chiều dài</div>
+                  <div class="pv-field">Nhập Chiều dài</div>
+                  <div class="pv-title" style="font-size:11px">Chiều rộng</div>
+                  <div class="pv-field">Nhập Chiều rộng</div>
+                </div>
+              </div>
+              <span class="label l-exp">Bài học kiến trúc</span>
+              <p style="font-size:.85rem">ShapeInput <strong>ghép</strong> từ ShapeTextField — widget nhỏ ghép thành
+                widget vừa, widget vừa ghép thành trang. Đây chính là tư duy "assembly" mà bài thi muốn kiểm tra.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- ShapeActionButton -->
+        <article class="wcard" id="w-shapebtn">
+          <div class="whead">
+            <h3>ShapeActionButton</h3><span
+              class="path">lib/exercises/calculator_shape/widgets/shape_action_button.dart</span>
+          </div>
+          <ul class="meta">
+            <li><b>Công dụng:</b> Nút hành động full-width có icon cho app tính hình (Tính / Xoá).</li>
+            <li><b>Đăng ký tại:</b> Không — widget con của các trang shape.</li>
+          </ul>
+          <div class="duo">
+            <div>
+              <span class="label l-code">Code</span>
+              <pre><code>import 'package:flutter/material.dart';
+
+class ShapeActionButton extends StatelessWidget {
+  final String text;
+  final IconData icon;
+  final Color color;
+  final VoidCallback onPressed;
+
+  const ShapeActionButton({
+    super.key,
+    required this.text,
+    this.icon = Icons.calculate,
+    this.color = Colors.indigo,
+    required this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      child: ElevatedButton.icon(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: color,
+          foregroundColor: Colors.white,
+          padding:
+              const EdgeInsets.symmetric(vertical: 14),
+        ),
+        onPressed: onPressed,
+        icon: Icon(icon),
+        label: Text(text,
+            style: const TextStyle(fontSize: 16)),
+      ),
+    );
+  }
+}</code></pre>
+            </div>
+            <div>
+              <span class="label l-prev">Preview</span>
+              <div class="phone">
+                <div class="pv-body">
+                  <div class="pv-btn" style="background:#4f46e5">🧮 Tính diện tích</div>
+                  <div class="pv-btn grey">⟲ Xoá</div>
+                </div>
+              </div>
+              <span class="label l-how">Cách dùng</span>
+              <pre><code>ShapeActionButton(
+  text: 'Tính diện tích',
+  onPressed: _calculate,
+),
+ShapeActionButton(
+  text: 'Xoá',
+  icon: Icons.refresh,
+  color: Colors.grey,
+  onPressed: _clear,
+),</code></pre>
+            </div>
+          </div>
+        </article>
+
+        <!-- ShapeInputDemo -->
+        <article class="wcard" id="w-shapeinputdemo">
+          <div class="whead">
+            <h3>ShapeInputDemo</h3><span class="path">lib/exercises/calculator_shape/shape_input_demo.dart</span>
+          </div>
+          <ul class="meta">
+            <li><b>Công dụng:</b> Trang tính hình chữ nhật hoàn chỉnh, lắp từ ShapeInput + ShapeActionButton.</li>
+            <li><b>Dùng khi thi:</b> Là "bài mẫu" cho mọi form nhập → tính → hiển thị.</li>
+            <li><b>Đăng ký tại:</b> ShapeCalculatorScreen (hoặc làm 1 tab của ShapeCalculatorDemo).</li>
+          </ul>
+          <div class="duo">
+            <div>
+              <span class="label l-code">Code</span>
+              <pre><code>import 'package:flutter/material.dart';
+import 'widgets/shape_input.dart';
+import 'widgets/shape_action_button.dart';
+
+class ShapeInputDemo extends StatefulWidget {
+  const ShapeInputDemo({super.key});
+
+  @override
+  State&lt;ShapeInputDemo&gt; createState() =&gt;
+      _ShapeInputDemoState();
+}
+
+class _ShapeInputDemoState extends State&lt;ShapeInputDemo&gt; {
+  final _lengthCtrl = TextEditingController();
+  final _widthCtrl = TextEditingController();
+  String _result = '';
+
+  @override
+  void dispose() {
+    _lengthCtrl.dispose();
+    _widthCtrl.dispose();
+    super.dispose();
+  }
+
+  void _calculate() {
+    final double? l = double.tryParse(_lengthCtrl.text);
+    final double? w = double.tryParse(_widthCtrl.text);
+    if (l == null || w == null || l &lt;= 0 || w &lt;= 0) {
+      setState(() =&gt; _result = 'Kích thước không hợp lệ');
+      return;
+    }
+    setState(() =&gt; _result =
+        'Diện tích: ${(l * w).toStringAsFixed(2)}');
+  }
+
+  void _clear() {
+    _lengthCtrl.clear();
+    _widthCtrl.clear();
+    setState(() =&gt; _result = '');
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Shape Input')),
+      body: ListView(
+        padding: const EdgeInsets.all(16),
+        children: [
+          ShapeInput(
+              title: 'Chiều dài',
+              controller: _lengthCtrl,
+              icon: Icons.straighten),
+          ShapeInput(
+              title: 'Chiều rộng',
+              controller: _widthCtrl,
+              icon: Icons.height),
+          ShapeActionButton(
+              text: 'Tính diện tích',
+              onPressed: _calculate),
+          const SizedBox(height: 8),
+          ShapeActionButton(
+              text: 'Xoá',
+              icon: Icons.refresh,
+              color: Colors.grey,
+              onPressed: _clear),
+          const SizedBox(height: 16),
+          Center(
+            child: Text(_result,
+                style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold)),
+          ),
+        ],
+      ),
+    );
+  }
+}</code></pre>
+            </div>
+            <div>
+              <span class="label l-prev">Preview</span>
+              <div class="phone">
+                <div class="pv-appbar">‹ Shape Input</div>
+                <div class="pv-body">
+                  <div class="pv-field">📏 <b>10</b> — Chiều dài</div>
+                  <div class="pv-field">📐 <b>4</b> — Chiều rộng</div>
+                  <div class="pv-btn" style="background:#4f46e5">🧮 Tính diện tích</div>
+                  <div class="pv-btn grey">⟲ Xoá</div>
+                  <div class="pv-big pv-center">Diện tích: 40.00</div>
+                </div>
+              </div>
+              <span class="label l-err">Lỗi thường gặp</span>
+              <ul style="font-size:.85rem">
+                <li>Nhớ validate <code>l &lt;= 0</code> — hình học không có cạnh âm; đề thường trừ điểm chỗ này.</li>
+                <li>Nút Xoá phải <code>clear()</code> controller <strong>và</strong> setState xoá kết quả.</li>
+              </ul>
+            </div>
+          </div>
+        </article>
+
+        <!-- ShapeNavbarDemo -->
+        <article class="wcard" id="w-shapenavbar">
+          <div class="whead">
+            <h3>ShapeNavbarDemo</h3><span class="path">lib/exercises/calculator_shape/shape_navbar_demo.dart</span>
+          </div>
+          <ul class="meta">
+            <li><b>Công dụng:</b> AppBar tuỳ biến tái sử dụng cho app tính hình. Vì Scaffold yêu cầu <code>appBar</code>
+              là <code>PreferredSizeWidget</code>, class phải <code>implements PreferredSizeWidget</code>.</li>
+            <li><b>Dùng khi thi:</b> Khi nhiều trang cần AppBar giống hệt nhau (màu, căn giữa) — viết 1 lần dùng nhiều
+              nơi.</li>
+          </ul>
+          <div class="duo">
+            <div>
+              <span class="label l-code">Code</span>
+              <pre><code>import 'package:flutter/material.dart';
+
+class ShapeNavbarDemo extends StatelessWidget
+    implements PreferredSizeWidget {
+  final String title;
+
+  const ShapeNavbarDemo({super.key, required this.title});
+
+  @override
+  Size get preferredSize =&gt;
+      const Size.fromHeight(kToolbarHeight);
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      title: Text(title),
+      centerTitle: true,
+      backgroundColor: Colors.indigo,
+      foregroundColor: Colors.white,
+    );
+  }
+}</code></pre>
+              <span class="label l-how">Cách dùng</span>
+              <pre><code>Scaffold(
+  appBar: const ShapeNavbarDemo(title: 'Hình chữ nhật'),
+  body: ...,
+)</code></pre>
+            </div>
+            <div>
+              <span class="label l-prev">Preview</span>
+              <div class="phone">
+                <div class="pv-appbar" style="background:#4f46e5;justify-content:center">Hình chữ nhật</div>
+                <div class="pv-body center"><span class="pv-muted">body của trang</span></div>
+              </div>
+              <span class="label l-err">Lỗi thường gặp</span>
+              <ul style="font-size:.85rem">
+                <li>Quên <code>implements PreferredSizeWidget</code> + getter <code>preferredSize</code> → không gán
+                  được vào <code>appBar:</code>.</li>
+                <li><code>kToolbarHeight</code> là hằng số Flutter (56) — dùng nó thay vì số tự chế.</li>
+              </ul>
+            </div>
+          </div>
+        </article>
+
+        <!-- ShapeBottomNavigate -->
+        <article class="wcard" id="w-shapebottom">
+          <div class="whead">
+            <h3>ShapeBottomNavigate</h3><span
+              class="path">lib/exercises/calculator_shape/shape_bottom_navigate.dart</span>
+          </div>
+          <ul class="meta">
+            <li><b>Công dụng:</b> BottomNavigationBar riêng của app tính hình (Chữ nhật / Hình tròn). Cùng pattern với
+              AppBottomNavBar: state ở cha.</li>
+            <li><b>Dùng khi thi:</b> Khi một bài tập lớn cần điều hướng nội bộ giữa các hình.</li>
+          </ul>
+          <div class="duo">
+            <div>
+              <span class="label l-code">Code</span>
+              <pre><code>import 'package:flutter/material.dart';
+
+class ShapeBottomNavigate extends StatelessWidget {
+  final int currentIndex;
+  final ValueChanged&lt;int&gt; onTap;
+
+  const ShapeBottomNavigate({
+    super.key,
+    required this.currentIndex,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BottomNavigationBar(
+      currentIndex: currentIndex,
+      onTap: onTap,
+      selectedItemColor: Colors.indigo,
+      items: const [
+        BottomNavigationBarItem(
+            icon: Icon(Icons.crop_square),
+            label: 'Chữ nhật'),
+        BottomNavigationBarItem(
+            icon: Icon(Icons.circle_outlined),
+            label: 'Hình tròn'),
+      ],
+    );
+  }
+}</code></pre>
+            </div>
+            <div>
+              <span class="label l-prev">Preview</span>
+              <div class="phone">
+                <div class="pv-nav" style="border-top:1px solid var(--rule)"><span class="on" style="color:#4f46e5">▢ Chữ
+                    nhật</span><span>◯ Hình tròn</span></div>
+              </div>
+              <span class="label l-err">Lỗi thường gặp</span>
+              <ul style="font-size:.85rem">
+                <li><code>currentIndex</code> vượt quá số item → crash "index out of range". Số item ở đây phải khớp số
+                  trang ở ShapeCalculatorDemo.</li>
+              </ul>
+            </div>
+          </div>
+        </article>
+
+        <!-- ShapeCalculatorDemo -->
+        <article class="wcard" id="w-shapecalc">
+          <div class="whead">
+            <h3>ShapeCalculatorDemo — "app con" hoàn chỉnh</h3><span
+              class="path">lib/exercises/calculator_shape/shape_calculator_demo.dart</span>
+          </div>
+          <ul class="meta">
+            <li><b>Công dụng:</b> Ghép tất cả lại: ShapeNavbarDemo (AppBar) + trang hình chữ nhật/hình tròn (body) +
+              ShapeBottomNavigate (điều hướng). Là bản thu nhỏ của chính HomeScreen.</li>
+            <li><b>Dùng khi thi:</b> Đề "app tính diện tích nhiều hình, chuyển bằng bottom nav" — đây chính là đáp án
+              khuôn.</li>
+            <li><b>Đăng ký tại:</b> ShapeCalculatorScreen.</li>
+          </ul>
+          <div class="duo">
+            <div>
+              <span class="label l-code">Code</span>
+              <pre><code>import 'package:flutter/material.dart';
+import 'shape_navbar_demo.dart';
+import 'shape_bottom_navigate.dart';
+import 'shape_input_demo.dart';
+// Có thể thay bằng CircleCalculatorWidget ở mục 6
+import '../../widgets/circle_calculator_widget.dart';
+
+class ShapeCalculatorDemo extends StatefulWidget {
+  const ShapeCalculatorDemo({super.key});
+
+  @override
+  State&lt;ShapeCalculatorDemo&gt; createState() =&gt;
+      _ShapeCalculatorDemoState();
+}
+
+class _ShapeCalculatorDemoState
+    extends State&lt;ShapeCalculatorDemo&gt; {
+  int _index = 0;
+
+  final List&lt;Widget&gt; _pages = const [
+    ShapeInputDemo(),          // hình chữ nhật
+    CircleCalculatorWidget(),  // hình tròn (mục 6)
+  ];
+
+  final List&lt;String&gt; _titles = const [
+    'Hình chữ nhật',
+    'Hình tròn',
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: ShapeNavbarDemo(title: _titles[_index]),
+      body: _pages[_index],
+      bottomNavigationBar: ShapeBottomNavigate(
+        currentIndex: _index,
+        onTap: (i) =&gt; setState(() =&gt; _index = i),
+      ),
+    );
+  }
+}</code></pre>
+            </div>
+            <div>
+              <span class="label l-prev">Preview</span>
+              <div class="phone">
+                <div class="pv-appbar" style="background:#4f46e5;justify-content:center">Hình chữ nhật</div>
+                <div class="pv-body">
+                  <div class="pv-field">📏 Chiều dài</div>
+                  <div class="pv-field">📐 Chiều rộng</div>
+                  <div class="pv-btn" style="background:#4f46e5">🧮 Tính diện tích</div>
+                </div>
+                <div class="pv-nav"><span class="on" style="color:#4f46e5">▢ Chữ nhật</span><span>◯ Hình tròn</span>
+                </div>
+              </div>
+              <span class="label l-exp">Nhận xét</span>
+              <ul style="font-size:.85rem">
+                <li>Cấu trúc <strong>giống hệt HomeScreen</strong>: index + list pages + list titles. Học 1 pattern,
+                  dùng được 2 nơi.</li>
+                <li>Trang con (ShapeInputDemo) có Scaffold riêng → sẽ có 2 AppBar. Nếu muốn đẹp tuyệt đối, tạo bản
+                  body-only của trang con; trong phòng thi, chấp nhận được nếu đề không yêu cầu.</li>
+              </ul>
+            </div>
+          </div>
+        </article>
+      </section>
+      <!-- ============ 6. ADDITIONAL EXAM WIDGETS ============ -->
+      <section class="block" id="sec6">
+        <h2><span class="no">6.</span>Widget mới hữu ích cho bài thi</h2>
+        <p class="lead">11 widget mới, viết sẵn để cắm thẳng vào kiến trúc hiện tại. <strong>Học 3 widget nền
+            trước</strong> (CustomInputField, CustomPrimaryButton, PageWrapper) vì 8 widget còn lại đều lắp từ chúng. Đề
+          xuất: các widget dùng chung đặt ở <code>lib/widgets/</code>, các bài tập hoàn chỉnh có thể đặt ở
+          <code>lib/exercises/midterm/</code>.</p>
+
+        <!-- CustomInputField -->
+        <article class="wcard" id="n-inputfield">
+          <div class="whead">
+            <h3>I. CustomInputField — ô nhập vạn năng</h3><span class="path">lib/widgets/custom_input_field.dart</span>
+          </div>
+          <ul class="meta">
+            <li><b>Công dụng:</b> TextField tái sử dụng: controller + label + icon + kiểu bàn phím, tự có margin dưới.
+            </li>
+            <li><b>Kết hợp với:</b> StudentInfoForm, RectangleCalculator, CircleCalculator, TriangleCalculator — mọi
+              form trong guide này.</li>
+          </ul>
+          <div class="duo">
+            <div>
+              <span class="label l-code">Code</span>
+              <pre><code>import 'package:flutter/material.dart';
+
+class CustomInputField extends StatelessWidget {
+  final TextEditingController controller;
+  final String label;
+  final IconData? icon;
+  final TextInputType keyboardType;
+
+  const CustomInputField({
+    super.key,
+    required this.controller,
+    required this.label,
+    this.icon,
+    this.keyboardType = TextInputType.text,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: TextField(
+        controller: controller,
+        keyboardType: keyboardType,
+        decoration: InputDecoration(
+          labelText: label,
+          prefixIcon: icon != null ? Icon(icon) : null,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          isDense: true,
+        ),
+      ),
+    );
+  }
+}</code></pre>
+            </div>
+            <div>
+              <span class="label l-prev">Preview</span>
+              <div class="phone">
+                <div class="pv-body">
+                  <div class="pv-field">👤 Họ tên</div>
+                  <div class="pv-field">🔢 MSSV (bàn phím số)</div>
+                </div>
+              </div>
+              <span class="label l-how">Cách dùng</span>
+              <pre><code>CustomInputField(
+  controller: _nameCtrl,
+  label: 'Họ tên',
+  icon: Icons.person,
+),
+CustomInputField(
+  controller: _idCtrl,
+  label: 'MSSV',
+  icon: Icons.badge,
+  keyboardType: TextInputType.number,
+),</code></pre>
+              <span class="label l-reg">Đăng ký</span>
+              <p style="font-size:.85rem">Không đăng ký vào category screen — đây là widget nền, được các form import:
+                <code>import '../widgets/custom_input_field.dart';</code></p>
+            </div>
+          </div>
+        </article>
+
+        <!-- CustomPrimaryButton -->
+        <article class="wcard" id="n-primarybtn">
+          <div class="whead">
+            <h3>J. CustomPrimaryButton — nút chính vạn năng</h3><span
+              class="path">lib/widgets/custom_primary_button.dart</span>
+          </div>
+          <ul class="meta">
+            <li><b>Công dụng:</b> ElevatedButton full-width có icon, màu tuỳ chọn. Dùng cho nút Gửi / Tính / Xoá của mọi
+              form.</li>
+          </ul>
+          <div class="duo">
+            <div>
+              <span class="label l-code">Code</span>
+              <pre><code>import 'package:flutter/material.dart';
+
+class CustomPrimaryButton extends StatelessWidget {
+  final String text;
+  final IconData? icon;
+  final Color color;
+  final VoidCallback onPressed;
+
+  const CustomPrimaryButton({
+    super.key,
+    required this.text,
+    this.icon,
+    this.color = Colors.teal,
+    required this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      child: ElevatedButton.icon(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: color,
+          foregroundColor: Colors.white,
+          padding:
+              const EdgeInsets.symmetric(vertical: 14),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
+        onPressed: onPressed,
+        icon: Icon(icon ?? Icons.check),
+        label: Text(text,
+            style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600)),
+      ),
+    );
+  }
+}</code></pre>
+            </div>
+            <div>
+              <span class="label l-prev">Preview</span>
+              <div class="phone">
+                <div class="pv-body">
+                  <div class="pv-btn">✔ Gửi thông tin</div>
+                  <div class="pv-btn grey">⟲ Xoá</div>
+                </div>
+              </div>
+              <span class="label l-how">Cách dùng</span>
+              <pre><code>CustomPrimaryButton(
+  text: 'Gửi thông tin',
+  icon: Icons.send,
+  onPressed: _submit,
+),
+CustomPrimaryButton(
+  text: 'Xoá',
+  icon: Icons.refresh,
+  color: Colors.grey,
+  onPressed: _clear,
+),</code></pre>
+            </div>
+          </div>
+        </article>
+
+        <!-- PageWrapper -->
+        <article class="wcard" id="n-pagewrapper">
+          <div class="whead">
+            <h3>K. PageWrapper — vỏ trang chuẩn</h3><span class="path">lib/widgets/page_wrapper.dart</span>
+          </div>
+          <ul class="meta">
+            <li><b>Công dụng:</b> Scaffold + AppBar + padding 16 gói sẵn. Mọi trang bài tập chỉ cần lo phần body.</li>
+            <li><b>Kết hợp với:</b> Tất cả widget mục 6 đều bọc trong PageWrapper → toàn app đồng bộ.</li>
+          </ul>
+          <div class="duo">
+            <div>
+              <span class="label l-code">Code</span>
+              <pre><code>import 'package:flutter/material.dart';
+
+class PageWrapper extends StatelessWidget {
+  final String title;
+  final Widget body;
+
+  const PageWrapper({
+    super.key,
+    required this.title,
+    required this.body,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(title),
+        centerTitle: true,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: body,
+      ),
+    );
+  }
+}</code></pre>
+              <span class="label l-how">Cách dùng</span>
+              <pre><code>return PageWrapper(
+  title: 'Student Info Form',
+  body: ListView(children: [ ... ]),
+);</code></pre>
+            </div>
+            <div>
+              <span class="label l-prev">Preview</span>
+              <div class="phone">
+                <div class="pv-appbar" style="justify-content:center">Tiêu đề trang</div>
+                <div class="pv-body center" style="min-height:90px"><span class="pv-muted">body (đã có padding
+                    16)</span></div>
+              </div>
+              <div class="callout" style="font-size:.82rem"><b>Tiết kiệm thời gian thi:</b> mỗi trang bớt được ~8 dòng
+                Scaffold/AppBar lặp lại. 6 trang là bớt gần 50 dòng gõ tay.</div>
+            </div>
+          </div>
+        </article>
+
+        <!-- StudentInfoCard -->
+        <article class="wcard" id="n-studentcard">
+          <div class="whead">
+            <h3>B. StudentInfoCard</h3><span class="path">lib/widgets/student_info_card.dart</span>
+          </div>
+          <ul class="meta">
+            <li><b>Công dụng:</b> Thẻ hiển thị thông tin sinh viên bằng Card + ListTile + Icon + Text.</li>
+            <li><b>Kết hợp với:</b> StudentInfoForm (hiện kết quả sau khi submit) và StudentListWidget (mỗi phần tử của
+              list).</li>
+          </ul>
+          <div class="duo">
+            <div>
+              <span class="label l-code">Code</span>
+              <pre><code>import 'package:flutter/material.dart';
+
+class StudentInfoCard extends StatelessWidget {
+  final String name;
+  final String studentId;
+  final String className;
+  final String gender;
+
+  const StudentInfoCard({
+    super.key,
+    required this.name,
+    required this.studentId,
+    required this.className,
+    required this.gender,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ListTile(
+            leading: const CircleAvatar(
+                child: Icon(Icons.person)),
+            title: Text(name,
+                style: const TextStyle(
+                    fontWeight: FontWeight.bold)),
+            subtitle: Text('MSSV: $studentId'),
+          ),
+          const Divider(height: 1),
+          ListTile(
+            dense: true,
+            leading: const Icon(Icons.school,
+                color: Colors.teal),
+            title: Text('Lớp: $className'),
+            trailing: Text(gender,
+                style: const TextStyle(
+                    color: Colors.teal,
+                    fontWeight: FontWeight.w600)),
+          ),
+        ],
+      ),
+    );
+  }
+}</code></pre>
+            </div>
+            <div>
+              <span class="label l-prev">Preview</span>
+              <div class="phone">
+                <div class="pv-body">
+                  <div class="pv-card">
+                    <div class="pv-row"><span class="pv-avatar">👤</span><span><span class="pv-title">Nguyễn Văn
+                          A</span><br><span class="pv-muted">MSSV: 21520001</span></span></div>
+                    <hr style="border:none;border-top:1px solid var(--rule);margin:7px 0">
+                    <div class="pv-row"><span>🎓 Lớp: SE1701</span><span class="pv-ok" style="flex:none">Nam</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <span class="label l-how">Cách dùng</span>
+              <pre><code>const StudentInfoCard(
+  name: 'Nguyễn Văn A',
+  studentId: '21520001',
+  className: 'SE1701',
+  gender: 'Nam',
+)</code></pre>
+              <span class="label l-reg">Đăng ký</span>
+              <p style="font-size:.85rem">Widget hiển thị thuần — không đăng ký riêng; nó xuất hiện bên trong
+                StudentInfoForm và StudentListWidget.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- StudentInfoForm -->
+        <article class="wcard" id="n-studentform">
+          <div class="whead">
+            <h3>A. StudentInfoForm — form + radio + kết quả</h3><span
+              class="path">lib/exercises/midterm/student_info_form.dart</span>
+          </div>
+          <ul class="meta">
+            <li><b>Công dụng:</b> Nhập tên, MSSV, lớp; chọn giới tính bằng Radio; bấm Gửi → hiện StudentInfoCard bên
+              dưới.</li>
+            <li><b>Dùng khi thi:</b> Dạng đề phổ biến nhất: "form nhập thông tin + hiển thị kết quả". Đây là bài mẫu đầy
+              đủ nhất guide này.</li>
+            <li><b>Lắp từ:</b> PageWrapper + CustomInputField + CustomPrimaryButton + StudentInfoCard.</li>
+          </ul>
+          <div class="duo">
+            <div>
+              <span class="label l-code">Code</span>
+              <pre><code>import 'package:flutter/material.dart';
+import '../../widgets/page_wrapper.dart';
+import '../../widgets/custom_input_field.dart';
+import '../../widgets/custom_primary_button.dart';
+import '../../widgets/student_info_card.dart';
+
+class StudentInfoForm extends StatefulWidget {
+  const StudentInfoForm({super.key});
+
+  @override
+  State&lt;StudentInfoForm&gt; createState() =&gt;
+      _StudentInfoFormState();
+}
+
+class _StudentInfoFormState extends State&lt;StudentInfoForm&gt; {
+  final _nameCtrl = TextEditingController();
+  final _idCtrl = TextEditingController();
+  final _classCtrl = TextEditingController();
+  String _gender = 'Nam';
+  Map&lt;String, String&gt;? _submitted;
+
+  @override
+  void dispose() {
+    _nameCtrl.dispose();
+    _idCtrl.dispose();
+    _classCtrl.dispose();
+    super.dispose();
+  }
+
+  void _submit() {
+    if (_nameCtrl.text.isEmpty || _idCtrl.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text('Nhập đủ họ tên và MSSV!')),
+      );
+      return;
+    }
+    setState(() {
+      _submitted = {
+        'name': _nameCtrl.text,
+        'id': _idCtrl.text,
+        'class': _classCtrl.text,
+        'gender': _gender,
+      };
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return PageWrapper(
+      title: 'Student Info Form',
+      body: ListView(
+        children: [
+          CustomInputField(
+              controller: _nameCtrl,
+              label: 'Họ tên',
+              icon: Icons.person),
+          CustomInputField(
+              controller: _idCtrl,
+              label: 'MSSV',
+              icon: Icons.badge,
+              keyboardType: TextInputType.number),
+          CustomInputField(
+              controller: _classCtrl,
+              label: 'Lớp',
+              icon: Icons.school),
+          Row(
+            children: [
+              const Text('Giới tính:'),
+              Radio&lt;String&gt;(
+                value: 'Nam',
+                groupValue: _gender,
+                onChanged: (v) =&gt;
+                    setState(() =&gt; _gender = v!),
+              ),
+              const Text('Nam'),
+              Radio&lt;String&gt;(
+                value: 'Nữ',
+                groupValue: _gender,
+                onChanged: (v) =&gt;
+                    setState(() =&gt; _gender = v!),
+              ),
+              const Text('Nữ'),
+            ],
+          ),
+          const SizedBox(height: 8),
+          CustomPrimaryButton(
+              text: 'Gửi thông tin',
+              icon: Icons.send,
+              onPressed: _submit),
+          const SizedBox(height: 16),
+          if (_submitted != null)
+            StudentInfoCard(
+              name: _submitted!['name']!,
+              studentId: _submitted!['id']!,
+              className: _submitted!['class']!,
+              gender: _submitted!['gender']!,
+            ),
+        ],
+      ),
+    );
+  }
+}</code></pre>
+            </div>
+            <div>
+              <span class="label l-prev">Preview</span>
+              <div class="phone">
+                <div class="pv-appbar" style="justify-content:center">Student Info Form</div>
+                <div class="pv-body">
+                  <div class="pv-field">👤 <b>Nguyễn Văn A</b></div>
+                  <div class="pv-field">🔢 <b>21520001</b></div>
+                  <div class="pv-field">🎓 <b>SE1701</b></div>
+                  <div><span class="pv-muted">Giới tính:</span> <span class="pv-radio"><span
+                        class="pv-dot on"></span>Nam</span><span class="pv-radio"><span class="pv-dot"></span>Nữ</span>
+                  </div>
+                  <div class="pv-btn">➤ Gửi thông tin</div>
+                  <div class="pv-card">
+                    <div class="pv-row"><span class="pv-avatar">👤</span><span><span class="pv-title">Nguyễn Văn
+                          A</span><br><span class="pv-muted">MSSV: 21520001 · SE1701 · Nam</span></span></div>
+                  </div>
+                </div>
+              </div>
+              <span class="label l-exp">Kỹ thuật cần nhớ</span>
+              <ul style="font-size:.85rem">
+                <li><strong>Radio pattern:</strong> tất cả radio cùng <code>groupValue</code> (biến state
+                  <code>_gender</code>); radio nào có <code>value == groupValue</code> thì sáng.</li>
+                <li><code>Map&lt;String, String&gt;? _submitted</code> — null nghĩa là chưa gửi;
+                  <code>if (_submitted != null)</code> trong list children là cách hiện/ẩn widget có điều kiện.</li>
+                <li>Dùng <code>ListView</code> thay Column để không tràn màn hình khi bàn phím bật lên.</li>
+              </ul>
+              <span class="label l-reg">Đăng ký vào MidtermScreen</span>
+              <pre><code>ExerciseItem(
+  title: 'Student Info Form',
+  subtitle: 'Form + Radio + Card kết quả',
+  icon: Icons.assignment_ind,
+  page: StudentInfoForm(),
+),</code></pre>
+            </div>
+          </div>
+        </article>
+      </section>
+      <section class="block">
+        <h2><span class="no">6b.</span>Widget mới — máy tính hình học &amp; danh sách</h2>
+
+        <!-- RectangleCalculatorWidget -->
+        <article class="wcard" id="n-rectangle">
+          <div class="whead">
+            <h3>C. RectangleCalculatorWidget</h3><span
+              class="path">lib/exercises/midterm/rectangle_calculator_widget.dart</span>
+          </div>
+          <ul class="meta">
+            <li><b>Công dụng:</b> Nhập dài + rộng → tính diện tích và chu vi; có nút Xoá.</li>
+            <li><b>Lắp từ:</b> PageWrapper + CustomInputField + CustomPrimaryButton.</li>
+          </ul>
+          <div class="duo">
+            <div>
+              <span class="label l-code">Code</span>
+              <pre><code>import 'package:flutter/material.dart';
+import '../../widgets/page_wrapper.dart';
+import '../../widgets/custom_input_field.dart';
+import '../../widgets/custom_primary_button.dart';
+
+class RectangleCalculatorWidget extends StatefulWidget {
+  const RectangleCalculatorWidget({super.key});
+
+  @override
+  State&lt;RectangleCalculatorWidget&gt; createState() =&gt;
+      _RectangleCalculatorWidgetState();
+}
+
+class _RectangleCalculatorWidgetState
+    extends State&lt;RectangleCalculatorWidget&gt; {
+  final _lengthCtrl = TextEditingController();
+  final _widthCtrl = TextEditingController();
+  String _result = '';
+
+  @override
+  void dispose() {
+    _lengthCtrl.dispose();
+    _widthCtrl.dispose();
+    super.dispose();
+  }
+
+  void _calculate() {
+    final double? l = double.tryParse(_lengthCtrl.text);
+    final double? w = double.tryParse(_widthCtrl.text);
+    if (l == null || w == null || l &lt;= 0 || w &lt;= 0) {
+      setState(() =&gt;
+          _result = 'Vui lòng nhập số dương hợp lệ');
+      return;
+    }
+    final double area = l * w;
+    final double perimeter = 2 * (l + w);
+    setState(() =&gt; _result =
+        'Diện tích: ${area.toStringAsFixed(2)}\n'
+        'Chu vi: ${perimeter.toStringAsFixed(2)}');
+  }
+
+  void _clear() {
+    _lengthCtrl.clear();
+    _widthCtrl.clear();
+    setState(() =&gt; _result = '');
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return PageWrapper(
+      title: 'Hình chữ nhật',
+      body: ListView(
+        children: [
+          CustomInputField(
+              controller: _lengthCtrl,
+              label: 'Chiều dài',
+              icon: Icons.straighten,
+              keyboardType: TextInputType.number),
+          CustomInputField(
+              controller: _widthCtrl,
+              label: 'Chiều rộng',
+              icon: Icons.height,
+              keyboardType: TextInputType.number),
+          CustomPrimaryButton(
+              text: 'Tính',
+              icon: Icons.calculate,
+              onPressed: _calculate),
+          const SizedBox(height: 8),
+          CustomPrimaryButton(
+              text: 'Xoá',
+              icon: Icons.refresh,
+              color: Colors.grey,
+              onPressed: _clear),
+          const SizedBox(height: 16),
+          Center(
+            child: Text(_result,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.teal)),
+          ),
+        ],
+      ),
+    );
+  }
+}</code></pre>
+            </div>
+            <div>
+              <span class="label l-prev">Preview</span>
+              <div class="phone">
+                <div class="pv-appbar" style="justify-content:center">Hình chữ nhật</div>
+                <div class="pv-body">
+                  <div class="pv-field">📏 <b>10</b> — Chiều dài</div>
+                  <div class="pv-field">📐 <b>4</b> — Chiều rộng</div>
+                  <div class="pv-btn">🧮 Tính</div>
+                  <div class="pv-btn grey">⟲ Xoá</div>
+                  <div class="pv-center" style="color:var(--accent);font-weight:700">Diện tích: 40.00<br>Chu vi: 28.00</div>
+                </div>
+              </div>
+              <span class="label l-reg">Đăng ký (MidtermScreen)</span>
+              <pre><code>ExerciseItem(
+  title: 'Hình chữ nhật',
+  subtitle: 'Diện tích + chu vi',
+  icon: Icons.crop_16_9,
+  page: RectangleCalculatorWidget(),
+),</code></pre>
+            </div>
+          </div>
+        </article>
+
+        <!-- CircleCalculatorWidget -->
+        <article class="wcard" id="n-circle">
+          <div class="whead">
+            <h3>D. CircleCalculatorWidget</h3><span class="path">lib/widgets/circle_calculator_widget.dart</span>
+          </div>
+          <ul class="meta">
+            <li><b>Công dụng:</b> Nhập bán kính → diện tích (πr²) và chu vi (2πr); có nút Xoá.</li>
+            <li><b>Điểm mới:</b> cần <code>import 'dart:math'</code> để lấy hằng số <code>pi</code>.</li>
+          </ul>
+          <div class="duo">
+            <div>
+              <span class="label l-code">Code</span>
+              <pre><code>import 'dart:math';
+import 'package:flutter/material.dart';
+import 'page_wrapper.dart';
+import 'custom_input_field.dart';
+import 'custom_primary_button.dart';
+
+class CircleCalculatorWidget extends StatefulWidget {
+  const CircleCalculatorWidget({super.key});
+
+  @override
+  State&lt;CircleCalculatorWidget&gt; createState() =&gt;
+      _CircleCalculatorWidgetState();
+}
+
+class _CircleCalculatorWidgetState
+    extends State&lt;CircleCalculatorWidget&gt; {
+  final _radiusCtrl = TextEditingController();
+  String _result = '';
+
+  @override
+  void dispose() {
+    _radiusCtrl.dispose();
+    super.dispose();
+  }
+
+  void _calculate() {
+    final double? r = double.tryParse(_radiusCtrl.text);
+    if (r == null || r &lt;= 0) {
+      setState(() =&gt; _result = 'Bán kính không hợp lệ');
+      return;
+    }
+    final double area = pi * r * r;
+    final double circumference = 2 * pi * r;
+    setState(() =&gt; _result =
+        'Diện tích: ${area.toStringAsFixed(2)}\n'
+        'Chu vi: ${circumference.toStringAsFixed(2)}');
+  }
+
+  void _clear() {
+    _radiusCtrl.clear();
+    setState(() =&gt; _result = '');
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return PageWrapper(
+      title: 'Hình tròn',
+      body: ListView(
+        children: [
+          CustomInputField(
+              controller: _radiusCtrl,
+              label: 'Bán kính',
+              icon: Icons.radio_button_unchecked,
+              keyboardType: TextInputType.number),
+          CustomPrimaryButton(
+              text: 'Tính',
+              icon: Icons.calculate,
+              onPressed: _calculate),
+          const SizedBox(height: 8),
+          CustomPrimaryButton(
+              text: 'Xoá',
+              icon: Icons.refresh,
+              color: Colors.grey,
+              onPressed: _clear),
+          const SizedBox(height: 16),
+          Center(
+            child: Text(_result,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.teal)),
+          ),
+        ],
+      ),
+    );
+  }
+}</code></pre>
+            </div>
+            <div>
+              <span class="label l-prev">Preview</span>
+              <div class="phone">
+                <div class="pv-appbar" style="justify-content:center">Hình tròn</div>
+                <div class="pv-body">
+                  <div class="pv-field">◯ <b>5</b> — Bán kính</div>
+                  <div class="pv-btn">🧮 Tính</div>
+                  <div class="pv-btn grey">⟲ Xoá</div>
+                  <div class="pv-center" style="color:var(--accent);font-weight:700">Diện tích: 78.54<br>Chu vi: 31.42</div>
+                </div>
+              </div>
+              <span class="label l-err">Lỗi thường gặp</span>
+              <ul style="font-size:.85rem">
+                <li>Quên <code>import 'dart:math';</code> → lỗi "Undefined name 'pi'".</li>
+                <li>Tự gõ 3.14 thay vì <code>pi</code> → mất điểm chính xác.</li>
+              </ul>
+              <span class="label l-reg">Đăng ký</span>
+              <p style="font-size:.85rem">Thêm ExerciseItem vào ShapeCalculatorScreen, hoặc làm trang thứ 2 của
+                ShapeCalculatorDemo (như mục 5b).</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- TriangleCalculatorWidget -->
+        <article class="wcard" id="n-triangle">
+          <div class="whead">
+            <h3>E. TriangleCalculatorWidget — Heron + validate</h3><span
+              class="path">lib/exercises/midterm/triangle_calculator_widget.dart</span>
+          </div>
+          <ul class="meta">
+            <li><b>Công dụng:</b> Nhập 3 cạnh → kiểm tra bất đẳng thức tam giác → chu vi + diện tích Heron; báo lỗi nếu
+              3 cạnh không hợp lệ.</li>
+            <li><b>Điểm mới:</b> <code>sqrt()</code> từ dart:math, logic validate nhiều điều kiện.</li>
+          </ul>
+          <div class="duo">
+            <div>
+              <span class="label l-code">Code</span>
+              <pre><code>import 'dart:math';
+import 'package:flutter/material.dart';
+import '../../widgets/page_wrapper.dart';
+import '../../widgets/custom_input_field.dart';
+import '../../widgets/custom_primary_button.dart';
+
+class TriangleCalculatorWidget extends StatefulWidget {
+  const TriangleCalculatorWidget({super.key});
+
+  @override
+  State&lt;TriangleCalculatorWidget&gt; createState() =&gt;
+      _TriangleCalculatorWidgetState();
+}
+
+class _TriangleCalculatorWidgetState
+    extends State&lt;TriangleCalculatorWidget&gt; {
+  final _aCtrl = TextEditingController();
+  final _bCtrl = TextEditingController();
+  final _cCtrl = TextEditingController();
+  String _result = '';
+  bool _isError = false;
+
+  @override
+  void dispose() {
+    _aCtrl.dispose();
+    _bCtrl.dispose();
+    _cCtrl.dispose();
+    super.dispose();
+  }
+
+  void _calculate() {
+    final double? a = double.tryParse(_aCtrl.text);
+    final double? b = double.tryParse(_bCtrl.text);
+    final double? c = double.tryParse(_cCtrl.text);
+
+    if (a == null || b == null || c == null ||
+        a &lt;= 0 || b &lt;= 0 || c &lt;= 0) {
+      setState(() {
+        _isError = true;
+        _result = 'Vui lòng nhập 3 số dương';
+      });
+      return;
+    }
+    // Bất đẳng thức tam giác
+    if (a + b &lt;= c || a + c &lt;= b || b + c &lt;= a) {
+      setState(() {
+        _isError = true;
+        _result = '3 cạnh này không tạo thành tam giác!';
+      });
+      return;
+    }
+    final double p = a + b + c;      // chu vi
+    final double s = p / 2;          // nửa chu vi
+    final double area =
+        sqrt(s * (s - a) * (s - b) * (s - c)); // Heron
+    setState(() {
+      _isError = false;
+      _result =
+          'Chu vi: ${p.toStringAsFixed(2)}\n'
+          'Diện tích: ${area.toStringAsFixed(2)}';
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return PageWrapper(
+      title: 'Tam giác (Heron)',
+      body: ListView(
+        children: [
+          CustomInputField(
+              controller: _aCtrl,
+              label: 'Cạnh a',
+              keyboardType: TextInputType.number),
+          CustomInputField(
+              controller: _bCtrl,
+              label: 'Cạnh b',
+              keyboardType: TextInputType.number),
+          CustomInputField(
+              controller: _cCtrl,
+              label: 'Cạnh c',
+              keyboardType: TextInputType.number),
+          CustomPrimaryButton(
+              text: 'Tính',
+              icon: Icons.calculate,
+              onPressed: _calculate),
+          const SizedBox(height: 16),
+          Center(
+            child: Text(
+              _result,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: _isError
+                    ? Colors.red
+                    : Colors.teal,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}</code></pre>
+            </div>
+            <div>
+              <span class="label l-prev">Preview</span>
+              <div class="phone">
+                <div class="pv-appbar" style="justify-content:center">Tam giác (Heron)</div>
+                <div class="pv-body">
+                  <div class="pv-field"><b>3</b> — Cạnh a</div>
+                  <div class="pv-field"><b>4</b> — Cạnh b</div>
+                  <div class="pv-field"><b>5</b> — Cạnh c</div>
+                  <div class="pv-btn">🧮 Tính</div>
+                  <div class="pv-center" style="color:var(--accent);font-weight:700">Chu vi: 12.00<br>Diện tích: 6.00</div>
+                </div>
+              </div>
+              <div class="phone">
+                <div class="pv-body">
+                  <div class="pv-field"><b>1</b> · <b>2</b> · <b>10</b></div>
+                  <div class="pv-center pv-error">3 cạnh này không tạo thành tam giác!</div>
+                </div>
+              </div>
+              <span class="label l-exp">Điểm chấm</span>
+              <ul style="font-size:.85rem">
+                <li>Validate đủ 2 tầng: số dương + bất đẳng thức tam giác.</li>
+                <li>Cờ <code>_isError</code> đổi màu chữ đỏ/teal — TextStyle không để const vì màu phụ thuộc state.</li>
+              </ul>
+            </div>
+          </div>
+        </article>
+
+        <!-- SimpleCounterWidget -->
+        <article class="wcard" id="n-counter">
+          <div class="whead">
+            <h3>F. SimpleCounterWidget</h3><span class="path">lib/exercises/midterm/simple_counter_widget.dart</span>
+          </div>
+          <ul class="meta">
+            <li><b>Công dụng:</b> Bộ đếm +/−/Reset — bài kiểm tra StatefulWidget kinh điển, làm được trong 3 phút.</li>
+          </ul>
+          <div class="duo">
+            <div>
+              <span class="label l-code">Code</span>
+              <pre><code>import 'package:flutter/material.dart';
+import '../../widgets/page_wrapper.dart';
+
+class SimpleCounterWidget extends StatefulWidget {
+  const SimpleCounterWidget({super.key});
+
+  @override
+  State&lt;SimpleCounterWidget&gt; createState() =&gt;
+      _SimpleCounterWidgetState();
+}
+
+class _SimpleCounterWidgetState
+    extends State&lt;SimpleCounterWidget&gt; {
+  int _count = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return PageWrapper(
+      title: 'Simple Counter',
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text('Giá trị hiện tại'),
+            Text(
+              '$_count',
+              style: const TextStyle(
+                  fontSize: 56,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.teal),
+            ),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment:
+                  MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: () =&gt;
+                      setState(() =&gt; _count--),
+                  child: const Icon(Icons.remove),
+                ),
+                const SizedBox(width: 12),
+                OutlinedButton(
+                  onPressed: () =&gt;
+                      setState(() =&gt; _count = 0),
+                  child: const Text('Reset'),
+                ),
+                const SizedBox(width: 12),
+                ElevatedButton(
+                  onPressed: () =&gt;
+                      setState(() =&gt; _count++),
+                  child: const Icon(Icons.add),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}</code></pre>
+            </div>
+            <div>
+              <span class="label l-prev">Preview</span>
+              <div class="phone">
+                <div class="pv-appbar" style="justify-content:center">Simple Counter</div>
+                <div class="pv-body center">
+                  <div class="pv-muted">Giá trị hiện tại</div>
+                  <div style="font-size:34px;font-weight:800;color:var(--accent)">7</div>
+                  <div class="pv-row" style="width:100%"><span class="pv-btn">−</span><span
+                      class="pv-btn grey">Reset</span><span class="pv-btn">+</span></div>
+                </div>
+              </div>
+              <span class="label l-reg">Đăng ký (MidtermScreen)</span>
+              <pre><code>ExerciseItem(
+  title: 'Simple Counter',
+  subtitle: 'Cộng / trừ / reset',
+  icon: Icons.exposure,
+  page: SimpleCounterWidget(),
+),</code></pre>
+            </div>
+          </div>
+        </article>
+
+        <!-- ProductCardWidget -->
+        <article class="wcard" id="n-product">
+          <div class="whead">
+            <h3>G. ProductCardWidget</h3><span class="path">lib/widgets/product_card_widget.dart</span>
+          </div>
+          <ul class="meta">
+            <li><b>Công dụng:</b> Thẻ sản phẩm: ảnh (icon placeholder) + tên + giá + nút thêm giỏ. Nhận dữ liệu qua tham
+              số → 1 widget hiển thị được mọi sản phẩm.</li>
+            <li><b>Kết hợp với:</b> ListView/GridView để làm trang danh sách sản phẩm (kiểu ShoesApp nâng cấp).</li>
+          </ul>
+          <div class="duo">
+            <div>
+              <span class="label l-code">Code</span>
+              <pre><code>import 'package:flutter/material.dart';
+
+class ProductCardWidget extends StatelessWidget {
+  final String name;
+  final double price;
+  final IconData image;
+  final VoidCallback onAddToCart;
+
+  const ProductCardWidget({
+    super.key,
+    required this.name,
+    required this.price,
+    this.image = Icons.shopping_bag,
+    required this.onAddToCart,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(14),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              height: 100,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.teal.shade50,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Icon(image,
+                  size: 48, color: Colors.teal),
+            ),
+            const SizedBox(height: 10),
+            Text(name,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                    fontWeight: FontWeight.bold)),
+            Text(
+              '${price.toStringAsFixed(0)}đ',
+              style: const TextStyle(
+                  color: Colors.teal,
+                  fontWeight: FontWeight.w600),
+            ),
+            const SizedBox(height: 8),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton.icon(
+                onPressed: onAddToCart,
+                icon: const Icon(
+                    Icons.add_shopping_cart, size: 18),
+                label: const Text('Thêm vào giỏ'),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}</code></pre>
+            </div>
+            <div>
+              <span class="label l-prev">Preview</span>
+              <div class="phone">
+                <div class="pv-body">
+                  <div class="pv-card">
+                    <div class="pv-img">👟</div>
+                    <div class="pv-title" style="margin-top:6px">Nike Air Zoom</div>
+                    <div class="pv-ok">1290000đ</div>
+                    <div class="pv-btn" style="margin-top:6px">🛒 Thêm vào giỏ</div>
+                  </div>
+                </div>
+              </div>
+              <span class="label l-how">Cách dùng trong GridView</span>
+              <pre><code>GridView.count(
+  crossAxisCount: 2,
+  childAspectRatio: 0.72,
+  children: [
+    ProductCardWidget(
+      name: 'Nike Air Zoom',
+      price: 1290000,
+      onAddToCart: () {},
+    ),
+    ProductCardWidget(
+      name: 'Adidas Ultra',
+      price: 990000,
+      image: Icons.directions_run,
+      onAddToCart: () {},
+    ),
+  ],
+)</code></pre>
+            </div>
+          </div>
+        </article>
+
+        <!-- StudentListWidget -->
+        <article class="wcard" id="n-studentlist">
+          <div class="whead">
+            <h3>H. StudentListWidget — ListView.builder</h3><span
+              class="path">lib/exercises/midterm/student_list_widget.dart</span>
+          </div>
+          <ul class="meta">
+            <li><b>Công dụng:</b> Hiển thị danh sách sinh viên bằng <code>ListView.builder</code>, mỗi dòng là một
+              StudentInfoCard — minh hoạ chuẩn "dữ liệu → danh sách widget".</li>
+            <li><b>Dùng khi thi:</b> Đề "hiển thị danh sách X" — thay Student bằng bất kỳ model nào.</li>
+          </ul>
+          <div class="duo">
+            <div>
+              <span class="label l-code">Code</span>
+              <pre><code>import 'package:flutter/material.dart';
+import '../../widgets/page_wrapper.dart';
+import '../../widgets/student_info_card.dart';
+
+class StudentListWidget extends StatelessWidget {
+  const StudentListWidget({super.key});
+
+  // Dữ liệu mẫu — khi thi có thể lấy từ form nhập
+  static const List&lt;Map&lt;String, String&gt;&gt; _students = [
+    {'name': 'Nguyễn Văn A', 'id': '21520001',
+     'class': 'SE1701', 'gender': 'Nam'},
+    {'name': 'Trần Thị B', 'id': '21520002',
+     'class': 'SE1701', 'gender': 'Nữ'},
+    {'name': 'Lê Văn C', 'id': '21520003',
+     'class': 'SE1702', 'gender': 'Nam'},
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return PageWrapper(
+      title: 'Danh sách sinh viên',
+      body: ListView.builder(
+        itemCount: _students.length,
+        itemBuilder: (context, index) {
+          final s = _students[index];
+          return StudentInfoCard(
+            name: s['name']!,
+            studentId: s['id']!,
+            className: s['class']!,
+            gender: s['gender']!,
+          );
+        },
+      ),
+    );
+  }
+}</code></pre>
+            </div>
+            <div>
+              <span class="label l-prev">Preview</span>
+              <div class="phone">
+                <div class="pv-appbar" style="justify-content:center">Danh sách sinh viên</div>
+                <div class="pv-body">
+                  <div class="pv-card pv-row"><span class="pv-avatar">👤</span><span><span class="pv-title">Nguyễn Văn
+                        A</span><br><span class="pv-muted">21520001 · SE1701 · Nam</span></span></div>
+                  <div class="pv-card pv-row"><span class="pv-avatar">👤</span><span><span class="pv-title">Trần Thị
+                        B</span><br><span class="pv-muted">21520002 · SE1701 · Nữ</span></span></div>
+                  <div class="pv-card pv-row"><span class="pv-avatar">👤</span><span><span class="pv-title">Lê Văn
+                        C</span><br><span class="pv-muted">21520003 · SE1702 · Nam</span></span></div>
+                </div>
+              </div>
+              <span class="label l-exp">Ghi nhớ</span>
+              <ul style="font-size:.85rem">
+                <li><code>itemCount</code> bắt buộc phải có, nếu không builder chạy vô hạn.</li>
+                <li>Muốn thêm sinh viên từ form: chuyển sang StatefulWidget, giữ <code>List&lt;Map&gt;</code> trong
+                  state, thêm phần tử trong setState.</li>
+              </ul>
+            </div>
+          </div>
+        </article>
+      </section>
+      <!-- ============ 7. ASSEMBLY RECIPES ============ -->
+      <section class="block" id="sec7">
+        <h2><span class="no">7.</span>Assembly Recipes — công thức lắp ráp khi thi</h2>
+
+        <article class="wcard">
+          <h3>Recipe 1 — Thêm một bài tập widget mới (≈ 2 phút)</h3>
+          <div class="step"><span class="n">1</span>
+            <div class="t"><b>Tạo file widget</b>
+              <p>Ví dụ <code>lib/exercises/midterm/my_new_demo.dart</code> chứa class
+                <code>MyNewDemo extends StatelessWidget</code> (không main, không runApp).</p>
+            </div>
+          </div>
+          <div class="step"><span class="n">2</span>
+            <div class="t"><b>Import vào category screen</b>
+              <p>Mở <code>midterm_screen.dart</code>, thêm <code>import '../exercises/midterm/my_new_demo.dart';</code>
+              </p>
+            </div>
+          </div>
+          <div class="step"><span class="n">3</span>
+            <div class="t"><b>Thêm ExerciseItem</b>
+              <pre><code>ExerciseItem(
+  title: 'My New Demo',
+  subtitle: 'Mô tả ngắn',
+  icon: Icons.star,
+  page: MyNewDemo(),
+),</code></pre>
+            </div>
+          </div>
+          <div class="step"><span class="n">4</span>
+            <div class="t"><b>Chạy app</b>
+              <p><code>flutter run</code> (hoặc hot reload <code>r</code>). Vào tab Midterm → thẻ mới xuất hiện → chạm
+                để mở.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="wcard">
+          <h3>Recipe 2 — Nối một nhóm bài mới vào BottomNavigationBar</h3>
+          <div class="step"><span class="n">1</span>
+            <div class="t"><b>Tạo category screen mới</b>
+              <p><code>lib/screens/exam_screen.dart</code> — copy khuôn MidtermScreen, đổi tên class thành
+                <code>ExamScreen</code> và thay list items.</p>
+            </div>
+          </div>
+          <div class="step"><span class="n">2</span>
+            <div class="t"><b>Thêm vào _screens của HomeScreen</b>
+              <pre><code>final List&lt;Widget&gt; _screens = const [
+  MidtermScreen(),
+  Buoi2Screen(),
+  CalculatorScreen(),
+  ShapeCalculatorScreen(),
+  ExamScreen(), // MỚI — nhớ import file
+];</code></pre>
+            </div>
+          </div>
+          <div class="step"><span class="n">3</span>
+            <div class="t"><b>Thêm title vào _titles</b>
+              <pre><code>final List&lt;String&gt; _titles = const [
+  'Midterm', 'Buổi 2', 'Calculator',
+  'Shape Calculator', 'Exam', // MỚI
+];</code></pre>
+            </div>
+          </div>
+          <div class="step"><span class="n">4</span>
+            <div class="t"><b>Thêm item vào AppBottomNavBar</b>
+              <pre><code>BottomNavigationBarItem(
+  icon: Icon(Icons.quiz), label: 'Exam'), // MỚI</code></pre>
+              <p>Kiểm tra: <code>_screens.length == _titles.length == items.length</code>. Lệch nhau là crash "index out
+                of range".</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="wcard">
+          <h3>Recipe 3 — Tái sử dụng một widget input chung</h3>
+          <p>Cùng một <code>CustomInputField</code> phục vụ 3 form khác nhau — chỉ đổi tham số:</p>
+          <pre><code>// Trong StudentInfoForm
+CustomInputField(controller: _nameCtrl, label: 'Họ tên', icon: Icons.person),
+
+// Trong RectangleCalculatorWidget
+CustomInputField(controller: _lengthCtrl, label: 'Chiều dài',
+    icon: Icons.straighten, keyboardType: TextInputType.number),
+
+// Trong CircleCalculatorWidget
+CustomInputField(controller: _radiusCtrl, label: 'Bán kính',
+    icon: Icons.radio_button_unchecked, keyboardType: TextInputType.number),</code></pre>
+          <p style="font-size:.9rem">Lợi ích: sửa style 1 chỗ (bo góc, isDense…) là cả 3 form đổi theo; khi thi bạn chỉ
+            gõ 1 dòng cho mỗi ô nhập thay vì 10 dòng TextField + InputDecoration.</p>
+        </article>
+
+        <article class="wcard">
+          <h3>Recipe 4 — Tách widget lớn thành widget nhỏ</h3>
+          <p>Dấu hiệu cần tách: hàm <code>build()</code> dài quá ~50 dòng, hoặc một cụm UI lặp lại ≥ 2 lần.</p>
+          <ul>
+            <li><strong>StudentInfoForm</strong> không tự vẽ TextField/nút — nó lắp từ <code>CustomInputField</code> +
+              <code>CustomPrimaryButton</code> + <code>StudentInfoCard</code>. Hàm build chỉ còn là "danh sách lắp ráp".
+            </li>
+            <li><strong>Shape calculator</strong> tách 3 tầng: <code>ShapeTextField</code> (ô nhập) →
+              <code>ShapeInput</code> (nhãn + ô nhập) → <code>ShapeInputDemo</code> (trang hoàn chỉnh); nút tách riêng
+              thành <code>ShapeActionButton</code>.</li>
+          </ul>
+          <p style="font-size:.9rem">Quy trình tách: cắt cụm code UI → tạo class StatelessWidget mới → biến phần dữ liệu
+            thay đổi thành tham số <code>final</code> + constructor <code>required</code> → thay cụm cũ bằng 1 dòng gọi
+            widget mới.</p>
+        </article>
+
+        <article class="wcard">
+          <h3>Recipe 5 — Tránh trùng tên class</h3>
+          <p>Dart báo lỗi khi 2 file cùng khai báo 1 tên class và bị import chung (trực tiếp hoặc gián tiếp): <em>"The
+              name 'CustomButton' is defined in the libraries..."</em></p>
+          <ul>
+            <li>Đặt tên theo <strong>ngữ cảnh + loại widget</strong>: <code>ShapeActionButton</code> thay vì
+              <code>CustomButton</code>; <code>CalculatorTextButton</code> thay vì <code>CustomButton</code>.</li>
+            <li>Tên file khớp tên class theo snake_case: <code>shape_action_button.dart</code> ↔
+              <code>ShapeActionButton</code>.</li>
+            <li>Mỗi bài tập có prefix riêng (<code>Shape…</code>, <code>Calculator…</code>, <code>Student…</code>) — vừa
+              tránh trùng vừa dễ tìm file khi thi.</li>
+            <li>Nếu lỡ trùng và không kịp đổi tên: <code>import '...' as shape;</code> rồi gọi
+              <code>shape.CustomButton(...)</code> — nhưng đổi tên vẫn là cách sạch nhất.</li>
+          </ul>
+        </article>
+      </section>
+
+      <!-- ============ 8. CHEAT SHEET ============ -->
+      <section class="block" id="sec8">
+        <h2><span class="no">8.</span>Midterm Cheat Sheet</h2>
+        <p class="lead">18 widget/khái niệm hay ra thi nhất — cú pháp, công dụng, ví dụ tí hon.</p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th style="width:16%">Widget / API</th>
+                <th style="width:34%">Cú pháp</th>
+                <th style="width:22%">Công dụng</th>
+                <th>Ví dụ tí hon</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><b>Scaffold</b></td>
+                <td><code>Scaffold(appBar:…, body:…, bottomNavigationBar:…, floatingActionButton:…)</code></td>
+                <td>Bộ khung 1 trang Material</td>
+                <td><code>Scaffold(body: Center(child: Text('Hi')))</code></td>
+              </tr>
+              <tr>
+                <td><b>AppBar</b></td>
+                <td><code>AppBar(title:…, centerTitle:…, actions: […])</code></td>
+                <td>Thanh tiêu đề trên cùng</td>
+                <td><code>AppBar(title: const Text('Home'))</code></td>
+              </tr>
+              <tr>
+                <td><b>BottomNavigationBar</b></td>
+                <td><code>BottomNavigationBar(currentIndex:…, onTap:…, items: […])</code></td>
+                <td>Chuyển tab dưới đáy; ≥4 item cần <code>type: fixed</code></td>
+                <td><code>onTap: (i) =&gt; setState(() =&gt; _index = i)</code></td>
+              </tr>
+              <tr>
+                <td><b>ListView</b></td>
+                <td><code>ListView(children:…)</code> / <code>ListView.builder(itemCount:…, itemBuilder:…)</code></td>
+                <td>Danh sách cuộn được</td>
+                <td><code>ListView.builder(itemCount: 3, itemBuilder: (c, i) =&gt; Text('$i'))</code></td>
+              </tr>
+              <tr>
+                <td><b>GridView</b></td>
+                <td><code>GridView.count(crossAxisCount: 2, children: […])</code></td>
+                <td>Lưới nhiều cột</td>
+                <td><code>GridView.count(crossAxisCount: 2, children: cards)</code></td>
+              </tr>
+              <tr>
+                <td><b>Card</b></td>
+                <td><code>Card(elevation:…, child:…)</code></td>
+                <td>Thẻ nổi có bóng, bo góc</td>
+                <td><code>Card(child: ListTile(title: Text('A')))</code></td>
+              </tr>
+              <tr>
+                <td><b>ListTile</b></td>
+                <td><code>ListTile(leading:…, title:…, subtitle:…, trailing:…, onTap:…)</code></td>
+                <td>1 dòng danh sách chuẩn</td>
+                <td><code>ListTile(leading: Icon(Icons.person), title: Text('An'))</code></td>
+              </tr>
+              <tr>
+                <td><b>TextField</b></td>
+                <td><code>TextField(controller:…, keyboardType:…, decoration: InputDecoration(labelText:…))</code></td>
+                <td>Ô nhập liệu</td>
+                <td><code>TextField(controller: _ctrl)</code></td>
+              </tr>
+              <tr>
+                <td><b>TextEditingController</b></td>
+                <td><code>final _ctrl = TextEditingController();</code> đọc: <code>_ctrl.text</code></td>
+                <td>Đọc/ghi/xoá nội dung TextField. Nhớ <code>dispose()</code></td>
+                <td><code>double.tryParse(_ctrl.text)</code></td>
+              </tr>
+              <tr>
+                <td><b>ElevatedButton</b></td>
+                <td><code>ElevatedButton(onPressed:…, child:…)</code> / <code>.icon(icon:…, label:…)</code></td>
+                <td>Nút hành động chính</td>
+                <td><code>ElevatedButton(onPressed: _go, child: Text('OK'))</code></td>
+              </tr>
+              <tr>
+                <td><b>Radio</b></td>
+                <td><code>Radio&lt;T&gt;(value:…, groupValue:…, onChanged:…)</code></td>
+                <td>Chọn 1 trong nhóm</td>
+                <td><code>Radio(value: 'Nam', groupValue: _g, onChanged: (v) =&gt; setState(() =&gt; _g = v!))</code>
+                </td>
+              </tr>
+              <tr>
+                <td><b>Checkbox</b></td>
+                <td><code>Checkbox(value: _b, onChanged: (v) =&gt; setState(() =&gt; _b = v!))</code></td>
+                <td>Bật/tắt true–false</td>
+                <td><code>Checkbox(value: _agree, onChanged: …)</code></td>
+              </tr>
+              <tr>
+                <td><b>DropdownButton</b></td>
+                <td><code>DropdownButton&lt;T&gt;(value:…, items: […], onChanged:…)</code></td>
+                <td>Chọn từ menu thả</td>
+                <td><code>DropdownMenuItem(value: 'A', child: Text('A'))</code></td>
+              </tr>
+              <tr>
+                <td><b>Slider</b></td>
+                <td><code>Slider(value:…, min:…, max:…, onChanged:…)</code></td>
+                <td>Kéo chọn giá trị số</td>
+                <td><code>Slider(value: _v, min: 0, max: 10, onChanged: (x) =&gt; setState(() =&gt; _v = x))</code></td>
+              </tr>
+              <tr>
+                <td><b>StatelessWidget</b></td>
+                <td><code>class A extends StatelessWidget { Widget build(ctx) =&gt; …; }</code></td>
+                <td>UI tĩnh, không state</td>
+                <td>StudentInfoCard, PageWrapper</td>
+              </tr>
+              <tr>
+                <td><b>StatefulWidget</b></td>
+                <td><code>class A extends StatefulWidget</code> + <code>class _AState extends State&lt;A&gt;</code></td>
+                <td>UI có dữ liệu thay đổi</td>
+                <td>Counter, mọi form/calculator</td>
+              </tr>
+              <tr>
+                <td><b>Navigator.push</b></td>
+                <td><code>Navigator.push(context, MaterialPageRoute(builder: (_) =&gt; Page()))</code></td>
+                <td>Mở trang mới (tự có nút back)</td>
+                <td>Dùng trong ExerciseLauncher</td>
+              </tr>
+              <tr>
+                <td><b>setState</b></td>
+                <td><code>setState(() { _x = giáTrịMới; })</code></td>
+                <td>Đổi state + vẽ lại UI</td>
+                <td><code>setState(() =&gt; _count++)</code></td>
+              </tr>
+              <tr>
+                <td><b>const constructor</b></td>
+                <td><code>const A({super.key});</code> → <code>const A()</code></td>
+                <td>Widget bất biến, build nhanh hơn</td>
+                <td><code>const Text('Hi')</code>, <code>const SizedBox(height: 8)</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+      <!-- ============ 9. COMMON EXAM ERRORS ============ -->
+      <section class="block" id="sec9">
+        <h2><span class="no">9.</span>Lỗi thi thường gặp &amp; cách sửa</h2>
+        <div class="grid2">
+          <div class="callout bad"><b>1. Nhiều hàm main()</b>Copy file demo có sẵn <code>main()</code> vào project →
+            chạy nhầm entry point, app mất bottom nav. <strong>Sửa:</strong> xoá mọi <code>main()</code> ngoài
+            <code>lib/main.dart</code>; file bài tập chỉ giữ class widget.</div>
+          <div class="callout bad"><b>2. Gọi runApp() trong widget bài tập</b>Widget trở thành "app riêng", không push
+            mở được, không quay lại được. <strong>Sửa:</strong> widget chỉ <code>return</code> UI trong
+            <code>build()</code>; runApp duy nhất ở main.dart.</div>
+          <div class="callout bad"><b>3. Quên import</b><code>Error: 'StudentInfoForm' isn't defined</code>.
+            <strong>Sửa:</strong> thêm dòng import file chứa class đó; để ý đường dẫn tương đối <code>../</code> đúng số
+            cấp thư mục.</div>
+          <div class="callout bad"><b>4. Trùng tên class</b>2 file cùng khai báo <code>CustomButton</code> → lỗi
+            "defined in both libraries". <strong>Sửa:</strong> đặt tên có ngữ cảnh (ShapeActionButton,
+            CalculatorTextButton) — xem Recipe 5.</div>
+          <div class="callout bad"><b>5. Không dispose TextEditingController</b>Rò rỉ bộ nhớ, bị trừ điểm code sạch.
+            <strong>Sửa:</strong> trong State thêm
+            <code>@override void dispose() { _ctrl.dispose(); super.dispose(); }</code></div>
+          <div class="callout bad"><b>6. Dùng sai BuildContext</b>Gọi <code>Navigator.push(context)</code> hoặc
+            <code>ScaffoldMessenger.of(context)</code> với context <strong>phía trên</strong> MaterialApp/Scaffold →
+            "Navigator operation requested with a context...". <strong>Sửa:</strong> dùng context của
+            <code>build()</code> bên trong cây MaterialApp; trong kiến trúc này mọi widget bài tập đều an toàn vì
+            MaterialApp nằm ở app.dart.</div>
+          <div class="callout bad"><b>7. Thiếu const</b>Cảnh báo <code>prefer_const_constructors</code> tràn màn hình,
+            mất điểm lint. <strong>Sửa:</strong> thêm <code>const</code> cho widget không đổi:
+            <code>const Text(…)</code>, <code>const SizedBox(…)</code>, constructor <code>const A({super.key})</code>.
+          </div>
+          <div class="callout bad"><b>8. Overflow trong Row/Column</b>Sọc vàng-đen "BOTTOM OVERFLOWED BY … PIXELS".
+            <strong>Sửa:</strong> bọc phần co giãn bằng <code>Expanded</code>/<code>Flexible</code>; thay Column bằng
+            <code>ListView</code> khi form dài; Text dài thêm <code>overflow: TextOverflow.ellipsis</code>.</div>
+          <div class="callout bad"><b>9. Bấm nút mà UI không đổi</b>Đã gán <code>_result = ...</code> nhưng quên bọc
+            trong <code>setState</code> → giá trị đổi mà màn hình đứng im. <strong>Sửa:</strong> mọi thay đổi state phải
+            nằm trong <code>setState(() {...})</code> của StatefulWidget.</div>
+          <div class="callout bad"><b>10. BottomNavigationBar index out of range</b>Thêm tab vào navbar nhưng quên thêm
+            trang vào <code>_screens</code> (hoặc ngược lại). <strong>Sửa:</strong> kiểm tra 3 danh sách
+            <code>_screens</code>, <code>_titles</code>, <code>items</code> luôn bằng nhau về số lượng và thứ tự (Recipe
+            2, bước 4).</div>
+        </div>
+      </section>
+
+      <!-- ============ 10. FINAL COMPLETE EXAMPLE ============ -->
+      <section class="block" id="sec10">
+        <h2><span class="no">10.</span>Ví dụ tổng hợp cuối cùng — mini app hoàn chỉnh</h2>
+        <p class="lead">Ghép mọi thứ đã học thành 1 app chạy được: main.dart → App → HomeScreen (bottom nav) →
+          ExamScreen (launcher) → StudentInfoForm + RectangleCalculatorWidget + CircleCalculatorWidget.</p>
+
+        <div class="duo">
+          <div>
+            <span class="label l-code">Sơ đồ file &amp; luồng kết nối</span>
+            <pre class="tree">
+lib/
+  main.dart                        <span class="cm">→ runApp(App())</span>
+  app.dart                         <span class="cm">→ MaterialApp(home: HomeScreen())</span>
+  navigation/bottom_navbar.dart    <span class="cm">→ AppBottomNavBar (5 tab)</span>
+  screens/
+    home_screen.dart               <span class="cm">→ _screens[_currentIndex]</span>
+    exam_screen.dart               <span class="cm">→ ExerciseLauncher(items: 3 bài)</span>
+  widgets/
+    exercise_card.dart             <span class="cm">→ thẻ bài tập</span>
+    exercise_launcher.dart         <span class="cm">→ Navigator.push(item.page)</span>
+    page_wrapper.dart              <span class="cm">→ vỏ Scaffold chung</span>
+    custom_input_field.dart        <span class="cm">→ ô nhập chung</span>
+    custom_primary_button.dart     <span class="cm">→ nút chung</span>
+    student_info_card.dart         <span class="cm">→ thẻ kết quả</span>
+    circle_calculator_widget.dart
+  exercises/midterm/
+    student_info_form.dart
+    rectangle_calculator_widget.dart
+</pre>
+            <span class="label l-code">lib/screens/exam_screen.dart (file mới duy nhất cần viết)</span>
+            <pre><code>import 'package:flutter/material.dart';
+import '../widgets/exercise_launcher.dart';
+import '../widgets/circle_calculator_widget.dart';
+import '../exercises/midterm/student_info_form.dart';
+import '../exercises/midterm/rectangle_calculator_widget.dart';
+
+class ExamScreen extends StatelessWidget {
+  const ExamScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ExerciseLauncher(
+      items: const [
+        ExerciseItem(
+          title: 'Student Info Form',
+          subtitle: 'Form + Radio + Card kết quả',
+          icon: Icons.assignment_ind,
+          page: StudentInfoForm(),
+        ),
+        ExerciseItem(
+          title: 'Hình chữ nhật',
+          subtitle: 'Diện tích + chu vi',
+          icon: Icons.crop_16_9,
+          page: RectangleCalculatorWidget(),
+        ),
+        ExerciseItem(
+          title: 'Hình tròn',
+          subtitle: 'πr² và 2πr',
+          icon: Icons.circle_outlined,
+          page: CircleCalculatorWidget(),
+        ),
+      ],
+    );
+  }
+}</code></pre>
+            <span class="label l-code">Cập nhật lib/screens/home_screen.dart</span>
+            <pre><code>// Thêm import
+import 'exam_screen.dart';
+
+// Thêm vào _screens
+final List&lt;Widget&gt; _screens = const [
+  MidtermScreen(),
+  Buoi2Screen(),
+  CalculatorScreen(),
+  ShapeCalculatorScreen(),
+  ExamScreen(), // MỚI
+];
+
+// Thêm vào _titles
+final List&lt;String&gt; _titles = const [
+  'Midterm', 'Buổi 2', 'Calculator',
+  'Shape Calculator', 'Exam', // MỚI
+];</code></pre>
+            <span class="label l-code">Cập nhật lib/navigation/bottom_navbar.dart</span>
+            <pre><code>items: const [
+  BottomNavigationBarItem(
+      icon: Icon(Icons.school), label: 'Midterm'),
+  BottomNavigationBarItem(
+      icon: Icon(Icons.menu_book), label: 'Buổi 2'),
+  BottomNavigationBarItem(
+      icon: Icon(Icons.calculate), label: 'Calc'),
+  BottomNavigationBarItem(
+      icon: Icon(Icons.category), label: 'Shape'),
+  BottomNavigationBarItem(
+      icon: Icon(Icons.quiz), label: 'Exam'), // MỚI
+],</code></pre>
+          </div>
+          <div>
+            <span class="label l-prev">Kết quả</span>
+            <div class="phone">
+              <div class="pv-appbar" style="justify-content:center">Exam</div>
+              <div class="pv-body">
+                <div class="pv-card pv-row"><span class="pv-avatar">📋</span><span><span class="pv-title">Student Info
+                      Form</span><br><span class="pv-muted">Form + Radio + Card</span></span><span class="pv-muted"
+                    style="flex:none">›</span></div>
+                <div class="pv-card pv-row"><span class="pv-avatar">▭</span><span><span class="pv-title">Hình chữ
+                      nhật</span><br><span class="pv-muted">Diện tích + chu vi</span></span><span class="pv-muted"
+                    style="flex:none">›</span></div>
+                <div class="pv-card pv-row"><span class="pv-avatar">◯</span><span><span class="pv-title">Hình
+                      tròn</span><br><span class="pv-muted">πr² và 2πr</span></span><span class="pv-muted"
+                    style="flex:none">›</span></div>
+              </div>
+              <div class="pv-nav" style="font-size:9px"><span>Midterm</span><span>Buổi
+                  2</span><span>Calc</span><span>Shape</span><span class="on">● Exam</span></div>
+            </div>
+            <span class="label l-exp">Luồng kết nối đầy đủ</span>
+            <ol style="font-size:.86rem">
+              <li><code>main()</code> gọi <code>runApp(const App())</code>.</li>
+              <li><code>App</code> dựng MaterialApp + theme, mở <code>HomeScreen</code>.</li>
+              <li><code>HomeScreen</code> giữ <code>_currentIndex</code>; bấm tab Exam trên <code>AppBottomNavBar</code>
+                → <code>setState</code> → body = <code>ExamScreen</code>.</li>
+              <li><code>ExamScreen</code> chỉ khai báo 3 <code>ExerciseItem</code>; <code>ExerciseLauncher</code> vẽ 3
+                thẻ.</li>
+              <li>Chạm thẻ → <code>Navigator.push</code> mở widget bài tập (bọc trong <code>PageWrapper</code>, tự có
+                nút back).</li>
+              <li>Trong form/calculator: <code>CustomInputField</code> đọc dữ liệu qua controller → nút
+                <code>CustomPrimaryButton</code> gọi hàm tính → <code>setState</code> hiện kết quả (StudentInfoCard hoặc
+                Text).</li>
+            </ol>
+            <div class="callout"><b>Checklist trước khi nộp bài:</b>
+              <ul style="font-size:.85rem;margin-left:18px">
+                <li>Chỉ 1 <code>main()</code>, 1 <code>runApp()</code> ✔</li>
+                <li>3 danh sách nav bằng nhau ✔</li>
+                <li>Mọi controller có <code>dispose()</code> ✔</li>
+                <li>Input được validate (tryParse, số dương) ✔</li>
+                <li>Không warning const, không overflow ✔</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+  <footer>Flutter Midterm Widget Assembly Guide · Tài liệu ôn thi — mở file này bằng trình duyệt bất kỳ, không cần
+    internet. Chúc thi tốt! 🍀</footer>
+
+  <script>
+    (function () {
+      // ---- Syntax highlight (1 lượt duyệt, an toàn với HTML) ----
+      var KW = 'import|class|extends|implements|with|return|const|final|var|void|get|set|static|late|required|override|super|this|new|if|else|for|while|switch|case|break|continue|true|false|null|as|is|in|async|await';
+      var re = new RegExp(
+        '(\\/\\/[^\\n]*)' +                       // 1: comment
+        "|('(?:[^'\\\\\\n]|\\\\.)*')" +           // 2: string
+        '|\\b(' + KW + ')\\b' +                   // 3: keyword
+        '|\\b([A-Z][A-Za-z0-9_]*)\\b' +           // 4: Type
+        '|\\b(\\d+(?:\\.\\d+)?)\\b',              // 5: number
+        'g'
+      );
+      document.querySelectorAll('pre code').forEach(function (block) {
+        var esc = block.textContent
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;');
+        esc = esc.replace(re, function (m, c, s, k, t, n) {
+          if (c) return '<span class="tk-c">' + c + '</span>';
+          if (s) return '<span class="tk-s">' + s + '</span>';
+          if (k) return '<span class="tk-k">' + k + '</span>';
+          if (t) return '<span class="tk-t">' + t + '</span>';
+          if (n) return '<span class="tk-n">' + n + '</span>';
+          return m;
+        });
+        block.innerHTML = esc;
+      });
+
+      // ---- Copy buttons ----
+      document.querySelectorAll('pre').forEach(function (pre) {
+        var code = pre.querySelector('code');
+        if (!code) return;
+        var btn = document.createElement('button');
+        btn.className = 'copy-btn';
+        btn.type = 'button';
+        btn.textContent = 'Copy';
+        btn.addEventListener('click', function () {
+          var text = code.textContent;
+          function done() {
+            btn.textContent = 'Đã copy ✓';
+            btn.classList.add('ok');
+            setTimeout(function () {
+              btn.textContent = 'Copy';
+              btn.classList.remove('ok');
+            }, 1400);
+          }
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(done, function () { fallback(); });
+          } else {
+            fallback();
+          }
+          function fallback() {
+            var ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.position = 'fixed';
+            ta.style.opacity = '0';
+            document.body.appendChild(ta);
+            ta.select();
+            try { document.execCommand('copy'); } catch (e) { }
+            document.body.removeChild(ta);
+            done();
+          }
+        });
+        pre.appendChild(btn);
+      });
+    })();
+  </script>
+</body>
+
+</html>
+
