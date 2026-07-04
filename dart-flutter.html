@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flutter — Widget & Chức năng cơ bản</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;700&family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --cream: #F7F3EA;
+            --cream-deep: #EFE9DA;
+            --ink: #2B2620;
+            --ink-soft: #6B655A;
+            --beni: #B7410E;
+            --beni-soft: #D97757;
+            --line: #E3DDCB;
+            --moss: #6B7156;
+            --code-bg: #211E19;
+            --code-text: #EFE9DA;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            background: var(--cream);
+            color: var(--ink);
+            font-family: 'Noto Sans JP', sans-serif;
+            font-weight: 300;
+            line-height: 1.75;
+        }
+
+        ::selection {
+            background: var(--beni-soft);
+            color: var(--cream);
+        }
+
+        /* ---------- Header ---------- */
+        header {
+            padding: 64px 8vw 48px;
+            border-bottom: 1px solid var(--line);
+            position: relative;
+        }
+
+        .eyebrow {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            letter-spacing: .25em;
+            color: var(--beni);
+            text-transform: uppercase;
+        }
+
+        h1 {
+            font-family: 'Noto Serif JP', serif;
+            font-weight: 700;
+            font-size: clamp(32px, 5vw, 52px);
+            margin: 14px 0 10px;
+            letter-spacing: .02em;
+        }
+
+        header p {
+            max-width: 640px;
+            color: var(--ink-soft);
+            font-size: 15px;
+        }
+
+        .stamp {
+            position: absolute;
+            top: 56px;
+            right: 8vw;
+            width: 64px;
+            height: 64px;
+            border: 2px solid var(--beni);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Noto Serif JP', serif;
+            color: var(--beni);
+            font-size: 13px;
+            line-height: 1.3;
+            text-align: center;
+            transform: rotate(-4deg);
+            opacity: .85;
+        }
+
+        /* ---------- Layout ---------- */
+        .wrap {
+            display: grid;
+            grid-template-columns: 220px 1fr;
+            gap: 0;
+        }
+
+        nav {
+            position: sticky;
+            top: 0;
+            align-self: start;
+            height: 100vh;
+            overflow-y: auto;
+            padding: 40px 24px;
+            border-right: 1px solid var(--line);
+        }
+
+        nav .group-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            letter-spacing: .15em;
+            color: var(--beni);
+            text-transform: uppercase;
+            margin: 20px 0 8px;
+        }
+
+        nav a {
+            display: block;
+            padding: 5px 0;
+            font-size: 13.5px;
+            color: var(--ink-soft);
+            text-decoration: none;
+            border-left: 2px solid transparent;
+            padding-left: 10px;
+            margin-left: -12px;
+            transition: .15s;
+        }
+
+        nav a:hover {
+            color: var(--ink);
+            border-left-color: var(--beni-soft);
+        }
+
+        main {
+            padding: 48px 6vw 120px;
+            max-width: 920px;
+        }
+
+        /* ---------- Sections ---------- */
+        section {
+            padding: 44px 0;
+            border-bottom: 1px solid var(--line);
+        }
+
+        section:first-of-type {
+            padding-top: 0;
+        }
+
+        .sec-head {
+            display: flex;
+            align-items: baseline;
+            gap: 16px;
+            margin-bottom: 6px;
+        }
+
+        .num {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            color: var(--cream);
+            background: var(--beni);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .num.fn {
+            background: var(--moss);
+        }
+
+        h2 {
+            font-family: 'Noto Serif JP', serif;
+            font-size: 26px;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .desc {
+            color: var(--ink-soft);
+            font-size: 14.5px;
+            margin: 8px 0 20px;
+            max-width: 640px;
+        }
+
+        .desc b {
+            color: var(--ink);
+            font-weight: 500;
+        }
+
+        h3.sub {
+            font-family: 'Noto Serif JP', serif;
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--beni);
+            margin: 22px 0 8px;
+        }
+
+        pre {
+            background: var(--code-bg);
+            color: var(--code-text);
+            padding: 18px 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12.8px;
+            line-height: 1.65;
+            margin: 0 0 6px;
+        }
+
+        code {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .kw {
+            color: #D97757;
+        }
+
+        .cls {
+            color: #9FC5A1;
+        }
+
+        .str {
+            color: #D8C48B;
+        }
+
+        .com {
+            color: #7A7468;
+            font-style: italic;
+        }
+
+        .note {
+            font-size: 13px;
+            color: var(--ink-soft);
+            background: var(--cream-deep);
+            border-left: 3px solid var(--beni-soft);
+            padding: 10px 14px;
+            margin-top: 10px;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .props {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 14px 0;
+            font-size: 13px;
+        }
+
+        .props th,
+        .props td {
+            text-align: left;
+            padding: 8px 10px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .props th {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: .05em;
+            color: var(--beni);
+        }
+
+        .props td:first-child {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--ink);
+        }
+
+        .divider-word {
+            text-align: center;
+            font-family: 'Noto Serif JP', serif;
+            color: var(--line);
+            font-size: 22px;
+            letter-spacing: .5em;
+            margin: 8px 0 8px;
+        }
+
+        footer {
+            padding: 40px 6vw 80px;
+            color: var(--ink-soft);
+            font-size: 12.5px;
+            border-top: 1px solid var(--line);
+        }
+
+        @media (max-width:840px) {
+            .wrap {
+                grid-template-columns: 1fr;
+            }
+
+            nav {
+                position: relative;
+                height: auto;
+                border-right: none;
+                border-bottom: 1px solid var(--line);
+            }
+
+            .stamp {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="eyebrow">Dart / Flutter — Ôn thi Mobile Programming</div>
+        <h1>Widget nền tảng &amp; Chức năng tương tác</h1>
+        <p>Tài liệu tra cứu nhanh: cách khai báo, cách hoạt động và ví dụ code nhỏ cho từng widget UI cơ bản, cùng phần
+            chức năng (event, state) thường gặp trong đề thi.</p>
+        <div class="stamp">碼<br>学</div>
+    </header>
+
+    <div class="wrap">
+        <nav>
+            <div class="group-label">Phần 1 — Widget</div>
+            <a href="#label">01 · Label (Text)</a>
+            <a href="#checkbox">02 · Checkbox</a>
+            <a href="#radio">03 · Radio</a>
+            <a href="#button">04 · Button</a>
+            <a href="#slider">05 · Slider</a>
+            <a href="#image">06 · Image / Icon</a>
+            <a href="#row">07 · Row</a>
+            <a href="#column">08 · Column</a>
+
+            <div class="group-label">Phần 2 — Chức năng</div>
+            <a href="#fn-checkbox">09 · Checkbox hoạt động</a>
+            <a href="#fn-button">10 · Button hoạt động</a>
+            <a href="#fn-radio">11 · Radio group</a>
+            <a href="#fn-combobox">12 · ComboBox (Dropdown)</a>
+            <a href="#fn-drag">13 · Kéo thả (Drag &amp; Drop)</a>
+            <a href="#fn-slider">14 · Slider hoạt động</a>
+            <a href="#fn-scroll">15 · Scroll / Dropdown menu</a>
+        </nav>
+
+        <main>
+
+            <!-- ============ 01 LABEL ============ -->
+            <section id="label">
+                <div class="sec-head"><span class="num">01</span>
+                    <h2>Label — widget <code>Text</code></h2>
+                </div>
+                <p class="desc">Flutter không có widget tên "Label" riêng — dùng <b>Text</b> để hiển thị chữ tĩnh (giống
+                    <code>&lt;label&gt;</code> hay <code>TextView</code>).</p>
+
+                <h3 class="sub">Cú pháp khai báo</h3>
+                <pre><span class="cls">Text</span>(
+  <span class="str">'Nội dung hiển thị'</span>,
+  style: <span class="cls">TextStyle</span>(
+    fontSize: <span class="kw">16</span>,
+    fontWeight: FontWeight.bold,
+    color: Colors.black87,
+  ),
+)</pre>
+
+                <table class="props">
+                    <tr>
+                        <th>Thuộc tính</th>
+                        <th>Ý nghĩa</th>
+                    </tr>
+                    <tr>
+                        <td>style</td>
+                        <td>Định dạng font, size, màu, độ đậm</td>
+                    </tr>
+                    <tr>
+                        <td>textAlign</td>
+                        <td>Căn lề: left / center / right</td>
+                    </tr>
+                    <tr>
+                        <td>overflow</td>
+                        <td>Xử lý khi chữ tràn (ellipsis…)</td>
+                    </tr>
+                    <tr>
+                        <td>maxLines</td>
+                        <td>Giới hạn số dòng hiển thị</td>
+                    </tr>
+                </table>
+
+                <div class="note">Cách hoạt động: Text là widget "stateless" thuần hiển thị — không tự thay đổi, muốn
+                    đổi nội dung phải bọc trong StatefulWidget và gọi setState.</div>
+            </section>
+
+            <!-- ============ 02 CHECKBOX ============ -->
+            <section id="checkbox">
+                <div class="sec-head"><span class="num">02</span>
+                    <h2>Checkbox</h2>
+                </div>
+                <p class="desc">Ô vuông tick chọn/bỏ chọn một giá trị boolean (true/false).</p>
+
+                <h3 class="sub">Cú pháp khai báo</h3>
+                <pre><span class="cls">Checkbox</span>(
+  value: isChecked,             <span class="com">// bool: true / false</span>
+  activeColor: <span class="cls">Colors</span>.orange,
+  onChanged: (bool? newValue) {
+    setState(() {
+      isChecked = newValue!;
+    });
+  },
+)</pre>
+                <div class="note">Checkbox <b>bắt buộc</b> phải nằm trong StatefulWidget vì value cần thay đổi được theo
+                    thời gian.</div>
+            </section>
+
+            <!-- ============ 03 RADIO ============ -->
+            <section id="radio">
+                <div class="sec-head"><span class="num">03</span>
+                    <h2>Radio</h2>
+                </div>
+                <p class="desc">Chọn một trong nhiều lựa chọn — các Radio cùng nhóm chia sẻ một biến
+                    <code>groupValue</code>.</p>
+
+                <h3 class="sub">Cú pháp khai báo</h3>
+                <pre><span class="cls">Radio</span>&lt;<span class="cls">int</span>&gt;(
+  value: <span class="kw">1</span>,                 <span class="com">// giá trị đại diện của lựa chọn này</span>
+  groupValue: selectedValue,   <span class="com">// giá trị đang được chọn trong nhóm</span>
+  onChanged: (<span class="cls">int</span>? val) {
+    setState(() => selectedValue = val);
+  },
+)</pre>
+                <div class="note">Cách hoạt động: khi <code>value == groupValue</code> → radio đó hiển thị đã chọn. Đổi
+                    <code>groupValue</code> sẽ tự đổi radio nào được tick.</div>
+            </section>
+
+            <!-- ============ 04 BUTTON ============ -->
+            <section id="button">
+                <div class="sec-head"><span class="num">04</span>
+                    <h2>Button</h2>
+                </div>
+                <p class="desc">Flutter có nhiều loại: <b>ElevatedButton</b> (nổi khối), <b>TextButton</b> (phẳng),
+                    <b>OutlinedButton</b> (viền), <b>IconButton</b> (chỉ icon).</p>
+
+                <h3 class="sub">Cú pháp khai báo</h3>
+                <pre><span class="cls">ElevatedButton</span>(
+  onPressed: () {
+    <span class="com">// hành động khi bấm</span>
+  },
+  style: ElevatedButton.styleFrom(
+    backgroundColor: <span class="cls">Colors</span>.red,
+  ),
+  child: <span class="cls">Text</span>(<span class="str">'Bấm vào đây'</span>),
+)</pre>
+                <pre><span class="cls">IconButton</span>(
+  icon: <span class="cls">Icon</span>(Icons.favorite),
+  onPressed: () {},
+)</pre>
+                <div class="note">Nếu <code>onPressed: null</code> → nút tự động chuyển sang trạng thái "disabled" (mờ,
+                    không bấm được).</div>
+            </section>
+
+            <!-- ============ 05 SLIDER ============ -->
+            <section id="slider">
+                <div class="sec-head"><span class="num">05</span>
+                    <h2>Slider</h2>
+                </div>
+                <p class="desc">Thanh trượt chọn giá trị số trong một khoảng (min–max).</p>
+
+                <h3 class="sub">Cú pháp khai báo</h3>
+                <pre><span class="cls">Slider</span>(
+  value: currentValue,      <span class="com">// double</span>
+  min: <span class="kw">0</span>,
+  max: <span class="kw">100</span>,
+  divisions: <span class="kw">10</span>,           <span class="com">// số nấc chia (tuỳ chọn)</span>
+  label: currentValue.round().toString(),
+  onChanged: (<span class="cls">double</span> val) {
+    setState(() => currentValue = val);
+  },
+)</pre>
+            </section>
+
+            <!-- ============ 06 IMAGE/ICON ============ -->
+            <section id="image">
+                <div class="sec-head"><span class="num">06</span>
+                    <h2>Image &amp; Icon</h2>
+                </div>
+                <p class="desc">Hiển thị hình ảnh (asset, network, file) hoặc icon có sẵn từ bộ Material Icons.</p>
+
+                <h3 class="sub">Cú pháp khai báo</h3>
+                <pre><span class="com">// Ảnh từ thư mục assets</span>
+<span class="cls">Image</span>.asset(<span class="str">'assets/images/logo.png'</span>, width: <span class="kw">100</span>)
+
+<span class="com">// Ảnh từ internet</span>
+<span class="cls">Image</span>.network(<span class="str">'https://example.com/pic.jpg'</span>)
+
+<span class="com">// Icon</span>
+<span class="cls">Icon</span>(Icons.star, color: <span class="cls">Colors</span>.amber, size: <span class="kw">28</span>)</pre>
+                <div class="note">Nhớ khai báo asset trong <code>pubspec.yaml</code> (mục <code>flutter: assets:</code>)
+                    thì <code>Image.asset</code> mới nhận diện được file.</div>
+            </section>
+
+            <!-- ============ 07 ROW ============ -->
+            <section id="row">
+                <div class="sec-head"><span class="num">07</span>
+                    <h2>Row</h2>
+                </div>
+                <p class="desc">Sắp xếp các widget con theo <b>hàng ngang</b>.</p>
+
+                <h3 class="sub">Cú pháp khai báo</h3>
+                <pre><span class="cls">Row</span>(
+  mainAxisAlignment: MainAxisAlignment.spaceBetween, <span class="com">// trục ngang</span>
+  crossAxisAlignment: CrossAxisAlignment.center,      <span class="com">// trục dọc</span>
+  children: [
+    <span class="cls">Icon</span>(Icons.home),
+    <span class="cls">Text</span>(<span class="str">'Trang chủ'</span>),
+    <span class="cls">Icon</span>(Icons.arrow_forward),
+  ],
+)</pre>
+                <div class="note">mainAxis của Row là <b>ngang</b>, crossAxis là <b>dọc</b> — ngược lại hoàn toàn với
+                    Column.</div>
+            </section>
+
+            <!-- ============ 08 COLUMN ============ -->
+            <section id="column">
+                <div class="sec-head"><span class="num">08</span>
+                    <h2>Column</h2>
+                </div>
+                <p class="desc">Sắp xếp các widget con theo <b>hàng dọc</b>.</p>
+
+                <h3 class="sub">Cú pháp khai báo</h3>
+                <pre><span class="cls">Column</span>(
+  mainAxisAlignment: MainAxisAlignment.center,   <span class="com">// trục dọc</span>
+  crossAxisAlignment: CrossAxisAlignment.start,  <span class="com">// trục ngang</span>
+  children: [
+    <span class="cls">Text</span>(<span class="str">'Tiêu đề'</span>),
+    <span class="cls">SizedBox</span>(height: <span class="kw">8</span>),
+    <span class="cls">Text</span>(<span class="str">'Mô tả bên dưới'</span>),
+  ],
+)</pre>
+                <div class="note">Dùng <code>SizedBox(height:...)</code> giữa các phần tử để tạo khoảng cách thay vì
+                    margin.</div>
+            </section>
+
+            <div class="divider-word">機 能</div>
+
+            <!-- ============ 09 FN CHECKBOX ============ -->
+            <section id="fn-checkbox">
+                <div class="sec-head"><span class="num fn">09</span>
+                    <h2>Chức năng: Checkbox</h2>
+                </div>
+                <p class="desc">Toggle giá trị bool và cập nhật UI ngay lập tức qua <code>setState</code>.</p>
+                <pre><span class="kw">class</span> <span class="cls">MyCheckbox</span> <span class="kw">extends</span> <span class="cls">StatefulWidget</span> {
+  <span class="kw">@override</span>
+  <span class="cls">State</span> createState() => _MyCheckboxState();
+}
+
+<span class="kw">class</span> _MyCheckboxState <span class="kw">extends</span> <span class="cls">State</span>&lt;MyCheckbox&gt; {
+  <span class="kw">bool</span> agree = <span class="kw">false</span>;
+
+  <span class="kw">@override</span>
+  <span class="cls">Widget</span> build(<span class="cls">BuildContext</span> context) {
+    <span class="kw">return</span> <span class="cls">Row</span>(children: [
+      <span class="cls">Checkbox</span>(
+        value: agree,
+        onChanged: (v) => setState(() => agree = v!),
+      ),
+      <span class="cls">Text</span>(<span class="str">'Tôi đồng ý điều khoản'</span>),
+    ]);
+  }
+}</pre>
+                <div class="note">Bản chất: mỗi lần tick → onChanged trả về giá trị mới → setState() báo Flutter "vẽ
+                    lại" widget với state mới.</div>
+            </section>
+
+            <!-- ============ 10 FN BUTTON ============ -->
+            <section id="fn-button">
+                <div class="sec-head"><span class="num fn">10</span>
+                    <h2>Chức năng: Button</h2>
+                </div>
+                <p class="desc">onPressed nhận một hàm callback — chạy logic bất kỳ khi người dùng bấm.</p>
+                <pre><span class="kw">int</span> counter = <span class="kw">0</span>;
+
+<span class="cls">ElevatedButton</span>(
+  onPressed: () {
+    setState(() => counter++);
+  },
+  child: <span class="cls">Text</span>(<span class="str">'Đếm: $counter'</span>),
+)</pre>
+                <div class="note">Có thể dùng <code>async</code> trong onPressed để gọi API rồi setState khi có kết quả
+                    trả về.</div>
+            </section>
+
+            <!-- ============ 11 FN RADIO ============ -->
+            <section id="fn-radio">
+                <div class="sec-head"><span class="num fn">11</span>
+                    <h2>Chức năng: Radio Group</h2>
+                </div>
+                <p class="desc">Nhiều Radio dùng chung 1 biến groupValue để đảm bảo chỉ 1 lựa chọn được chọn tại một
+                    thời điểm.</p>
+                <pre><span class="cls">String</span>? gioiTinh = <span class="str">'nam'</span>;
+
+<span class="cls">Column</span>(children: [
+  <span class="cls">ListTile</span>(
+    title: <span class="cls">Text</span>(<span class="str">'Nam'</span>),
+    leading: <span class="cls">Radio</span>&lt;String&gt;(
+      value: <span class="str">'nam'</span>, groupValue: gioiTinh,
+      onChanged: (v) => setState(() => gioiTinh = v),
+    ),
+  ),
+  <span class="cls">ListTile</span>(
+    title: <span class="cls">Text</span>(<span class="str">'Nữ'</span>),
+    leading: <span class="cls">Radio</span>&lt;String&gt;(
+      value: <span class="str">'nu'</span>, groupValue: gioiTinh,
+      onChanged: (v) => setState(() => gioiTinh = v),
+    ),
+  ),
+])</pre>
+            </section>
+
+            <!-- ============ 12 FN COMBOBOX ============ -->
+            <section id="fn-combobox">
+                <div class="sec-head"><span class="num fn">12</span>
+                    <h2>Chức năng: ComboBox — <code>DropdownButton</code></h2>
+                </div>
+                <p class="desc">Flutter gọi combobox là <b>DropdownButton</b>: bấm vào mở danh sách, chọn 1 item.</p>
+                <pre><span class="cls">String</span> selected = <span class="str">'HCM'</span>;
+<span class="kw">final</span> cities = [<span class="str">'HCM'</span>, <span class="str">'Hà Nội'</span>, <span class="str">'Đà Nẵng'</span>];
+
+<span class="cls">DropdownButton</span>&lt;String&gt;(
+  value: selected,
+  items: cities.map((c) {
+    <span class="kw">return</span> <span class="cls">DropdownMenuItem</span>(value: c, child: <span class="cls">Text</span>(c));
+  }).toList(),
+  onChanged: (v) => setState(() => selected = v!),
+)</pre>
+                <div class="note">items phải sinh từ danh sách bằng <code>.map()</code> rồi <code>.toList()</code> — mỗi
+                    phần tử là 1 DropdownMenuItem.</div>
+            </section>
+
+            <!-- ============ 13 FN DRAG ============ -->
+            <section id="fn-drag">
+                <div class="sec-head"><span class="num fn">13</span>
+                    <h2>Chức năng: Kéo thả — <code>Draggable</code> / <code>DragTarget</code></h2>
+                </div>
+                <p class="desc">Draggable bọc widget có thể kéo đi; DragTarget là vùng nhận khi thả vào.</p>
+                <pre><span class="cls">Draggable</span>&lt;String&gt;(
+  data: <span class="str">'item-01'</span>,           <span class="com">// dữ liệu mang theo khi kéo</span>
+  feedback: <span class="cls">Icon</span>(Icons.star, size: <span class="kw">40</span>),   <span class="com">// hiển thị lúc đang kéo</span>
+  childWhenDragging: <span class="cls">Opacity</span>(opacity: <span class="kw">0.3</span>, child: <span class="cls">Icon</span>(Icons.star)),
+  child: <span class="cls">Icon</span>(Icons.star, size: <span class="kw">40</span>),  <span class="com">// hiển thị bình thường</span>
+)
+
+<span class="cls">DragTarget</span>&lt;String&gt;(
+  onAccept: (data) {
+    <span class="com">// xử lý khi thả 'data' vào đây</span>
+    setState(() => droppedItem = data);
+  },
+  builder: (context, candidateData, rejectedData) {
+    <span class="kw">return</span> <span class="cls">Container</span>(
+      width: <span class="kw">100</span>, height: <span class="kw">100</span>,
+      color: <span class="cls">Colors</span>.grey[300],
+      child: <span class="cls">Center</span>(child: <span class="cls">Text</span>(<span class="str">'Thả vào đây'</span>)),
+    );
+  },
+)</pre>
+                <div class="note">Luồng: Draggable phát ra "data" khi bắt đầu kéo → DragTarget theo dõi vị trí thả → nếu
+                    thả trúng vùng, gọi onAccept(data).</div>
+            </section>
+
+            <!-- ============ 14 FN SLIDER ============ -->
+            <section id="fn-slider">
+                <div class="sec-head"><span class="num fn">14</span>
+                    <h2>Chức năng: Slider hoạt động</h2>
+                </div>
+                <p class="desc">onChanged bắn liên tục khi kéo → thường dùng để hiển thị giá trị realtime (âm lượng, độ
+                    sáng...).</p>
+                <pre><span class="cls">double</span> volume = <span class="kw">50</span>;
+
+<span class="cls">Column</span>(children: [
+  <span class="cls">Text</span>(<span class="str">'Âm lượng: ${volume.round()}'</span>),
+  <span class="cls">Slider</span>(
+    value: volume, min: <span class="kw">0</span>, max: <span class="kw">100</span>,
+    onChanged: (v) => setState(() => volume = v),
+  ),
+])</pre>
+            </section>
+
+            <!-- ============ 15 FN SCROLL ============ -->
+            <section id="fn-scroll">
+                <div class="sec-head"><span class="num fn">15</span>
+                    <h2>Chức năng: Scroll &amp; Dropdown menu</h2>
+                </div>
+                <p class="desc">Khi nội dung dài hơn màn hình, bọc bằng <b>SingleChildScrollView</b> hoặc dùng
+                    <b>ListView</b> (tự scroll sẵn).</p>
+                <pre><span class="cls">SingleChildScrollView</span>(
+  child: <span class="cls">Column</span>(
+    children: List.generate(<span class="kw">20</span>, (i) => <span class="cls">Text</span>(<span class="str">'Dòng số $i'</span>)),
+  ),
+)</pre>
+                <h3 class="sub">Dropdown menu dạng nút bấm mở menu — <code>PopupMenuButton</code></h3>
+                <pre><span class="cls">PopupMenuButton</span>&lt;String&gt;(
+  onSelected: (value) {
+    <span class="com">// xử lý khi chọn 1 mục trong menu</span>
+  },
+  itemBuilder: (context) => [
+    <span class="cls">PopupMenuItem</span>(value: <span class="str">'edit'</span>, child: <span class="cls">Text</span>(<span class="str">'Sửa'</span>)),
+    <span class="cls">PopupMenuItem</span>(value: <span class="str">'delete'</span>, child: <span class="cls">Text</span>(<span class="str">'Xoá'</span>)),
+  ],
+)</pre>
+                <div class="note">DropdownButton (mục 12) dùng để <b>chọn 1 giá trị dữ liệu</b>; PopupMenuButton dùng để
+                    <b>chọn 1 hành động</b> — khác nhau về mục đích dù giao diện tương tự.</div>
+            </section>
+
+        </main>
+    </div>
+
+    <footer>
+        Tài liệu ôn tập Flutter/Dart — Mobile Programming · làm nhanh để nắm cú pháp trước khi vào phòng thi, nhớ code
+        tay lại từng ví dụ để nhớ lâu hơn.
+    </footer>
+
+</body>
+
+</html>

@@ -82,5 +82,17 @@
     "slides": "6 Chương",
     "progress": 0,
     "href": "./flutter-midterm-guide.html"
+  },
+  {
+    "id": 8,
+    "title": "Giữa kỳ Mobile Layout",
+    "description": "Tổng hợp kiến thức luồng xử lí các widget: lấy từ bài tập thực hành hàng tuần",
+    "category": "Mobile Development",
+    "color": "#D4541A",
+    "badge": "Mới",
+    "badgeType": "new",
+    "slides": "6 Chương",
+    "progress": 0,
+    "href": "./dart-flutter.html"
   }
 ]
