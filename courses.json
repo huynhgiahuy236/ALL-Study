@@ -94,5 +94,17 @@
     "slides": "6 Chương",
     "progress": 0,
     "href": "./dart-flutter.html"
+  },
+  {
+    "id": 9,
+    "title": "Phân tích & Cách dùng menu WordPress",
+    "description": "Tổng hợp kiến thức menu wordpresss",
+    "category": "Mobile Development",
+    "color": "#D4541A",
+    "badge": "Mới",
+    "badgeType": "new",
+    "slides": "6 Chương",
+    "progress": 0,
+    "href": "./dart-flutter.html"
   }
 ]

@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WordPress Admin Sidebar — Ôn tập kiến trúc Headless CMS</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root{
+    --cream:#F7F2E7;
+    --cream-deep:#EFE7D6;
+    --ink:#2A2723;
+    --ink-soft:#6B6459;
+    --line:#DED4BE;
+    --beni:#A13D3D;
+    --beni-deep:#7E2E2E;
+    --beni-tint:#F3E2DD;
+    --card-bg:#FCFAF4;
+    --radius: 16px;
+    --radius-sm: 10px;
+    --sidebar-w: 260px;
+  }
+
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Noto Sans JP','Hiragino Sans',sans-serif;
+    font-weight:300;
+    line-height:1.8;
+    font-size:16px;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  ::selection{ background:var(--beni-tint); color:var(--beni-deep); }
+
+  h1,h2,h3{ font-family:'Noto Serif JP',serif; font-weight:600; color:var(--ink); margin:0 0 0.5em; }
+  code, pre, .mono{ font-family:'JetBrains Mono',monospace; }
+
+  /* ---------------- layout shell ---------------- */
+  .shell{
+    display:flex;
+    align-items:flex-start;
+    max-width:1180px;
+    margin:0 auto;
+  }
+
+  /* ---------------- sidebar ---------------- */
+  .sidebar{
+    width:var(--sidebar-w);
+    flex-shrink:0;
+    position:sticky;
+    top:24px;
+    max-height:calc(100vh - 48px);
+    overflow-y:auto;
+    margin:24px 0 24px 24px;
+    padding:22px 18px;
+    background:var(--card-bg);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    scrollbar-width:thin;
+    scrollbar-color:var(--line) transparent;
+  }
+  .sidebar::-webkit-scrollbar{ width:6px; }
+  .sidebar::-webkit-scrollbar-thumb{ background:var(--line); border-radius:10px; }
+
+  .sidebar-title{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px; letter-spacing:0.14em; text-transform:uppercase;
+    color:var(--beni-deep); margin-bottom:16px;
+    display:flex; align-items:center; gap:8px;
+  }
+  .sidebar-title::before{ content:""; width:16px; height:1px; background:var(--beni-deep); }
+
+  .sidebar-part{
+    font-family:'JetBrains Mono',monospace;
+    font-size:10.5px; letter-spacing:0.1em; text-transform:uppercase;
+    color:var(--ink-soft);
+    margin:18px 0 8px;
+    padding-top:14px;
+    border-top:1px dashed var(--line);
+  }
+  .sidebar-part:first-of-type{ border-top:none; padding-top:0; margin-top:0; }
+
+  .sidebar a{
+    display:flex; align-items:center; gap:9px;
+    text-decoration:none;
+    color:var(--ink-soft);
+    font-size:13.5px;
+    padding:7px 10px;
+    border-radius:var(--radius-sm);
+    margin-bottom:2px;
+    transition: background .15s ease, color .15s ease;
+  }
+  .sidebar a .n{
+    font-family:'JetBrains Mono',monospace;
+    font-size:10.5px;
+    color:var(--beni-deep);
+    background:var(--beni-tint);
+    border-radius:999px;
+    width:20px; height:20px;
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+  }
+  .sidebar a:hover{ background:var(--cream-deep); color:var(--ink); }
+  .sidebar a.active{ background:var(--beni-deep); color:#fff; }
+  .sidebar a.active .n{ background:rgba(255,255,255,0.25); color:#fff; }
+
+  /* mobile toggle */
+  .sidebar-toggle{
+    display:none;
+    position:fixed; bottom:22px; right:22px; z-index:50;
+    background:var(--beni-deep); color:#fff;
+    border:none; border-radius:999px;
+    width:52px; height:52px;
+    font-size:20px;
+    box-shadow:0 8px 20px rgba(126,46,46,0.35);
+    cursor:pointer;
+  }
+
+  /* ---------------- main content ---------------- */
+  main{ flex:1; min-width:0; }
+  .wrap{ max-width:720px; margin:0 auto; padding:0 24px; }
+
+  header{ padding:72px 0 40px; border-bottom:1px solid var(--line); }
+  .kicker{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px; letter-spacing:0.16em; text-transform:uppercase;
+    color:var(--beni-deep); margin-bottom:18px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .kicker::before{ content:""; width:20px; height:1px; background:var(--beni-deep); }
+  h1.title{ font-size:clamp(24px,3.6vw,34px); line-height:1.4; }
+  h1.title .sub{ display:block; font-size:15.5px; font-weight:400; color:var(--ink-soft); margin-top:10px; font-family:'Noto Sans JP',sans-serif; }
+  .lede{ color:var(--ink-soft); font-size:15px; max-width:560px; margin-top:20px; }
+
+  .kanji-divider{
+    text-align:center; padding:40px 0 6px;
+    font-family:'Noto Serif JP',serif;
+    font-size:20px; letter-spacing:0.5em;
+    -webkit-text-stroke:1px var(--beni-deep);
+    color: transparent;
+  }
+  .part-label{
+    text-align:center; font-size:12.5px;
+    font-family:'JetBrains Mono',monospace;
+    letter-spacing:0.14em; text-transform:uppercase;
+    color:var(--ink-soft); margin-bottom:8px;
+  }
+
+  /* ---------------- section cards ---------------- */
+  section.item{
+    margin:22px 0;
+    padding:32px 30px;
+    background:var(--card-bg);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    scroll-margin-top:24px;
+  }
+
+  .item-num{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12.5px; color:var(--beni-deep);
+    border:1px solid var(--beni-deep);
+    display:inline-block; padding:3px 11px;
+    border-radius:999px; margin-bottom:16px;
+  }
+  h2.item-title{ font-size:21px; margin-bottom:14px; }
+
+  p{ margin:0 0 15px; }
+  p.muted{ color:var(--ink-soft); font-size:14.5px; }
+  p.tip{
+    color:var(--ink-soft); font-size:14px; font-style:italic;
+    background:var(--cream-deep);
+    padding:12px 16px;
+    border-radius:var(--radius-sm);
+    margin-top:18px;
+  }
+
+  ul{ margin:0 0 16px; padding-left:20px; }
+  li{ margin-bottom:6px; }
+
+  pre.code{
+    background:var(--ink); color:#E9E3D3;
+    padding:18px 20px; border-radius:var(--radius-sm);
+    overflow-x:auto; font-size:13.5px; line-height:1.65;
+    margin:16px 0;
+  }
+  pre.code .kw{ color:#E3A08A; }
+  pre.code .str{ color:#C9D4A8; }
+  pre.code .com{ color:#7d786c; }
+  code.inline{ background:var(--cream-deep); padding:2px 7px; border-radius:6px; font-size:13px; color:var(--beni-deep); }
+
+  table{ width:100%; border-collapse:separate; border-spacing:0; margin:16px 0; font-size:14px; border:1px solid var(--line); border-radius:var(--radius-sm); overflow:hidden; }
+  th{ text-align:left; padding:10px 14px; background:var(--cream-deep); font-weight:500; font-family:'Noto Serif JP',serif; font-size:13.5px;}
+  td{ padding:10px 14px; border-top:1px solid var(--line); color:var(--ink-soft); vertical-align:top; }
+  th.beni{ color:var(--beni-deep); }
+
+  .callout{
+    border-left:3px solid var(--beni-deep);
+    background:var(--beni-tint);
+    padding:14px 18px; border-radius:var(--radius-sm);
+    margin:18px 0; font-size:14px; color:var(--beni-deep);
+  }
+
+  .badge{
+    display:inline-block;
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px; padding:3px 10px; border-radius:999px;
+    border:1px solid var(--line); color:var(--ink-soft);
+    margin-bottom:14px; margin-right:6px;
+  }
+  .badge.api{ background:var(--ink); color:var(--cream); border-color:var(--ink); }
+
+  footer{ padding:56px 0 80px; text-align:center; }
+  footer .kanji{ font-family:'Noto Serif JP',serif; font-size:13px; letter-spacing:0.3em; color:var(--ink-soft); margin-bottom:8px; }
+  footer p{ color:var(--ink-soft); font-size:13.5px; font-style:italic; }
+
+  @media (max-width:960px){
+    .sidebar{
+      position:fixed;
+      top:0; left:0; bottom:0;
+      height:100vh; max-height:none;
+      margin:0;
+      width:78vw; max-width:300px;
+      border-radius:0 var(--radius) var(--radius) 0;
+      transform:translateX(-100%);
+      transition:transform .25s ease;
+      z-index:60;
+    }
+    .sidebar.open{ transform:translateX(0); box-shadow:0 0 40px rgba(0,0,0,0.25); }
+    .sidebar-toggle{ display:flex; align-items:center; justify-content:center; }
+    .sidebar-backdrop{
+      display:none;
+      position:fixed; inset:0; background:rgba(42,39,35,0.35);
+      z-index:55;
+    }
+    .sidebar-backdrop.show{ display:block; }
+    header{ padding:56px 0 32px; }
+    section.item{ padding:26px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-title">Mục lục</div>
+
+    <div class="sidebar-part">Phần 1 — Menu Items</div>
+    <a href="#dashboard"><span class="n">01</span>Dashboard</a>
+    <a href="#posts"><span class="n">02</span>Posts</a>
+    <a href="#media"><span class="n">03</span>Media</a>
+    <a href="#pages"><span class="n">04</span>Pages</a>
+    <a href="#comments"><span class="n">05</span>Comments</a>
+    <a href="#appearance"><span class="n">06</span>Appearance</a>
+    <a href="#plugins"><span class="n">07</span>Plugins</a>
+    <a href="#users"><span class="n">08</span>Users</a>
+    <a href="#tools"><span class="n">09</span>Tools</a>
+    <a href="#settings"><span class="n">10</span>Settings</a>
+    <a href="#collapse"><span class="n">11</span>Collapse Menu</a>
+
+    <div class="sidebar-part">Phần 2 — Tích hợp &amp; Vận hành</div>
+    <a href="#nextjs-data"><span class="n">12</span>Next.js fetch</a>
+    <a href="#comparison"><span class="n">13</span>So sánh</a>
+    <a href="#security"><span class="n">14</span>Bảo mật</a>
+    <a href="#workflow"><span class="n">15</span>Quy trình</a>
+  </aside>
+
+  <div class="sidebar-backdrop" id="backdrop"></div>
+
+  <main>
+    <div class="wrap">
+
+      <header>
+        <div class="kicker">CMS Architecture · Ôn tập</div>
+        <h1 class="title">WordPress Admin Sidebar
+          <span class="sub">Ôn tập kiến trúc Headless CMS cho Next.js</span>
+        </h1>
+        <p class="lede">Tài liệu tra cứu nhanh: từng mục trong sidebar admin dùng để làm gì, và vai trò của nó thay đổi ra sao khi WordPress chuyển sang làm backend CMS cho Next.js.</p>
+      </header>
+
+      <div class="kanji-divider">碼 学</div>
+      <div class="part-label">Phần 1 — Menu Items</div>
+
+      <section class="item" id="dashboard">
+        <span class="item-num">01</span>
+        <h2 class="item-title">Dashboard</h2>
+        <p>Trang chủ của admin — cái nhìn tổng quan nhanh về tình trạng hiện tại của site: cập nhật đang chờ, site health, thống kê nhanh (posts, comments, pages), và thông báo hệ thống.</p>
+        <p class="tip">Kiểm tra mục này đầu tiên khi đăng nhập. Ở mức nâng cao, đây cũng là nơi phát hiện sớm plugin lỗi hay chứng chỉ SSL hết hạn — những thứ có thể làm gián đoạn API mà Next.js phụ thuộc vào.</p>
+      </section>
+
+      <section class="item" id="posts">
+        <span class="item-num">02</span>
+        <h2 class="item-title">Posts</h2>
+        <span class="badge api">có API</span>
+        <p>Quản lý bài viết blog, tin tức — nội dung theo trình tự thời gian, gắn tác giả. Có các mục con Add New, Categories, Tags.</p>
+        <table>
+          <tr><th>Field</th><th>Ý nghĩa</th></tr>
+          <tr><td>title</td><td>Tiêu đề hiển thị ở danh sách và trang chi tiết</td></tr>
+          <tr><td>content</td><td>Toàn bộ nội dung, trả về dưới dạng HTML đã render</td></tr>
+          <tr><td>excerpt</td><td>Đoạn tóm tắt ngắn, dùng cho card/danh sách</td></tr>
+          <tr><td>slug</td><td>Định danh URL, ví dụ <code class="inline">my-first-post</code></td></tr>
+          <tr><td>featured image</td><td>Ảnh đại diện dùng làm thumbnail/hero</td></tr>
+        </table>
+        <pre class="code"><span class="kw">GET</span> /wp-json/wp/v2/posts</pre>
+        <p class="tip">Trong Next.js: endpoint này phục vụ trang danh sách blog, trang chi tiết bài viết, và nội dung SEO.</p>
+      </section>
+
+      <section class="item" id="media">
+        <span class="item-num">03</span>
+        <h2 class="item-title">Media</h2>
+        <span class="badge api">có API</span>
+        <p>Thư viện chứa mọi file đã upload — hình ảnh, video, PDF — tách biệt khỏi nơi chúng được sử dụng.</p>
+        <ul>
+          <li><strong>attachment ID</strong> — mã tham chiếu để gắn ảnh vào bài viết</li>
+          <li><strong>source URL</strong> — link trực tiếp đến file, dùng ngay trong <code class="inline">&lt;img&gt;</code></li>
+          <li><strong>alt text</strong> — mô tả ảnh phục vụ accessibility và SEO</li>
+        </ul>
+        <pre class="code"><span class="kw">GET</span> /wp-json/wp/v2/media</pre>
+      </section>
+
+      <section class="item" id="pages">
+        <span class="item-num">04</span>
+        <h2 class="item-title">Pages</h2>
+        <span class="badge api">có API</span>
+        <p>Quản lý nội dung tĩnh, độc lập: Home, About, Contact, Privacy Policy.</p>
+        <p class="muted"><strong>Posts vs. Pages:</strong> Posts theo thời gian và dùng taxonomy; Pages phân cấp, có thể có Page cha/con, không có categories.</p>
+        <pre class="code"><span class="kw">GET</span> /wp-json/wp/v2/pages</pre>
+      </section>
+
+      <section class="item" id="comments">
+        <span class="item-num">05</span>
+        <h2 class="item-title">Comments</h2>
+        <p>Hàng đợi quản lý bình luận: duyệt, từ chối, đánh dấu spam, hoặc xóa.</p>
+        <p class="tip">Hữu ích trên site thiên nội dung (blog, tin tức, cộng đồng). Nhiều công ty tắt hẳn trên site marketing/e-commerce để giảm khối lượng kiểm duyệt.</p>
+      </section>
+
+      <section class="item" id="appearance">
+        <span class="item-num">06</span>
+        <h2 class="item-title">Appearance</h2>
+        <p>Trong WordPress truyền thống: kiểm soát toàn bộ giao diện — theme, menu, widget, customizer, header, background.</p>
+        <div class="callout"><strong>Khi headless:</strong> phần lớn Appearance không còn liên quan vì Next.js đảm nhiệm giao diện. Mục con duy nhất vẫn hữu ích là <strong>Menus</strong> — cấu trúc điều hướng vẫn là dữ liệu có giá trị.</div>
+
+        <table>
+          <tr><th>Sub-item</th><th>Vai trò khi headless</th></tr>
+          <tr><td>Themes</td><td>Không dùng — để mặc định</td></tr>
+          <tr><td>Customize</td><td>Không dùng — Next.js xử lý styling</td></tr>
+          <tr><td>Widgets</td><td>Hầu như không dùng</td></tr>
+          <tr><td>Menus</td><td>Vẫn giữ vai trò — xem chi tiết bên dưới</td></tr>
+          <tr><td>Header / Background</td><td>Không dùng</td></tr>
+        </table>
+
+        <p><strong>Menus:</strong> nơi tạo cấu trúc điều hướng độc lập với nội dung từng trang. Mục trong menu có thể lấy từ Pages, Posts, Categories, hoặc Custom Links. Kéo thả để sắp xếp; kéo lệch phải để tạo quan hệ cha/con (dropdown).</p>
+        <pre class="code">Home
+Services
+  – Web Design
+  – SEO
+Blog
+Contact</pre>
+        <p class="tip">REST API cốt lõi không xuất menu mặc định — cần một endpoint tùy chỉnh hoặc plugin như WPGraphQL để lấy dữ liệu menu về cho Next.js.</p>
+      </section>
+
+      <section class="item" id="plugins">
+        <span class="item-num">07</span>
+        <h2 class="item-title">Plugins</h2>
+        <p>Mở rộng WordPress: WooCommerce (e-commerce), SEO plugin, WPGraphQL, JWT Authentication, Cache plugin.</p>
+        <p class="muted">Mỗi plugin là code chạy với quyền admin vào database — quá nhiều plugin làm tăng rủi ro hiệu năng và bảo mật.</p>
+        <p class="tip">Khi headless: plugin mở rộng <em>khả năng của API</em> thay vì thay đổi giao diện — đó là toàn bộ giá trị của WPGraphQL hay JWT Authentication trong một dự án headless.</p>
+      </section>
+
+      <section class="item" id="users">
+        <span class="item-num">08</span>
+        <h2 class="item-title">Users</h2>
+        <p>Quản lý tài khoản và phân quyền.</p>
+        <table>
+          <tr><th>Role</th><th>Quyền hạn</th></tr>
+          <tr><td>Administrator</td><td>Toàn quyền</td></tr>
+          <tr><td>Editor</td><td>Quản lý mọi post/page</td></tr>
+          <tr><td>Author</td><td>Chỉ bài viết của mình</td></tr>
+          <tr><td>Contributor</td><td>Viết nhưng cần duyệt mới xuất bản</td></tr>
+          <tr><td>Subscriber</td><td>Chỉ quản lý hồ sơ cá nhân</td></tr>
+        </table>
+        <div class="callout">Không dùng chung tài khoản admin. Bật xác thực hai lớp — đây là điểm duy nhất có thể viết lại mọi thứ API trả về.</div>
+      </section>
+
+      <section class="item" id="tools">
+        <span class="item-num">09</span>
+        <h2 class="item-title">Tools</h2>
+        <p>Import/export dữ liệu, chạy tiện ích bảo trì: di chuyển nội dung giữa môi trường, export XML để backup.</p>
+      </section>
+
+      <section class="item" id="settings">
+        <span class="item-num">10</span>
+        <h2 class="item-title">Settings</h2>
+        <table>
+          <tr><th>Mục</th><th>Cấu hình</th></tr>
+          <tr><td>General</td><td>Tên site, tagline, URL, múi giờ</td></tr>
+          <tr><td>Writing</td><td>Category mặc định, định dạng</td></tr>
+          <tr><td>Reading</td><td>Trang chủ hiển thị, số bài/trang</td></tr>
+          <tr><td>Discussion</td><td>Hành vi comment, kiểm duyệt</td></tr>
+          <tr><td>Permalinks</td><td>Cấu trúc URL — quan trọng nhất khi làm headless</td></tr>
+        </table>
+        <p class="tip">Permalinks sạch (<code class="inline">/sample-post/</code> thay vì <code class="inline">/?p=123</code>) giúp response API dễ ánh xạ sang route Next.js, và giữ URL ổn định cho SEO.</p>
+      </section>
+
+      <section class="item" id="collapse">
+        <span class="item-num">11</span>
+        <h2 class="item-title">Collapse Menu</h2>
+        <p>Ẩn nhãn chữ, chỉ giữ icon — giúp bảng admin gọn hơn trên màn hình nhỏ.</p>
+      </section>
+
+      <div class="kanji-divider">連 携</div>
+      <div class="part-label">Phần 2 — Tích hợp &amp; Vận hành</div>
+
+      <section class="item" id="nextjs-data">
+        <span class="item-num">12</span>
+        <h2 class="item-title">Next.js dùng dữ liệu WordPress</h2>
+        <p>WordPress lưu dữ liệu trong MySQL → xuất qua REST API dưới dạng JSON → Next.js fetch và render.</p>
+        <pre class="code"><span class="com">// Lấy tất cả bài viết</span>
+fetch(<span class="str">"https://example.com/wp-json/wp/v2/posts"</span>)
+
+<span class="com">// Lấy tất cả trang</span>
+fetch(<span class="str">"https://example.com/wp-json/wp/v2/pages"</span>)</pre>
+        <p><strong>Response mẫu:</strong></p>
+        <pre class="code">{
+  <span class="str">"id"</span>: 1,
+  <span class="str">"slug"</span>: <span class="str">"about"</span>,
+  <span class="str">"title"</span>: { <span class="str">"rendered"</span>: <span class="str">"About Us"</span> },
+  <span class="str">"content"</span>: { <span class="str">"rendered"</span>: <span class="str">"&lt;p&gt;...&lt;/p&gt;"</span> }
+}</pre>
+        <p class="tip">Chú ý mẫu <code class="inline">.rendered</code> — WordPress trả HTML sẵn, Next.js chèn cẩn thận qua <code class="inline">dangerouslySetInnerHTML</code> hoặc một parser phù hợp.</p>
+      </section>
+
+      <section class="item" id="comparison">
+        <span class="item-num">13</span>
+        <h2 class="item-title">Traditional vs. Headless WordPress</h2>
+        <table>
+          <tr><th>Traditional</th><th class="beni">Headless</th></tr>
+          <tr><td>Admin, backend, frontend trong một hệ thống</td><td>Chỉ admin và nội dung; frontend nằm riêng</td></tr>
+          <tr><td>Theme kiểm soát toàn bộ giao diện</td><td>Next.js xử lý toàn bộ giao diện</td></tr>
+          <tr><td>PHP render trực tiếp mỗi request</td><td>REST API kết nối hai bên, Next.js render</td></tr>
+          <tr><td>Dễ thiết lập cho site nhỏ</td><td>Phù hợp UI hiện đại, SEO, khả năng mở rộng</td></tr>
+        </table>
+      </section>
+
+      <section class="item" id="security">
+        <span class="item-num">14</span>
+        <h2 class="item-title">Bảo mật</h2>
+        <ul>
+          <li>Lộ domain WordPress là bình thường — đó là cách API truy cập được.</li>
+          <li>Dữ liệu API công khai (post, page, media đã xuất bản) vốn ai cũng xem được.</li>
+          <li>Thao tác nhạy cảm cần xác thực: phiên đăng nhập, token, đúng role/quyền.</li>
+          <li>Không lộ mật khẩu database, API secret, JWT secret, WooCommerce secret trong code frontend.</li>
+          <li>Bảo vệ <code class="inline">wp-admin</code>: mật khẩu mạnh, 2FA, role tối thiểu, plugin luôn cập nhật.</li>
+        </ul>
+      </section>
+
+      <section class="item" id="workflow">
+        <span class="item-num">15</span>
+        <h2 class="item-title">Quy trình thực tế</h2>
+        <ul>
+          <li>Biên tập viên đăng nhập vào admin WordPress.</li>
+          <li>Tạo hoặc cập nhật post, page, hoặc menu.</li>
+          <li>WordPress lưu thay đổi vào MySQL.</li>
+          <li>REST API trả nội dung dưới dạng JSON.</li>
+          <li>Next.js fetch JSON đó, lúc build hoặc lúc request.</li>
+          <li>Người dùng thấy website đã render từ dữ liệu đó.</li>
+        </ul>
+        <p class="tip">WordPress là backend CMS quản lý nội dung; Next.js chịu toàn bộ trách nhiệm render giao diện cho người dùng cuối.</p>
+      </section>
+
+      <footer>
+        <div class="kanji">構 造 · 内 容 · 表 示</div>
+        <p>Tài liệu ôn tập WordPress Admin cho kiến trúc Headless + Next.js — tra cứu nhanh trước khi làm dự án thật.</p>
+      </footer>
+
+    </div>
+  </main>
+</div>
+
+<button class="sidebar-toggle" id="sidebarToggle" aria-label="Mở mục lục">☰</button>
+
+<script>
+  var sidebar = document.getElementById('sidebar');
+  var toggle = document.getElementById('sidebarToggle');
+  var backdrop = document.getElementById('backdrop');
+
+  function openSidebar(){ sidebar.classList.add('open'); backdrop.classList.add('show'); }
+  function closeSidebar(){ sidebar.classList.remove('open'); backdrop.classList.remove('show'); }
+
+  toggle.addEventListener('click', function(){
+    sidebar.classList.contains('open') ? closeSidebar() : openSidebar();
+  });
+  backdrop.addEventListener('click', closeSidebar);
+  sidebar.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){ if(window.innerWidth <= 960) closeSidebar(); });
+  });
+
+  var links = Array.prototype.slice.call(sidebar.querySelectorAll('a'));
+  var sections = links.map(function(a){ return document.querySelector(a.getAttribute('href')); });
+
+  function onScroll(){
+    var pos = window.scrollY + 120;
+    var activeIndex = 0;
+    sections.forEach(function(sec, i){
+      if(sec && sec.offsetTop <= pos) activeIndex = i;
+    });
+    links.forEach(function(a, i){
+      a.classList.toggle('active', i === activeIndex);
+    });
+  }
+  window.addEventListener('scroll', onScroll);
+  onScroll();
+</script>
+
+</body>
+</html>
