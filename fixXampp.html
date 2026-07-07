@@ -1,0 +1,1486 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lỗi Khởi Động XAMPP — Hướng Dẫn Khắc Phục</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <style>
+        /* ============================================================
+     BẢNG MÀU & BIẾN DÙNG CHUNG (CSS Variables)
+     - Theo phong cách tối giản Nhật: nền kem, đen sumi, đỏ beni
+     - Dùng biến để đổi màu 1 chỗ là áp dụng toàn trang
+  ============================================================ */
+        :root {
+            --bg: #F5F0E6;
+            --bg-card: #FBF8F1;
+            --bg-alt: #ECE4D3;
+            --ink: #2A2622;
+            --ink-soft: #5C554C;
+            --sidebar-bg: #1E1B18;
+            --sidebar-ink: #C9C0AE;
+            --sidebar-ink-dim: #7A7268;
+            --beni: #A23B2E;
+            --beni-dark: #7D2C22;
+            --beni-tint: #F4E3DF;
+            --success: #57724F;
+            --success-tint: #E7EEE0;
+            --warning: #A6822E;
+            --warning-tint: #F3EAD3;
+            --border: #DCD3BE;
+            --code-bg: #201D1A;
+            --code-ink: #E4DCC8;
+            --shadow: 0 1px 2px rgba(30, 27, 24, 0.04), 0 4px 16px rgba(30, 27, 24, 0.05);
+        }
+
+        /* ============================================================
+     RESET CƠ BẢN & FONT MẶC ĐỊNH
+     - box-sizing: border-box giúp tính padding/border dễ hơn
+     - scroll-behavior: smooth để khi bấm link sidebar, trang tự
+       cuộn mượt tới section thay vì nhảy cứng
+     - h1-h4 dùng font serif (Noto Serif JP) tạo cảm giác trang
+       trọng; phần thân dùng font sans nhẹ (weight 300)
+  ============================================================ */
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Noto Sans JP', sans-serif;
+            font-weight: 300;
+            line-height: 1.7;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: 'Noto Serif JP', serif;
+            font-weight: 600;
+            letter-spacing: 0.01em;
+            margin: 0;
+        }
+
+        code,
+        pre,
+        .cmd {
+            font-family: 'JetBrains Mono', monospace;
+            /* font riêng cho code/lệnh, dễ phân biệt với chữ thường */
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        /* ============================================================
+     LAYOUT TỔNG THỂ
+     - Dùng CSS Grid 2 cột: sidebar cố định (272px) + nội dung chính
+     - Trên mobile sẽ chuyển thành 1 cột (xem phần @media bên dưới)
+  ============================================================ */
+        .layout {
+            display: grid;
+            grid-template-columns: 272px 1fr;
+            min-height: 100vh;
+        }
+
+        /* ============================================================
+     SIDEBAR (thanh điều hướng bên trái)
+     - position: fixed => luôn đứng yên khi cuộn trang trên desktop
+     - Nền đen sumi, chữ màu be sáng để tương phản
+  ============================================================ */
+        .sidebar {
+            background: var(--sidebar-bg);
+            color: var(--sidebar-ink);
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 272px;
+            overflow-y: auto;
+            padding: 28px 0 40px;
+            z-index: 100;
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+        }
+
+        /* Khối logo + tên trang ở đầu sidebar */
+        .brand {
+            padding: 0 26px 22px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+            margin-bottom: 18px;
+        }
+
+        .brand-mark {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 34px;
+            height: 34px;
+            background: var(--beni);
+            color: #F5EDE4;
+            font-family: 'Noto Serif JP', serif;
+            font-weight: 700;
+            font-size: 15px;
+            border-radius: 2px;
+            margin-bottom: 12px;
+        }
+
+        .brand h1 {
+            font-size: 16px;
+            color: #F2ECDF;
+            line-height: 1.4;
+        }
+
+        .brand p {
+            margin: 6px 0 0;
+            font-size: 11.5px;
+            color: var(--sidebar-ink-dim);
+            letter-spacing: 0.04em;
+        }
+
+        /* Ô nhập từ khóa để lọc nhanh các mục trong sidebar (JS xử lý ở cuối file) */
+        .nav-search {
+            padding: 0 20px 16px;
+        }
+
+        .nav-search input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.09);
+            color: #EFE8D9;
+            padding: 9px 12px;
+            border-radius: 3px;
+            font-size: 13px;
+            font-family: 'Noto Sans JP', sans-serif;
+            outline: none;
+            transition: border-color .15s ease;
+        }
+
+        .nav-search input:focus {
+            border-color: var(--beni);
+        }
+
+        .nav-search input::placeholder {
+            color: var(--sidebar-ink-dim);
+        }
+
+        /* Danh sách các link điều hướng (Tổng Quan, Apache Không Khởi Động, ...) */
+        nav.sidenav {
+            padding: 0 12px;
+        }
+
+        .sidenav a {
+            display: block;
+            padding: 9px 14px;
+            border-radius: 3px;
+            font-size: 13.5px;
+            color: var(--sidebar-ink);
+            margin-bottom: 1px;
+            position: relative;
+            transition: background .15s ease, color .15s ease;
+        }
+
+        .sidenav a .desc {
+            display: block;
+            font-size: 10.5px;
+            color: var(--sidebar-ink-dim);
+            margin-top: 2px;
+            font-weight: 300;
+        }
+
+        .sidenav a:hover {
+            background: rgba(255, 255, 255, 0.045);
+            color: #F2ECDF;
+        }
+
+        /* class .active được JS gắn vào link tương ứng với section đang cuộn tới (scroll-spy) */
+        .sidenav a.active {
+            background: rgba(162, 59, 46, 0.18);
+            color: #F2ECDF;
+        }
+
+        .sidenav a.active::before {
+            content: "";
+            /* thanh gạch đỏ nhỏ bên trái link đang active */
+            position: absolute;
+            left: 0;
+            top: 8px;
+            bottom: 8px;
+            width: 2px;
+            background: var(--beni);
+        }
+
+        .sidenav a.hidden {
+            display: none;
+        }
+
+        /* Ẩn mục nav khi không khớp từ khóa tìm kiếm (JS xử lý) */
+
+        .nav-empty {
+            padding: 10px 14px;
+            font-size: 12px;
+            color: var(--sidebar-ink-dim);
+            display: none;
+        }
+
+        /* Thanh menu trên cùng, chỉ hiện trên mobile (xem @media bên dưới) */
+        .mobile-bar {
+            display: none;
+        }
+
+        /* ============================================================
+     KHU VỰC NỘI DUNG CHÍNH (bên phải sidebar)
+     - margin-left = đúng bằng độ rộng sidebar để không bị đè lên
+  ============================================================ */
+        main {
+            grid-column: 2;
+            margin-left: 272px;
+            width: calc(100% - 272px);
+            padding: 0 56px 100px;
+        }
+
+        /* Tiêu đề trang, dùng position: sticky để luôn hiện khi cuộn xuống */
+        .page-header {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: rgba(245, 240, 230, 0.92);
+            backdrop-filter: blur(6px);
+            /* làm mờ nhẹ nội dung phía sau khi cuộn qua */
+            padding: 26px 0 18px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 40px;
+        }
+
+        .page-header .eyebrow {
+            font-size: 11px;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--beni);
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .page-header h1 {
+            font-size: 27px;
+            color: var(--ink);
+        }
+
+        .page-header .sub {
+            margin-top: 6px;
+            font-size: 13.5px;
+            color: var(--ink-soft);
+        }
+
+        /* Khối giới thiệu đầu trang (Tổng Quan) */
+        section.hero {
+            padding-bottom: 44px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 48px;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.3fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+
+        .hero-lead p {
+            font-size: 15px;
+            color: var(--ink-soft);
+            max-width: 52ch;
+        }
+
+        /* Ô vuông đỏ xoay nhẹ mô phỏng con dấu (hanko) — điểm nhấn thị giác riêng của trang */
+        .hero-stamp {
+            justify-self: end;
+            width: 108px;
+            height: 108px;
+            border: 2px solid var(--beni);
+            border-radius: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            color: var(--beni);
+            transform: rotate(-2deg);
+            font-family: 'Noto Serif JP', serif;
+        }
+
+        .hero-stamp span {
+            font-size: 11px;
+            letter-spacing: 0.08em;
+        }
+
+        .hero-stamp strong {
+            font-size: 30px;
+            line-height: 1;
+            margin: 4px 0;
+        }
+
+        .quicklist {
+            list-style: none;
+            padding: 0;
+            margin: 26px 0 0;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px 22px;
+        }
+
+        .quicklist li {
+            font-size: 12.5px;
+            color: var(--ink-soft);
+            padding-left: 14px;
+            position: relative;
+        }
+
+        .quicklist li::before {
+            content: "—";
+            position: absolute;
+            left: 0;
+            color: var(--beni);
+        }
+
+        /* ============================================================
+     PHẦN SECTION / CARD CHO TỪNG LỖI
+     - Mỗi lỗi (Apache Không Khởi Động, Port 80 Bị Chiếm, ...) là một
+       <section class="error-section"> chứa 1 .card bên trong
+     - scroll-margin-top: để khi click link sidebar nhảy tới section,
+       nội dung không bị header sticky che mất phần đầu
+  ============================================================ */
+        .error-section {
+            margin-bottom: 60px;
+            scroll-margin-top: 96px;
+            border-radius: 25px 25px 25px 25px;
+            
+        }
+
+        /* Tiêu đề từng lỗi: số thứ tự (01, 02...) + tên lỗi, có vạch đỏ bên trái */
+        .section-head {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            margin-bottom: 6px;
+            border-left: 3px solid var(--beni);
+            padding-left: 16px;
+        }
+
+        .section-head .num {
+            font-family: 'Noto Serif JP', serif;
+            color: var(--beni);
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .section-head h2 {
+            font-size: 21px;
+            color: var(--ink);
+        }
+
+        /* Hàng badge "độ khó" + "thời gian ước tính" nằm dưới tiêu đề */
+        .badges {
+            display: flex;
+            gap: 8px;
+            margin: 10px 0 22px 19px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            font-size: 11px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: 500;
+            letter-spacing: 0.02em;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* 3 mức độ khó: xanh lá (Dễ) / vàng (Trung bình) / đỏ (Khó) */
+        .badge.easy {
+            background: var(--success-tint);
+            color: var(--success);
+        }
+
+        .badge.medium {
+            background: var(--warning-tint);
+            color: var(--warning);
+        }
+
+        .badge.hard {
+            background: var(--beni-tint);
+            color: var(--beni-dark);
+        }
+
+        .badge.time {
+            background: var(--bg-alt);
+            color: var(--ink-soft);
+        }
+
+        /* badge thời gian, màu trung tính */
+
+        /* Khung card chứa toàn bộ nội dung 1 lỗi: error message, nguyên nhân, cách sửa... */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 26px 28px;
+            box-shadow: var(--shadow);
+            margin-left: 19px;
+            /* thẳng hàng với .section-head vì section-head có padding-left */
+        }
+
+        .card h3 {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.09em;
+            color: var(--ink-soft);
+            margin-bottom: 12px;
+            font-family: 'Noto Sans JP', sans-serif;
+            font-weight: 600;
+        }
+
+        .card>*+* {
+            margin-top: 22px;
+        }
+
+        /* tự thêm khoảng cách giữa các khối con liền nhau trong card */
+
+        /* Ô đỏ hiển thị nguyên văn error message của XAMPP */
+        .msg-box {
+            background: var(--beni-tint);
+            border: 1px solid #E2C1BA;
+            border-left: 3px solid var(--beni);
+            border-radius: 3px;
+            padding: 14px 16px;
+        }
+
+        .msg-box p {
+            margin: 0 0 6px;
+            font-family: 'JetBrains Mono', monospace;
+            /* dùng font mono để trông giống thông báo hệ thống thật */
+            font-size: 12.5px;
+            color: var(--beni-dark);
+        }
+
+        .msg-box p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Danh sách nguyên nhân (bullet list) */
+        .causes ul {
+            margin: 0;
+            padding-left: 18px;
+        }
+
+        .causes li {
+            font-size: 14px;
+            color: var(--ink-soft);
+            margin-bottom: 6px;
+        }
+
+        /* Các bước fix (numbered list) */
+        .fix ol {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .fix li {
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .fix li:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Khối code màu nền đen cho các lệnh CMD, đường dẫn file, đoạn config */
+        pre.code-block {
+            background: var(--code-bg);
+            color: var(--code-ink);
+            padding: 14px 16px;
+            border-radius: 3px;
+            font-size: 12.5px;
+            overflow-x: auto;
+            /* nếu dòng lệnh dài, cho cuộn ngang thay vì vỡ layout */
+            margin: 8px 0 0;
+            line-height: 1.6;
+        }
+
+        /* Ô xanh lá cho mẹo phòng tránh lỗi (Prevention tips) */
+        .prevention {
+            background: var(--success-tint);
+            border-left: 3px solid var(--success);
+            border-radius: 3px;
+            padding: 14px 16px;
+            font-size: 13.5px;
+            color: #3E5638;
+        }
+
+        /* Ô vàng cho cảnh báo quan trọng (ví dụ: nhắc backup trước khi sửa) */
+        .warning-box {
+            background: var(--warning-tint);
+            border-left: 3px solid var(--warning);
+            border-radius: 3px;
+            padding: 14px 16px;
+            font-size: 13.5px;
+            color: #6B5320;
+        }
+
+        /* Danh sách checklist ở section 12 — ô vuông trước mỗi dòng chỉ mang tính trang trí (không phải checkbox thật) */
+        .checklist {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: grid;
+            gap: 10px;
+        }
+
+        .checklist li {
+            font-size: 14px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .checklist li::before {
+            content: "";
+            flex-shrink: 0;
+            width: 16px;
+            height: 16px;
+            margin-top: 2px;
+            border: 1.5px solid var(--beni);
+            border-radius: 2px;
+        }
+
+        /* Danh sách đường dẫn log file ở section 11 */
+        .log-grid {
+            display: grid;
+            gap: 14px;
+        }
+
+        .log-item {
+            font-size: 13.5px;
+        }
+
+        .log-item .path {
+            display: block;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--beni-dark);
+            margin-top: 4px;
+            background: var(--bg-alt);
+            padding: 6px 10px;
+            border-radius: 3px;
+            display: inline-block;
+        }
+
+        /* Nút tròn "Lên đầu trang" góc dưới bên phải — ẩn mặc định, JS sẽ hiện ra khi cuộn xuống đủ xa */
+        .back-top {
+            position: fixed;
+            right: 32px;
+            bottom: 32px;
+            width: 44px;
+            height: 44px;
+            background: var(--sidebar-bg);
+            color: #F2ECDF;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+            opacity: 0;
+            pointer-events: none;
+            /* mặc định vô hình và không click được */
+            transition: opacity .2s ease, transform .2s ease;
+            z-index: 200;
+            font-size: 18px;
+        }
+
+        .back-top.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* class .show do JS thêm vào khi cần hiện nút */
+        .back-top:hover {
+            transform: translateY(-2px);
+            background: var(--beni);
+        }
+
+        footer {
+            margin-top: 60px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+            font-size: 12px;
+            color: var(--ink-soft);
+            text-align: center;
+        }
+
+        /* ============================================================
+     RESPONSIVE — MÀN HÌNH NHỎ HƠN 900PX (TABLET / MOBILE)
+     - Ẩn sidebar cố định, thay bằng thanh top bar + nút "Menu"
+     - Bấm nút Menu sẽ toggle class .open trên sidebar (xem JS)
+     - Layout chuyển từ grid 2 cột về 1 cột (display:block)
+  ============================================================ */
+        @media (max-width: 900px) {
+            .layout {
+                display: block;
+            }
+
+            .sidebar {
+                position: static;
+                width: 100%;
+                height: auto;
+                display: none;
+                /* mặc định ẩn trên mobile */
+                padding: 0;
+                border-right: none;
+            }
+
+            .sidebar.open {
+                display: block;
+                padding: 18px 0 24px;
+            }
+
+            /* hiện ra khi bấm nút Menu */
+            .mobile-bar {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                background: var(--sidebar-bg);
+                color: #F2ECDF;
+                padding: 14px 20px;
+                position: sticky;
+                top: 0;
+                z-index: 150;
+            }
+
+            .mobile-bar .brand-inline {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                font-family: 'Noto Serif JP', serif;
+                font-size: 14px;
+            }
+
+            .mobile-bar .brand-inline .brand-mark {
+                margin: 0;
+                width: 28px;
+                height: 28px;
+                font-size: 13px;
+            }
+
+            .mobile-toggle {
+                background: transparent;
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                color: #F2ECDF;
+                padding: 6px 12px;
+                border-radius: 3px;
+                font-size: 12px;
+                cursor: pointer;
+                font-family: 'Noto Sans JP', sans-serif;
+            }
+
+            main {
+                margin-left: 0;
+                width: 100%;
+                padding: 0 20px 80px;
+            }
+
+            .hero-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-stamp {
+                justify-self: start;
+                transform: rotate(-2deg);
+            }
+
+            .quicklist {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .card {
+                margin-left: 0;
+                padding: 20px;
+                
+            }
+
+            .badges {
+                margin-left: 0;
+            }
+
+            .section-head {
+                padding-left: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .quicklist {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Thanh menu chỉ hiện trên mobile/tablet (≤900px), chứa logo thu nhỏ + nút mở sidebar -->
+    <div class="mobile-bar">
+        <div class="brand-inline">
+            <span class="brand-mark">桜</span>
+            Hướng Dẫn XAMPP
+        </div>
+        <button class="mobile-toggle" id="mobileToggle">Danh mục</button>
+    </div>
+
+    <!-- .layout là grid 2 cột: sidebar bên trái + main bên phải -->
+    <div class="layout">
+
+        <!-- ============ SIDEBAR ============ -->
+        <aside class="sidebar" id="sidebar">
+            <div class="brand">
+                <span class="brand-mark">桜</span>
+                <h1>Lỗi Khởi Động XAMPP</h1>
+                <p>TÀI LIỆU KHẮC PHỤC LỖI</p>
+            </div>
+
+            <!-- Ô search lọc menu, xử lý bằng JS ở cuối trang -->
+            <div class="nav-search">
+                <input type="text" id="navSearch" placeholder="Lọc mục…">
+            </div>
+
+            <!-- Mỗi thẻ <a> trỏ tới id của 1 section bên dưới bằng href="#..."
+         span.desc là dòng mô tả nhỏ hiện dưới tên mục -->
+            <nav class="sidenav" id="sidenav">
+                <a href="#overview" data-desc="Nội dung hướng dẫn">Tổng Quan<span class="desc">Nội dung hướng
+                        dẫn</span></a>
+                <a href="#apache-not-starting" data-desc="Apache không chạy được">Apache Không Khởi Động<span
+                        class="desc">Apache không chạy được</span></a>
+                <a href="#port-80" data-desc="Xung đột port 80">Port 80 Bị Chiếm<span class="desc">Xung đột port
+                        80</span></a>
+                <a href="#port-443" data-desc="Xung đột port 443 / SSL">Port 443 Bị Chiếm<span class="desc">Xung đột
+                        port 443 / SSL</span></a>
+                <a href="#mysql-not-starting" data-desc="MySQL không chạy được">MySQL Không Khởi Động<span
+                        class="desc">MySQL không chạy được</span></a>
+                <a href="#mysql-shutdown" data-desc="Khôi phục database bị lỗi">MySQL Tự Tắt Đột Ngột<span
+                        class="desc">Khôi phục database bị lỗi</span></a>
+                <a href="#phpmyadmin" data-desc="Kết nối bị từ chối">Lỗi phpMyAdmin<span class="desc">Kết nối bị từ
+                        chối</span></a>
+                <a href="#access-denied" data-desc="Sai thông tin đăng nhập">Truy Cập Bị Từ Chối<span class="desc">Sai
+                        thông tin đăng nhập</span></a>
+                <a href="#vhost" data-desc="Không tìm thấy domain tùy chỉnh">Lỗi Virtual Host<span class="desc">Không
+                        tìm thấy domain tùy chỉnh</span></a>
+                <a href="#firewall" data-desc="Bị phần mềm bảo mật chặn">Firewall / Antivirus<span class="desc">Bị phần
+                        mềm bảo mật chặn</span></a>
+                <a href="#permission" data-desc="Vấn đề quyền ghi file">Lỗi Phân Quyền<span class="desc">Vấn đề quyền
+                        ghi file</span></a>
+                <a href="#logs" data-desc="Nơi kiểm tra đầu tiên">File Log<span class="desc">Nơi kiểm tra đầu
+                        tiên</span></a>
+                <a href="#checklist" data-desc="10 bước kiểm tra nhanh">Checklist Nhanh<span class="desc">10 bước kiểm
+                        tra nhanh</span></a>
+            </nav>
+            <!-- Hiện dòng này khi search không khớp mục nào (JS toggle display) -->
+            <p class="nav-empty" id="navEmpty">Không có mục nào khớp.</p>
+        </aside>
+
+        <!-- ============ NỘI DUNG CHÍNH ============ -->
+        <main>
+            <!-- Header dính (sticky) trên cùng, luôn hiện khi cuộn -->
+            <div class="page-header">
+                <div class="eyebrow">Phát Triển Local · Windows</div>
+                <h1>Các Lỗi Khởi Động XAMPP Thường Gặp Và Cách Khắc Phục</h1>
+                <p class="sub">Xác định lỗi qua thông báo hiển thị trên màn hình, hiểu nguyên nhân, và làm theo đúng các
+                    bước khắc phục.</p>
+            </div>
+
+            <!-- Khối giới thiệu (Tổng Quan) — id="overview" khớp với link đầu tiên trong sidebar -->
+            <section class="hero" id="overview">
+                <div class="hero-grid">
+                    <div class="hero-lead">
+                        <p>XAMPP thường bị lỗi theo một số kiểu quen thuộc — gần như luôn là do port đang bận, có
+                            service database thứ hai đang chạy, hoặc thiếu quyền administrator. Hướng dẫn này được sắp
+                            xếp đúng theo cách bạn thực sự gặp lỗi: dựa vào dòng chữ đỏ mà XAMPP hiện ra đầu tiên. Tìm
+                            đúng thông báo, đọc nguyên nhân, rồi làm theo cách sửa.</p>
+                        <ul class="quicklist">
+                            <li>12 loại lỗi được đề cập</li>
+                            <li>Lệnh copy-paste sẵn</li>
+                            <li>Đường dẫn dành cho Windows</li>
+                            <li>Badge độ khó + thời gian</li>
+                            <li>Kèm mẹo phòng tránh</li>
+                            <li>Sidebar có tìm kiếm</li>
+                        </ul>
+                    </div>
+                    <!-- Ô vuông đỏ trang trí kiểu con dấu (hanko) -->
+                    <div class="hero-stamp">
+                        <span>XAMPP</span>
+                        <strong>12</strong>
+                        <span>LỖI</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============================================================
+         SECTION 1 — Apache Không Khởi Động
+         Đây là "mẫu" cấu trúc dùng lại cho toàn bộ 10 section lỗi
+         phía dưới (section 2 → 10 đều theo đúng khuôn này):
+           .section-head  → số thứ tự + tên lỗi
+           .badges        → badge độ khó (dễ/trung bình/khó) + thời gian
+           .card
+             .msg-box     → nguyên văn thông báo lỗi tiếng Anh (ô đỏ, giữ nguyên vì đây là chữ XAMPP thật sự hiển thị)
+             .causes      → danh sách nguyên nhân (bullet list)
+             .fix         → các bước sửa (numbered list) + pre.code-block
+             .prevention  → mẹo phòng tránh (ô xanh lá)
+         id="apache-not-starting" phải khớp với href="#apache-not-starting" trong sidebar
+    ============================================================ -->
+            <section class="error-section" id="apache-not-starting">
+                <div class="section-head"><span class="num">01</span>
+                    <h2>Apache Không Khởi Động</h2>
+                </div>
+                <div class="badges">
+                    <span class="badge medium">Trung bình</span>
+                    <span class="badge time">⏱ 10 phút</span>
+                </div>
+                <div class="card">
+                    <div class="msg-box">
+                        <h3>Thông Báo Lỗi</h3>
+                        <p>"Apache shutdown unexpectedly."</p>
+                        <p>"This may be due to a blocked port, missing dependencies, improper privileges, a crash, or a
+                            shutdown by another method."</p>
+                    </div>
+                    <div class="causes">
+                        <h3>Nguyên Nhân Chính</h3>
+                        <ul>
+                            <li>Port 80 đã bị một process khác chiếm dụng</li>
+                            <li>Port 443 đã bị một process khác chiếm dụng</li>
+                            <li>Skype, IIS, VMware, Docker, hoặc service khác đang giữ port của Apache</li>
+                            <li>XAMPP chưa có quyền administrator</li>
+                            <li>File cấu hình Apache đang bị lỗi</li>
+                        </ul>
+                    </div>
+                    <div class="fix">
+                        <h3>Các Bước Khắc Phục</h3>
+                        <ol>
+                            <li>Đóng XAMPP Control Panel, sau đó mở lại bằng <strong>Run as Administrator</strong>.</li>
+                            <li>Kiểm tra xem port 80 có đang bị chiếm không:
+                                <pre class="code-block">netstat -ano | findstr :80</pre>
+                            </li>
+                            <li>Kiểm tra xem port 443 có đang bị chiếm không:
+                                <pre class="code-block">netstat -ano | findstr :443</pre>
+                            </li>
+                            <li>Ghi lại PID ở cột cuối cùng và dừng process tương ứng, hoặc dừng trực tiếp service đang
+                                xung đột.</li>
+                            <li>Nếu không muốn giải phóng port, hãy đổi port của Apache thay vào đó. Mở file:
+                                <pre class="code-block">C:\xampp\apache\conf\httpd.conf</pre>
+                            </li>
+                            <li>Tìm 2 dòng này:
+                                <pre class="code-block">Listen 80
+ServerName localhost:80</pre>
+                                và đổi thành:
+                                <pre class="code-block">Listen 8080
+ServerName localhost:8080</pre>
+                            </li>
+                            <li>Khởi động lại XAMPP, sau đó truy cập trang của bạn tại:
+                                <pre class="code-block">http://localhost:8080</pre>
+                            </li>
+                        </ol>
+                    </div>
+                    <div class="prevention">
+                        <strong>Phòng tránh:</strong> Luôn mở XAMPP Control Panel bằng quyền Administrator, và tắt Skype
+                        hoặc bất kỳ web server local nào khác trước khi khởi động Apache.
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 2 -->
+            <section class="error-section" id="port-80">
+                <div class="section-head"><span class="num">02</span>
+                    <h2>Port 80 Bị Chiếm</h2>
+                </div>
+                <div class="badges">
+                    <span class="badge easy">Dễ</span>
+                    <span class="badge time">⏱ 5 phút</span>
+                </div>
+                <div class="card">
+                    <div class="msg-box">
+                        <h3>Thông Báo Lỗi</h3>
+                        <p>"Port 80 in use by Unable to open process."</p>
+                        <p>"Apache WILL NOT start without the configured ports free!"</p>
+                    </div>
+                    <div class="causes">
+                        <h3>Nguyên Nhân Chính</h3>
+                        <ul>
+                            <li>IIS (Internet Information Services) đang được bật</li>
+                            <li>Skype đang sử dụng port 80</li>
+                            <li>Một web server khác đang chạy sẵn</li>
+                        </ul>
+                    </div>
+                    <div class="fix">
+                        <h3>Các Bước Khắc Phục</h3>
+                        <ol>
+                            <li>Mở Command Prompt với quyền Administrator.</li>
+                            <li>Chạy lệnh:
+                                <pre class="code-block">netstat -ano | findstr :80</pre>
+                            </li>
+                            <li>Tìm PID ở cột cuối cùng của kết quả.</li>
+                            <li>Mở Task Manager, chuyển sang tab <strong>Details</strong>, và tìm process có PID đó.
+                            </li>
+                            <li>Kết thúc (End task) process đó nếu an toàn để đóng.</li>
+                            <li>Nếu process là IIS, hãy tắt IIS thay vì kết thúc process: vào <strong>Control Panel →
+                                    Programs → Turn Windows features on or off</strong> rồi bỏ chọn <strong>Internet
+                                    Information Services</strong>.</li>
+                            <li>Hoặc đơn giản là đổi port của Apache sang 8080 như hướng dẫn ở phần "Apache Không Khởi
+                                Động" bên trên.</li>
+                        </ol>
+                    </div>
+                    <div class="prevention">
+                        <strong>Phòng tránh:</strong> Giữ IIS ở trạng thái tắt nếu bạn không dùng đến, và thoát Skype
+                        trước khi làm việc với XAMPP.
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 3 -->
+            <section class="error-section" id="port-443">
+                <div class="section-head"><span class="num">03</span>
+                    <h2>Port 443 Bị Chiếm</h2>
+                </div>
+                <div class="badges">
+                    <span class="badge easy">Dễ</span>
+                    <span class="badge time">⏱ 5 phút</span>
+                </div>
+                <div class="card">
+                    <div class="msg-box">
+                        <h3>Thông Báo Lỗi</h3>
+                        <p>"Port 443 in use."</p>
+                        <p>"Apache WILL NOT start without the configured ports free!"</p>
+                    </div>
+                    <div class="causes">
+                        <h3>Nguyên Nhân Chính</h3>
+                        <ul>
+                            <li>IIS, VMware, Docker, hoặc một service HTTPS khác đang giữ port 443</li>
+                        </ul>
+                    </div>
+                    <div class="fix">
+                        <h3>Các Bước Khắc Phục</h3>
+                        <ol>
+                            <li>Kiểm tra xem thứ gì đang dùng port này:
+                                <pre class="code-block">netstat -ano | findstr :443</pre>
+                            </li>
+                            <li>Dừng service đang xung đột dựa theo PID tìm được.</li>
+                            <li>Hoặc sửa file cấu hình SSL thay vào đó:
+                                <pre class="code-block">C:\xampp\apache\conf\extra\httpd-ssl.conf</pre>
+                            </li>
+                            <li>Đổi:
+                                <pre class="code-block">Listen 443
+&lt;VirtualHost _default_:443&gt;</pre>
+                                thành:
+                                <pre class="code-block">Listen 4433
+&lt;VirtualHost _default_:4433&gt;</pre>
+                            </li>
+                            <li>Khởi động lại Apache từ Control Panel.</li>
+                        </ol>
+                    </div>
+                    <div class="prevention">
+                        <strong>Phòng tránh:</strong> Tránh chạy Docker hoặc các network service của VMware cùng lúc với
+                        XAMPP, trừ khi các port đã được tách riêng.
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 4 -->
+            <section class="error-section" id="mysql-not-starting">
+                <div class="section-head"><span class="num">04</span>
+                    <h2>MySQL Không Khởi Động</h2>
+                </div>
+                <div class="badges">
+                    <span class="badge medium">Trung bình</span>
+                    <span class="badge time">⏱ 10 phút</span>
+                </div>
+                <div class="card">
+                    <div class="msg-box">
+                        <h3>Thông Báo Lỗi</h3>
+                        <p>"MySQL shutdown unexpectedly."</p>
+                        <p>"This may be due to a blocked port, missing dependencies, improper privileges, a crash, or a
+                            shutdown by another method."</p>
+                    </div>
+                    <div class="causes">
+                        <h3>Nguyên Nhân Chính</h3>
+                        <ul>
+                            <li>Port 3306 đã bị chiếm dụng</li>
+                            <li>Một service MySQL hoặc MariaDB khác (ví dụ MySQL80) đang chạy nền</li>
+                            <li>Thư mục data của MySQL bị hỏng</li>
+                            <li>Lần trước XAMPP bị đóng không đúng cách</li>
+                        </ul>
+                    </div>
+                    <div class="fix">
+                        <h3>Các Bước Khắc Phục</h3>
+                        <ol>
+                            <li>Kiểm tra port:
+                                <pre class="code-block">netstat -ano | findstr :3306</pre>
+                            </li>
+                            <li>Mở ứng dụng <strong>Services</strong> của Windows (services.msc).</li>
+                            <li>Dừng <strong>MySQL80</strong> hoặc <strong>MariaDB</strong> nếu thấy chúng đang chạy
+                                trong danh sách.</li>
+                            <li>Khởi động lại XAMPP Control Panel với quyền Administrator.</li>
+                            <li>Nếu vẫn còn xung đột, đổi port của MySQL từ 3306 sang 3307 trong file:
+                                <pre class="code-block">C:\xampp\mysql\bin\my.ini</pre>
+                            </li>
+                            <li>Cập nhật lại cấu hình phpMyAdmin cho khớp với port mới (xem phần lỗi phpMyAdmin bên
+                                dưới).</li>
+                        </ol>
+                    </div>
+                    <div class="prevention">
+                        <strong>Phòng tránh:</strong> Gỡ hoặc tắt hẳn mọi service MySQL/MariaDB cài riêng nếu XAMPP là
+                        database local chính bạn dùng.
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 5 -->
+            <section class="error-section" id="mysql-shutdown">
+                <div class="section-head"><span class="num">05</span>
+                    <h2>MySQL Tự Tắt Đột Ngột</h2>
+                </div>
+                <div class="badges">
+                    <span class="badge hard">Khó</span>
+                    <span class="badge time">⏱ 20 phút</span>
+                </div>
+                <div class="card">
+                    <div class="msg-box">
+                        <h3>Thông Báo Lỗi</h3>
+                        <p>"MySQL shutdown unexpectedly."</p>
+                        <p>"Error: MySQL shutdown unexpectedly."</p>
+                    </div>
+                    <div class="causes">
+                        <h3>Nguyên Nhân Chính</h3>
+                        <ul>
+                            <li>Database bị crash</li>
+                            <li>Sự cố với file ibdata1</li>
+                            <li>File dữ liệu bị hỏng</li>
+                            <li>Máy tính bị tắt đột ngột trong lúc MySQL đang chạy</li>
+                        </ul>
+                    </div>
+                    <div class="warning-box">
+                        <strong>Trước khi bắt đầu:</strong> hãy sao lưu (backup) toàn bộ thư mục <code>data</code> trước
+                        khi thay đổi hoặc xóa bất cứ thứ gì.
+                    </div>
+                    <div class="fix">
+                        <h3>Các Bước Khắc Phục</h3>
+                        <ol>
+                            <li>Dừng XAMPP hoàn toàn.</li>
+                            <li>Đi tới thư mục:
+                                <pre class="code-block">C:\xampp\mysql\</pre>
+                            </li>
+                            <li>Đổi tên thư mục <code>data</code> hiện có thành <code>data_old</code>.</li>
+                            <li>Copy thư mục <code>backup</code> rồi đổi tên bản copy thành <code>data</code>.</li>
+                            <li>Từ <code>data_old</code>, chỉ copy các thư mục database của riêng bạn vào thư mục
+                                <code>data</code> mới.
+                            </li>
+                            <li><strong>Không</strong> copy các thư mục <code>mysql</code>,
+                                <code>performance_schema</code>, hoặc <code>phpmyadmin</code> — hãy dùng bản mới từ
+                                <code>backup</code>.
+                            </li>
+                            <li>Khởi động lại MySQL từ Control Panel.</li>
+                            <li>Nếu vẫn lỗi, mở log để xem nguyên nhân chính xác:
+                                <pre class="code-block">C:\xampp\mysql\data\mysql_error.log</pre>
+                            </li>
+                        </ol>
+                    </div>
+                    <div class="prevention">
+                        <strong>Phòng tránh:</strong> Luôn bấm <strong>Stop</strong> trong XAMPP Control Panel trước khi
+                        tắt máy, và định kỳ sao lưu thư mục <code>data</code>.
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 6 -->
+            <section class="error-section" id="phpmyadmin">
+                <div class="section-head"><span class="num">06</span>
+                    <h2>Lỗi phpMyAdmin</h2>
+                </div>
+                <div class="badges">
+                    <span class="badge easy">Dễ</span>
+                    <span class="badge time">⏱ 5 phút</span>
+                </div>
+                <div class="card">
+                    <div class="msg-box">
+                        <h3>Thông Báo Lỗi</h3>
+                        <p>"phpMyAdmin tried to connect to the MySQL server, and the server rejected the connection."
+                        </p>
+                        <p>"Cannot connect: invalid settings."</p>
+                    </div>
+                    <div class="causes">
+                        <h3>Nguyên Nhân Chính</h3>
+                        <ul>
+                            <li>MySQL hiện chưa chạy</li>
+                            <li>Sai username hoặc password</li>
+                            <li>Sai port đã cấu hình</li>
+                            <li>File cấu hình của phpMyAdmin bị sai</li>
+                        </ul>
+                    </div>
+                    <div class="fix">
+                        <h3>Các Bước Khắc Phục</h3>
+                        <ol>
+                            <li>Khởi động cả Apache và MySQL từ Control Panel.</li>
+                            <li>Mở file:
+                                <pre class="code-block">C:\xampp\phpMyAdmin\config.inc.php</pre>
+                            </li>
+                            <li>Kiểm tra các giá trị này đã đúng chưa:
+                                <pre class="code-block">$cfg['Servers'][$i]['host'] = '127.0.0.1';
+$cfg['Servers'][$i]['user'] = 'root';
+$cfg['Servers'][$i]['password'] = '';</pre>
+                            </li>
+                            <li>Nếu trước đó bạn đã đổi port MySQL, thêm dòng này vào:
+                                <pre class="code-block">$cfg['Servers'][$i]['port'] = '3307';</pre>
+                            </li>
+                        </ol>
+                    </div>
+                    <div class="prevention">
+                        <strong>Phòng tránh:</strong> Mỗi lần đổi port MySQL, hãy cập nhật luôn cấu hình phpMyAdmin
+                        trong cùng lúc đó để hai bên không bị lệch nhau.
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 7 -->
+            <section class="error-section" id="access-denied">
+                <div class="section-head"><span class="num">07</span>
+                    <h2>Truy Cập Bị Từ Chối</h2>
+                </div>
+                <div class="badges">
+                    <span class="badge easy">Dễ</span>
+                    <span class="badge time">⏱ 5 phút</span>
+                </div>
+                <div class="card">
+                    <div class="msg-box">
+                        <h3>Thông Báo Lỗi</h3>
+                        <p>"Access denied for user 'root'@'localhost'."</p>
+                        <p>"#1045 - Access denied for user."</p>
+                    </div>
+                    <div class="causes">
+                        <h3>Nguyên Nhân Chính</h3>
+                        <ul>
+                            <li>Sai password MySQL trong code hoặc config</li>
+                            <li>Password đã đổi nhưng config chưa được cập nhật</li>
+                            <li>Sự cố về quyền của user</li>
+                        </ul>
+                    </div>
+                    <div class="fix">
+                        <h3>Các Bước Khắc Phục</h3>
+                        <ol>
+                            <li>Kiểm tra password đang dùng trong <code>config.php</code> của ứng dụng.</li>
+                            <li>Kiểm tra cùng giá trị đó trong <code>config.inc.php</code> của phpMyAdmin.</li>
+                            <li>Với bản cài XAMPP mặc định, password của root thường để trống.</li>
+                            <li>Đảm bảo code kết nối của bạn khớp, ví dụ:
+                                <pre
+                                    class="code-block">$conn = new mysqli("localhost", "root", "", "database_name");</pre>
+                            </li>
+                        </ol>
+                    </div>
+                    <div class="prevention">
+                        <strong>Phòng tránh:</strong> Nếu bạn từng đặt password cho root, hãy lưu ở một chỗ duy nhất
+                        (file .env hoặc hằng số config) và cập nhật mọi script có kết nối tới MySQL.
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 8 -->
+            <section class="error-section" id="vhost">
+                <div class="section-head"><span class="num">08</span>
+                    <h2>Lỗi Virtual Host</h2>
+                </div>
+                <div class="badges">
+                    <span class="badge medium">Trung bình</span>
+                    <span class="badge time">⏱ 10 phút</span>
+                </div>
+                <div class="card">
+                    <div class="msg-box">
+                        <h3>Thông Báo Lỗi</h3>
+                        <p>"Object not found!"</p>
+                        <p>"Not Found" / "This site can't be reached" — Apache vẫn khởi động được, nhưng domain tùy
+                            chỉnh của bạn không load lên.</p>
+                    </div>
+                    <div class="causes">
+                        <h3>Nguyên Nhân Chính</h3>
+                        <ul>
+                            <li>Sai DocumentRoot trong file vhost</li>
+                            <li>Sai ServerName</li>
+                            <li>File hosts của Windows chưa được cấu hình</li>
+                            <li>File vhost của Apache chưa được include vào config chính</li>
+                        </ul>
+                    </div>
+                    <div class="fix">
+                        <h3>Các Bước Khắc Phục</h3>
+                        <ol>
+                            <li>Sửa file:
+                                <pre class="code-block">C:\xampp\apache\conf\extra\httpd-vhosts.conf</pre>
+                            </li>
+                            <li>Thêm một đoạn như sau:
+                                <pre class="code-block">&lt;VirtualHost *:80&gt;
+    DocumentRoot "C:/xampp/htdocs/myproject"
+    ServerName myproject.test
+&lt;/VirtualHost&gt;</pre>
+                            </li>
+                            <li>Sửa file hosts của Windows:
+                                <pre class="code-block">C:\Windows\System32\drivers\etc\hosts</pre>
+                            </li>
+                            <li>Thêm dòng này vào cuối file:
+                                <pre class="code-block">127.0.0.1 myproject.test</pre>
+                            </li>
+                            <li>Khởi động lại Apache từ Control Panel.</li>
+                        </ol>
+                    </div>
+                    <div class="prevention">
+                        <strong>Phòng tránh:</strong> Mỗi project chỉ nên có một khối vhost riêng, và đặt cho mỗi
+                        project một domain <code>.test</code> khác nhau để tránh trùng lặp.
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 9 -->
+            <section class="error-section" id="firewall">
+                <div class="section-head"><span class="num">09</span>
+                    <h2>Firewall / Antivirus</h2>
+                </div>
+                <div class="badges">
+                    <span class="badge easy">Dễ</span>
+                    <span class="badge time">⏱ 5 phút</span>
+                </div>
+                <div class="card">
+                    <div class="msg-box">
+                        <h3>Thông Báo Lỗi</h3>
+                        <p>Apache hoặc MySQL vừa khởi động xong thì tắt ngay lập tức.</p>
+                        <p>Trình duyệt không truy cập được localhost, hoặc xuất hiện cảnh báo Windows Security.</p>
+                    </div>
+                    <div class="causes">
+                        <h3>Nguyên Nhân Chính</h3>
+                        <ul>
+                            <li>Windows Firewall đang chặn Apache</li>
+                            <li>Phần mềm antivirus đang chặn xampp-control.exe, httpd.exe, hoặc mysqld.exe</li>
+                        </ul>
+                    </div>
+                    <div class="fix">
+                        <h3>Các Bước Khắc Phục</h3>
+                        <ol>
+                            <li>Cho phép cả Apache và MySQL đi qua Windows Firewall khi được hỏi, hoặc thêm thủ công vào
+                                mục <strong>Allowed apps</strong>.</li>
+                            <li>Thêm toàn bộ thư mục XAMPP vào danh sách loại trừ (exclusion/whitelist) của antivirus.
+                            </li>
+                            <li>Chạy XAMPP Control Panel với quyền Administrator.</li>
+                        </ol>
+                    </div>
+                    <div class="prevention">
+                        <strong>Phòng tránh:</strong> Thiết lập ngoại lệ (exception) trên firewall một lần duy nhất ngay
+                        sau khi cài XAMPP, để không bị gián đoạn về sau.
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 10 -->
+            <section class="error-section" id="permission">
+                <div class="section-head"><span class="num">10</span>
+                    <h2>Lỗi Phân Quyền</h2>
+                </div>
+                <div class="badges">
+                    <span class="badge easy">Dễ</span>
+                    <span class="badge time">⏱ 5 phút</span>
+                </div>
+                <div class="card">
+                    <div class="msg-box">
+                        <h3>Thông Báo Lỗi</h3>
+                        <p>"Access is denied."</p>
+                        <p>"Cannot create file." / "Cannot write to folder."</p>
+                    </div>
+                    <div class="causes">
+                        <h3>Nguyên Nhân Chính</h3>
+                        <ul>
+                            <li>XAMPP được cài bên trong Program Files</li>
+                            <li>Không có quyền administrator</li>
+                            <li>Sự cố về quyền của thư mục</li>
+                        </ul>
+                    </div>
+                    <div class="fix">
+                        <h3>Các Bước Khắc Phục</h3>
+                        <ol>
+                            <li>Cài XAMPP trực tiếp tại:
+                                <pre class="code-block">C:\xampp</pre>
+                            </li>
+                            <li>Chạy Control Panel với quyền Administrator.</li>
+                            <li>Cấp quyền ghi (write permission) cho thư mục project cụ thể nếu cần (chuột phải →
+                                Properties → Security).</li>
+                            <li>Tránh cài XAMPP bên trong:
+                                <pre class="code-block">C:\Program Files</pre>
+                            </li>
+                        </ol>
+                    </div>
+                    <div class="prevention">
+                        <strong>Phòng tránh:</strong> Ngay từ đầu hãy giữ XAMPP ở gốc ổ C: — chỉ riêng điều này đã tránh
+                        được phần lớn lỗi phân quyền.
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 11 -->
+            <section class="error-section" id="logs">
+                <div class="section-head"><span class="num">11</span>
+                    <h2>File Log</h2>
+                </div>
+                <div class="badges">
+                    <span class="badge easy">Dễ</span>
+                    <span class="badge time">⏱ 2 phút</span>
+                </div>
+                <div class="card">
+                    <div class="log-grid">
+                        <div class="log-item">
+                            Log lỗi của Apache
+                            <span class="path">C:\xampp\apache\logs\error.log</span>
+                        </div>
+                        <div class="log-item">
+                            Log lỗi của MySQL
+                            <span class="path">C:\xampp\mysql\data\mysql_error.log</span>
+                        </div>
+                        <div class="log-item">
+                            Khu vực log trong XAMPP Control Panel — ô văn bản cuộn được ở phía dưới cửa sổ Control Panel
+                        </div>
+                    </div>
+                    <div class="warning-box">
+                        Luôn đọc dòng chữ đỏ trong XAMPP Control Panel trước tiên. Nó thường cho biết chính xác port
+                        hoặc service nào gây ra sự cố, trước cả khi bạn cần mở file log.
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 12 -->
+            <section class="error-section" id="checklist">
+                <div class="section-head"><span class="num">12</span>
+                    <h2>Checklist Nhanh</h2>
+                </div>
+                <div class="badges">
+                    <span class="badge easy">Dễ</span>
+                    <span class="badge time">⏱ 5 phút</span>
+                </div>
+                <div class="card">
+                    <ul class="checklist">
+                        <li>Chạy XAMPP với quyền Administrator</li>
+                        <li>Kiểm tra port 80 của Apache</li>
+                        <li>Kiểm tra port SSL 443 của Apache</li>
+                        <li>Kiểm tra port 3306 của MySQL</li>
+                        <li>Dừng các service đang xung đột</li>
+                        <li>Kiểm tra file cấu hình Apache</li>
+                        <li>Kiểm tra thư mục data của MySQL</li>
+                        <li>Kiểm tra file config của phpMyAdmin</li>
+                        <li>Đọc file log lỗi</li>
+                        <li>Khởi động lại XAMPP</li>
+                    </ul>
+                </div>
+            </section>
+
+            <footer>
+                Tài liệu tham khảo cho môi trường XAMPP local trên Windows.
+            </footer>
+        </main>
+    </div>
+
+    <!-- Nút tròn "Lên đầu trang", nằm ngoài .layout để position:fixed hoạt động đúng theo viewport -->
+    <div class="back-top" id="backTop" title="Lên đầu trang">↑</div>
+
+    <script>
+        /* ============================================================
+           1) TOGGLE SIDEBAR TRÊN MOBILE
+           - Bấm nút "Danh mục" → thêm/bớt class "open" cho sidebar
+           - Bấm vào 1 link trong sidebar (trên mobile) → tự đóng menu lại
+             để người dùng thấy ngay nội dung vừa nhảy tới
+        ============================================================ */
+        const sidebar = document.getElementById('sidebar');
+        const mobileToggle = document.getElementById('mobileToggle');
+        mobileToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('open');
+        });
+        document.querySelectorAll('.sidenav a').forEach(a => {
+            a.addEventListener('click', () => {
+                if (window.innerWidth <= 900) sidebar.classList.remove('open');
+            });
+        });
+
+        /* ============================================================
+           2) SCROLL-SPY — TỰ ĐỘNG HIGHLIGHT MỤC ĐANG XEM
+           - Lấy danh sách tất cả link sidebar và section tương ứng
+           - Mỗi lần cuộn trang: tìm section nào đang ở gần đỉnh màn hình
+             nhất (offsetTop <= vị trí cuộn hiện tại), rồi gắn class
+             "active" cho link tương ứng, bỏ active các link còn lại
+           - Số 140 là để bù lại phần header sticky ở trên cùng
+        ============================================================ */
+        const navLinks = Array.from(document.querySelectorAll('.sidenav a'));
+        const sections = navLinks.map(a => document.querySelector(a.getAttribute('href')));
+
+        function updateActive() {
+            let currentIndex = 0;
+            const scrollPos = window.scrollY + 140;
+            sections.forEach((sec, i) => {
+                if (sec && sec.offsetTop <= scrollPos) currentIndex = i;
+            });
+            navLinks.forEach((a, i) => a.classList.toggle('active', i === currentIndex));
+        }
+        window.addEventListener('scroll', updateActive);
+        updateActive(); // chạy 1 lần ngay khi trang tải xong, để mục "Tổng Quan" được highlight sẵn
+
+        /* ============================================================
+           3) NÚT "LÊN ĐẦU TRANG"
+           - Cuộn xuống quá 400px thì hiện nút (thêm class "show")
+           - Bấm vào nút → cuộn mượt (smooth) về đầu trang
+        ============================================================ */
+        const backTop = document.getElementById('backTop');
+        window.addEventListener('scroll', () => {
+            backTop.classList.toggle('show', window.scrollY > 400);
+        });
+        backTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+        /* ============================================================
+           4) Ô SEARCH LỌC SIDEBAR
+           - Gõ tới đâu, so khớp (không phân biệt hoa/thường) với chữ
+             trong từng link sidebar tới đó
+           - Link không khớp → thêm class "hidden" (display:none)
+           - Nếu không còn link nào hiển thị → hiện dòng "Không có mục nào khớp."
+        ============================================================ */
+        const searchInput = document.getElementById('navSearch');
+        const navEmpty = document.getElementById('navEmpty');
+        searchInput.addEventListener('input', () => {
+            const q = searchInput.value.trim().toLowerCase();
+            let visibleCount = 0;
+            navLinks.forEach(a => {
+                const text = a.textContent.toLowerCase();
+                const match = text.includes(q);
+                a.classList.toggle('hidden', !match);
+                if (match) visibleCount++;
+            });
+            navEmpty.style.display = visibleCount === 0 ? 'block' : 'none';
+        });
+    </script>
+
+</body>
+
+</html>

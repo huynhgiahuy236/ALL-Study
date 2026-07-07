@@ -106,5 +106,17 @@
     "slides": "6 Chương",
     "progress": 0,
     "href": "./menu-default.html"
+  },
+  {
+    "id": 10,
+    "title": "Debug Xampp",
+    "description": "Tổng hợp kiến thức bug của xampp và cách giải",
+    "category": "Mobile Development",
+    "color": "#D4541A",
+    "badge": "Mới",
+    "badgeType": "new",
+    "slides": "6 Chương",
+    "progress": 0,
+    "href": "./fixXampp.html"
   }
 ]
