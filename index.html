@@ -225,6 +225,50 @@
             min-height: 220px;
         }
 
+        .course-group + .course-group {
+            margin-top: 48px;
+        }
+
+        .course-group .section-header {
+            margin-bottom: 18px;
+            padding: 16px 18px;
+            border: 1.5px solid var(--rule);
+            border-left: 6px solid var(--group-accent, var(--ink));
+            border-radius: 12px;
+            background: color-mix(in srgb, var(--group-accent, var(--warm)) 8%, var(--card-bg));
+            align-items: center;
+        }
+
+        .course-group .section-title {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            color: var(--ink);
+            font-size: .8rem;
+        }
+
+        .course-group .section-title::before {
+            content: '';
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--group-accent, var(--ink));
+            box-shadow: 0 0 0 4px color-mix(in srgb, var(--group-accent, var(--ink)) 18%, transparent);
+        }
+
+        .course-group .section-count {
+            color: var(--group-accent, var(--muted));
+            font-weight: 700;
+        }
+
+        .empty-group {
+            padding: 24px 28px;
+            border: 1.5px dashed var(--rule);
+            border-radius: 16px;
+            color: var(--muted);
+            font-size: .85rem;
+        }
+
         .course-card:hover {
             background: var(--warm);
         }
@@ -524,6 +568,7 @@
 
     <script>
         let courses = [];
+        let courseGroups = [];
         const assetVersion = Date.now();
 
         function escapeHtml(value) {
@@ -607,6 +652,36 @@
     `).join('');
         }
 
+        function renderCourseGroups() {
+            const groupedCourses = courses.reduce((groups, course) => {
+                const groupId = course.groupId || 'other';
+                if (!groups[groupId]) groups[groupId] = [];
+                groups[groupId].push(course);
+                return groups;
+            }, {});
+
+            const declaredGroups = [...courseGroups].sort((a, b) => (a.order ?? 999) - (b.order ?? 999));
+            const declaredIds = new Set(declaredGroups.map(group => group.id));
+            const undeclaredGroups = Object.keys(groupedCourses)
+                .filter(groupId => !declaredIds.has(groupId))
+                .map(groupId => ({ id: groupId, title: groupId, order: 999 }));
+
+            return [...declaredGroups, ...undeclaredGroups].map(group => {
+                const categoryCourses = groupedCourses[group.id] || [];
+                return `
+                    <section class="course-group" style="--group-accent:${escapeHtml(group.accent || '#2D6BE4')}">
+                        <div class="section-header">
+                            <div class="section-title">${escapeHtml(group.title)}</div>
+                            <div class="section-count">${String(categoryCourses.length).padStart(2, '0')} courses</div>
+                        </div>
+                        ${categoryCourses.length
+                            ? `<div class="grid">${categoryCourses.map(renderCard).join('')}</div>`
+                            : '<div class="empty-group">Chưa có khóa học trong nhóm này.</div>'}
+                    </section>
+                `;
+            }).join('');
+        }
+
         function renderHome() {
             const outlet = document.getElementById('app-outlet');
             outlet.innerHTML = `
@@ -627,7 +702,7 @@
                 <div class="section-title">Tất cả khóa học</div>
                 <div class="section-count">${String(courses.length).padStart(2, '0')} courses</div>
             </div>
-            <div class="grid">${courses.map(renderCard).join('')}</div>
+            ${renderCourseGroups()}
         </div>
     `;
             syncActiveNav();
@@ -676,7 +751,9 @@
             try {
                 const res = await fetch('./courses.json');
                 if (!res.ok) throw new Error(`HTTP ${res.status}`);
-                courses = await res.json();
+                const catalog = await res.json();
+                courseGroups = Array.isArray(catalog.groups) ? catalog.groups : [];
+                courses = Array.isArray(catalog.courses) ? catalog.courses : catalog;
                 renderHeaderNav();
                 renderRoute();
             } catch (err) {

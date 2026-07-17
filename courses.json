@@ -1,134 +1,225 @@
-[
-  {
-    "id": 1,
-    "title": "Lộ trình học JavaScript",
-    "description": "Roadmap từ zero đến hero — từ biến, hàm, DOM đến async/await và Minimax AI.",
-    "category": "JavaScript",
-    "color": "#F7B731",
-    "badge": "Sẵn sàng",
-    "badgeType": "ready",
-    "slides": "8 giai đoạn",
-    "progress": 40,
-    "href": "./roadmap.html"
-  },
-  {
-    "id": 2,
-    "title": "Slide học JavaScript",
-    "description": "24 slides enterprise-quality — syntax, functions, DOM, event, OOP, async/await, và thuật toán AI.",
-    "category": "JavaScript · Slide",
-    "color": "#2D6BE4",
-    "badge": "Mới",
-    "badgeType": "new",
-    "slides": "24 slides",
-    "progress": 0,
-    "href": "./slidestudyJS.html"
-  },
-  {
-    "id": 3,
-    "title": "Ngữ pháp TOEIC toàn tập",
-    "description": "12 slides ôn tập — từ loại, 12 thì, liên từ, mệnh đề quan hệ, so sánh, câu điều kiện.",
-    "category": "Tiếng Anh · TOEIC",
-    "color": "#D4541A",
-    "badge": "Mới",
-    "badgeType": "new",
-    "slides": "12 slides",
-    "progress": 0,
-    "href": "./toiec.html"
-  },
-  {
-    "id": 4,
-    "title": "Design App StayZ",
-    "description": "Thiết kế phong cách nhật, bảng màu cỡ chữ khoảng cách...layout mẫu",
-    "category": "Dart Flutter",
-    "color": "#D4541A",
-    "badge": "Mới",
-    "badgeType": "new",
-    "slides": "2 Landing Page",
-    "progress": 0,
-    "href": "./StayZ-Design-System.html"
-  },
-  {
-    "id": 5,
-    "title": "InterView",
-    "description": "Tổng hợp kiến thức phỏng vấn Frontend: JavaScript, React, TypeScript, Redux/TanStack Query, Next.js... chia rõ Core Skills và Exposure, kèm câu hỏi mock và chiến lược trả lời.",
-    "category": "Frontend Development",
-    "color": "#D4541A",
-    "badge": "Mới",
-    "badgeType": "new",
-    "slides": "6 Chương",
-    "progress": 0,
-    "href": "./interview.html"
-  },
-  {
-    "id": 6,
-    "title": "Projet WorkFlow",
-    "description": "Tổng hợp kiến thức luồng xử lí các project: JavaScript, React, TypeScript, Redux/TanStack Query, Next.js... chia rõ section, features",
-    "category": "Frontend Development",
-    "color": "#D4541A",
-    "badge": "Mới",
-    "badgeType": "new",
-    "slides": "6 Chương",
-    "progress": 0,
-    "href": "./WorkFlow-Project.html"
-  },
-  {
-    "id": 7,
-    "title": "Giữa kỳ Mobile",
-    "description": "Tổng hợp kiến thức luồng xử lí các widget: lấy từ bài tập thực hành hàng tuần",
-    "category": "Mobile Development",
-    "color": "#D4541A",
-    "badge": "Mới",
-    "badgeType": "new",
-    "slides": "6 Chương",
-    "progress": 0,
-    "href": "./flutter-midterm-guide.html"
-  },
-  {
-    "id": 8,
-    "title": "Giữa kỳ Mobile Layout",
-    "description": "Tổng hợp kiến thức luồng xử lí các widget: lấy từ bài tập thực hành hàng tuần",
-    "category": "Mobile Development",
-    "color": "#D4541A",
-    "badge": "Mới",
-    "badgeType": "new",
-    "slides": "6 Chương",
-    "progress": 0,
-    "href": "./dart-flutter.html"
-  },
-  {
-    "id": 9,
-    "title": "Phân tích & Cách dùng menu WordPress",
-    "description": "Tổng hợp kiến thức menu wordpresss",
-    "category": "Mobile Development",
-    "color": "#D4541A",
-    "badge": "Mới",
-    "badgeType": "new",
-    "slides": "6 Chương",
-    "progress": 0,
-    "href": "./menu-default.html"
-  },
-  {
-    "id": 10,
-    "title": "Debug Xampp",
-    "description": "Tổng hợp kiến thức bug của xampp và cách giải",
-    "category": "Mobile Development",
-    "color": "#D4541A",
-    "badge": "Mới",
-    "badgeType": "new",
-    "slides": "6 Chương",
-    "progress": 0,
-    "href": "./fixXampp.html"
-  },
-  {
-    "id": 11,
-    "title": "Demo StayZ App",
-    "description": "Tổng hợp kiến thức stayz và cách giải",
-    "category": "Mobile Development",
-    "color": "#D4541A",
-    "badge": "Mới",
-    "badgeType": "new",
-    "slides": "6 Chương",
-    "progress": 0,
-    "href": "./demo.html"
-  }
-]
+{
+  "groups": [
+    {
+      "id": "javascript",
+      "title": "JavaScript",
+      "order": 1,
+      "accent": "#F7B731"
+    },
+    {
+      "id": "mobile-flutter",
+      "title": "Mobile, Flutter & StayZ",
+      "order": 2,
+      "accent": "#1597E5"
+    },
+    {
+      "id": "frontend",
+      "title": "Frontend Development",
+      "order": 4,
+      "accent": "#7158E2"
+    },
+    { "id": "english", "title": "English", "order": 5, "accent": "#20BF6B" },
+    {
+      "id": "wordpress-local",
+      "title": "WordPress & Local Development",
+      "order": 6,
+      "accent": "#D4541A"
+    },
+    {
+      "id": "wordpress-local",
+      "title": "WordPress & Local Development",
+      "order": 6,
+      "accent": "#D4541A"
+    },
+    {
+      "id": "mobile-lasttest",
+      "title": "Cuối kỳ Mobile",
+      "order": 7,
+      "accent": "#D4541A"
+    }
+  ],
+  "courses": [
+    {
+      "id": 1,
+      "groupId": "javascript",
+      "title": "Lộ trình học JavaScript",
+      "description": "Roadmap từ zero đến hero — từ biến, hàm, DOM đến async/await và Minimax AI.",
+      "category": "JavaScript",
+      "color": "#F7B731",
+      "badge": "Sẵn sàng",
+      "badgeType": "ready",
+      "slides": "8 giai đoạn",
+      "progress": 40,
+      "href": "./roadmap.html"
+    },
+    {
+      "id": 2,
+      "groupId": "javascript",
+      "title": "Slide học JavaScript",
+      "description": "24 slides enterprise-quality — syntax, functions, DOM, event, OOP, async/await, và thuật toán AI.",
+      "category": "JavaScript",
+      "color": "#2D6BE4",
+      "badge": "Mới",
+      "badgeType": "new",
+      "slides": "24 slides",
+      "progress": 0,
+      "href": "./slidestudyJS.html"
+    },
+    {
+      "id": 3,
+      "groupId": "english",
+      "title": "Ngữ pháp TOEIC toàn tập",
+      "description": "12 slides ôn tập — từ loại, 12 thì, liên từ, mệnh đề quan hệ, so sánh, câu điều kiện.",
+      "category": "English",
+      "color": "#D4541A",
+      "badge": "Mới",
+      "badgeType": "new",
+      "slides": "12 slides",
+      "progress": 0,
+      "href": "./toiec.html"
+    },
+    {
+      "id": 4,
+      "groupId": "mobile-flutter",
+      "title": "Thiết kế UI/UX StayZ",
+      "description": "Thiết kế phong cách nhật, bảng màu cỡ chữ khoảng cách...layout mẫu",
+      "category": "StayZ · UI/UX",
+      "color": "#D4541A",
+      "badge": "Mới",
+      "badgeType": "new",
+      "slides": "2 Landing Page",
+      "progress": 0,
+      "href": "./StayZ-Design-System.html"
+    },
+    {
+      "id": 5,
+      "groupId": "frontend",
+      "title": "InterView",
+      "description": "Tổng hợp kiến thức phỏng vấn Frontend: JavaScript, React, TypeScript, Redux/TanStack Query, Next.js... chia rõ Core Skills và Exposure, kèm câu hỏi mock và chiến lược trả lời.",
+      "category": "Frontend Development",
+      "color": "#D4541A",
+      "badge": "Mới",
+      "badgeType": "new",
+      "slides": "6 Chương",
+      "progress": 0,
+      "href": "./interview.html"
+    },
+    {
+      "id": 6,
+      "groupId": "frontend",
+      "title": "Projet WorkFlow",
+      "description": "Tổng hợp kiến thức luồng xử lí các project: JavaScript, React, TypeScript, Redux/TanStack Query, Next.js... chia rõ section, features",
+      "category": "Frontend Development",
+      "color": "#D4541A",
+      "badge": "Mới",
+      "badgeType": "new",
+      "slides": "6 Chương",
+      "progress": 0,
+      "href": "./WorkFlow-Project.html"
+    },
+    {
+      "id": 7,
+      "groupId": "mobile-flutter",
+      "title": "Ôn tập giữa kỳ Flutter",
+      "description": "Tổng hợp kiến thức luồng xử lí các widget: lấy từ bài tập thực hành hàng tuần",
+      "category": "Flutter · Ôn giữa kỳ",
+      "color": "#D4541A",
+      "badge": "Mới",
+      "badgeType": "new",
+      "slides": "6 Chương",
+      "progress": 0,
+      "href": "./flutter-midterm-guide.html"
+    },
+    {
+      "id": 8,
+      "groupId": "mobile-flutter",
+      "title": "Flutter Widget & Layout cơ bản",
+      "description": "Tổng hợp kiến thức luồng xử lí các widget: lấy từ bài tập thực hành hàng tuần",
+      "category": "Flutter · Widget & Layout",
+      "color": "#D4541A",
+      "badge": "Mới",
+      "badgeType": "new",
+      "slides": "6 Chương",
+      "progress": 0,
+      "href": "./dart-flutter.html"
+    },
+    {
+      "id": 9,
+      "groupId": "wordpress-local",
+      "title": "Phân tích & Cách dùng menu WordPress",
+      "description": "Tổng hợp kiến thức menu wordpresss",
+      "category": "WordPress & Local Development",
+      "color": "#D4541A",
+      "badge": "Mới",
+      "badgeType": "new",
+      "slides": "6 Chương",
+      "progress": 0,
+      "href": "./menu-default.html"
+    },
+    {
+      "id": 10,
+      "groupId": "wordpress-local",
+      "title": "Debug Xampp",
+      "description": "Tổng hợp kiến thức bug của xampp và cách giải",
+      "category": "WordPress & Local Development",
+      "color": "#D4541A",
+      "badge": "Mới",
+      "badgeType": "new",
+      "slides": "6 Chương",
+      "progress": 0,
+      "href": "./fixXampp.html"
+    },
+    {
+      "id": 11,
+      "groupId": "mobile-flutter",
+      "title": "Tổng quan dự án StayZ",
+      "description": "Tổng hợp kiến thức stayz và cách giải",
+      "category": "StayZ · Tổng quan dự án",
+      "color": "#D4541A",
+      "badge": "Mới",
+      "badgeType": "new",
+      "slides": "6 Chương",
+      "progress": 0,
+      "href": "./demo.html"
+    },
+    {
+      "id": 12,
+      "groupId": "mobile-lasttest",
+      "title": "Cơ bản cuối kỳ",
+      "description": "Tổng hợp kiến thức stayz và cách giải",
+      "category": "StayZ · Tổng quan dự án",
+      "color": "#D4541A",
+      "badge": "Mới",
+      "badgeType": "new",
+      "slides": "6 Chương",
+      "progress": 0,
+      "href": "./coban.html"
+    },
+    {
+      "id": 13,
+      "groupId": "mobile-lasttest",
+      "title": "Trung bình cuối kỳ",
+      "description": "Tổng hợp kiến thức stayz và cách giải",
+      "category": "StayZ · Tổng quan dự án",
+      "color": "#D4541A",
+      "badge": "Mới",
+      "badgeType": "new",
+      "slides": "6 Chương",
+      "progress": 0,
+      "href": "./trungbinh.html"
+    },
+    {
+      "id": 14,
+      "groupId": "mobile-lasttest",
+      "title": "Khó cuối kỳ",
+      "description": "Tổng hợp kiến thức stayz và cách giải",
+      "category": "StayZ · Tổng quan dự án",
+      "color": "#D4541A",
+      "badge": "Mới",
+      "badgeType": "new",
+      "slides": "6 Chương",
+      "progress": 0,
+      "href": "./kho.html"
+    }
+  ]
+}
