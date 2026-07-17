@@ -497,26 +497,79 @@
          background: white;
          color: var(--dark)
       }
-/* Đồng bộ với bản Word căn lề chuẩn */
-.answer{padding:0 1.5rem 1.5rem 4.4rem;line-height:1.65}
-.answer h3{margin:1rem 0 .45rem}
-.answer p{margin:.45rem 0 .7rem}
-.answer ul,.answer ol{margin:.55rem 0 .85rem;padding-left:1.55rem}
-.answer li{padding-left:.28rem;margin:0;line-height:1.6}
-.answer li+li{margin-top:.38rem}
-.answer li::marker{color:var(--teal);font-weight:800}
-.answer pre{margin:.7rem 0 1rem;padding:1rem 1.1rem;line-height:1.55;tab-size:2}
-.answer .bad,.answer .fix{margin:.7rem 0;padding:.75rem .9rem}
-@media(max-width:520px){.answer{padding:0 1rem 1.25rem}.answer ul,.answer ol{padding-left:1.4rem}.answer pre{margin-left:0;margin-right:0;padding:.85rem}}
-</style>
+
+      /* Đồng bộ với bản Word căn lề chuẩn */
+      .answer {
+         padding: 0 1.5rem 1.5rem 4.4rem;
+         line-height: 1.65
+      }
+
+      .answer h3 {
+         margin: 1rem 0 .45rem
+      }
+
+      .answer p {
+         margin: .45rem 0 .7rem
+      }
+
+      .answer ul,
+      .answer ol {
+         margin: .55rem 0 .85rem;
+         padding-left: 1.55rem
+      }
+
+      .answer li {
+         padding-left: .28rem;
+         margin: 0;
+         line-height: 1.6
+      }
+
+      .answer li+li {
+         margin-top: .38rem
+      }
+
+      .answer li::marker {
+         color: var(--teal);
+         font-weight: 800
+      }
+
+      .answer pre {
+         margin: .7rem 0 1rem;
+         padding: 1rem 1.1rem;
+         line-height: 1.55;
+         tab-size: 2
+      }
+
+      .answer .bad,
+      .answer .fix {
+         margin: .7rem 0;
+         padding: .75rem .9rem
+      }
+
+      @media(max-width:520px) {
+         .answer {
+            padding: 0 1rem 1.25rem
+         }
+
+         .answer ul,
+         .answer ol {
+            padding-left: 1.4rem
+         }
+
+         .answer pre {
+            margin-left: 0;
+            margin-right: 0;
+            padding: .85rem
+         }
+      }
+   </style>
 </head>
 
 <body>
    <header>
       <div class="hero">
-         <nav class="level-nav" aria-label="Chọn mức độ"><a href="on_tap_flutter_co_ban.html">Cơ bản</a><a
-               href="on_tap_flutter_trung_binh.html">Trung bình</a><a class="active"
-               href="on_tap_flutter_kho.html">Khó</a></nav><span class="tag">Flutter • Ôn thi cuối kỳ</span>
+         <nav class="level-nav" aria-label="Chọn mức độ"><a href="coban.html">Cơ bản</a><a href="trungbinh.html">Trung
+               bình</a><a class="active" href="kho.html">Khó</a></nav><span class="tag">Flutter • Ôn thi cuối kỳ</span>
          <h1>Mức độ khó</h1>
          <p class="lead">Phân tích kiến trúc, bất đồng bộ, dependency, phạm vi rebuild và các lỗi liên tầng thường khó
             phát hiện.</p>
