@@ -1,0 +1,4048 @@
+[
+  {
+    "type": "paragraph",
+    "text": "BỘ ĐỀ THI THỬ"
+  },
+  {
+    "type": "paragraph",
+    "text": "FLUTTER INTERN"
+  },
+  {
+    "type": "paragraph",
+    "text": "150 câu trắc nghiệm • 3 đề độc lập"
+  },
+  {
+    "type": "paragraph",
+    "text": "Logic • Dart • Flutter • REST API • UI/UX • Hiệu năng • Tình huống startup"
+  },
+  {
+    "type": "paragraph",
+    "text": "Tài liệu ôn luyện theo mức độ cơ bản đến trung bình\nPhù hợp sinh viên năm cuối và ứng viên Flutter Intern"
+  },
+  {
+    "type": "paragraph",
+    "text": "Hướng dẫn sử dụng"
+  },
+  {
+    "type": "paragraph",
+    "text": "Mỗi đề gồm 50 câu, thời gian gợi ý 45–50 phút."
+  },
+  {
+    "type": "paragraph",
+    "text": "Mỗi câu có 4 lựa chọn A, B, C, D và chỉ có một đáp án đúng nhất."
+  },
+  {
+    "type": "paragraph",
+    "text": "Không xem phần đáp án trước khi hoàn thành đề."
+  },
+  {
+    "type": "paragraph",
+    "text": "Sau khi chấm, đọc giải thích của cả câu đúng lẫn câu sai và thử trình bày lại bằng lời."
+  },
+  {
+    "type": "paragraph",
+    "text": "Mục tiêu tham khảo: 42–50 tốt; 35–41 khá; 25–34 cần củng cố; dưới 25 nên ôn lại nền tảng."
+  },
+  {
+    "type": "paragraph",
+    "text": "Cấu trúc mỗi đề"
+  },
+  {
+    "type": "table",
+    "rows": [
+      [
+        "Phần",
+        "Nội dung",
+        "Số câu"
+      ],
+      [
+        "1",
+        "Tư duy logic, OOP và cấu trúc dữ liệu",
+        "10"
+      ],
+      [
+        "2",
+        "Dart và Flutter",
+        "10"
+      ],
+      [
+        "3",
+        "REST API, JSON và bất đồng bộ",
+        "10"
+      ],
+      [
+        "4",
+        "UI/UX, quản lý state và hiệu năng",
+        "10"
+      ],
+      [
+        "5",
+        "Tình huống kỹ thuật và môi trường startup",
+        "10"
+      ]
+    ]
+  },
+  {
+    "type": "paragraph",
+    "text": "ĐỀ THI THỬ SỐ 1"
+  },
+  {
+    "type": "paragraph",
+    "text": "Thời gian: 50 phút    Số câu: 50    Điểm tối đa: 50"
+  },
+  {
+    "type": "paragraph",
+    "text": "Họ và tên: ________________________________________"
+  },
+  {
+    "type": "paragraph",
+    "text": "Phần 1: Tư duy logic, OOP và cấu trúc dữ liệu (10 câu)"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 1. Đoạn mã `for (int i = 0; i < 5; i++)` thực hiện thân vòng lặp bao nhiêu lần?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. 4 lần"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. 5 lần"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. 6 lần"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Không lần nào"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 2. Cấu trúc dữ liệu nào hoạt động theo nguyên tắc LIFO?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Set"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Queue"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Graph"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Stack"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 3. Trong OOP, lớp con sử dụng lại thuộc tính và phương thức của lớp cha là đặc tính nào?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Đa hình"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Trừu tượng"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Đóng gói"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Kế thừa"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 4. Kết quả của `10 ~/ 3` trong Dart là gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. 1"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. 4"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. 3.33"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. 3"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 5. Tìm kiếm nhị phân yêu cầu dữ liệu đầu vào như thế nào?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Không có phần tử trùng"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Đã được sắp xếp"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Chỉ chứa số"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Có kích thước chẵn"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 6. Độ phức tạp truy cập một phần tử List bằng chỉ số là gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. O(n)"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. O(1)"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. O(n²)"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. O(log n)"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 7. Giá trị của `true && (false || true)` là gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. false"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Lỗi"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. true"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. null"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 8. Biểu thức nào kiểm tra n là số chẵn?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. n * 2 == 0"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. n ~/ 2 == 0"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. n % 2 == 0"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. n / 2 == 0"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 9. Mục đích quan trọng nhất khi chia một chức năng lớn thành nhiều hàm nhỏ là gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Luôn tăng tốc độ"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Giảm hoàn toàn bộ nhớ"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Dễ đọc, kiểm thử và bảo trì"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Không cần dùng biến"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 10. Kiểu nào biểu diễn một chuỗi có thể null trong Dart Null Safety?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. null String"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. String"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Optional<String>"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. String?"
+  },
+  {
+    "type": "paragraph",
+    "text": "Phần 2: Dart và Flutter (10 câu)"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 11. Ngôn ngữ chính của Flutter là gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. JavaScript"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Swift"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Kotlin"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Dart"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 12. Widget không có trạng thái thay đổi nội bộ nên kế thừa gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Element"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. State"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. StatelessWidget"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. StatefulWidget"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 13. Trong State, phương thức nào yêu cầu Flutter dựng lại giao diện sau khi dữ liệu thay đổi?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. updateUI"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. setState"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. reload"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. notifyScreen"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 14. Widget nào sắp xếp các con theo chiều dọc?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Stack"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Row"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. WrapView"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Column"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 15. Danh sách dài nên dùng widget nào để xây dựng phần tử theo nhu cầu?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. ListView.builder"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Text"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Column"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Container"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 16. Lợi ích chính của constructor `const` cho widget là gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Tự thêm animation"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Tự gọi API"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Có thể tái sử dụng instance bất biến"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Widget luôn thay đổi"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 17. Hàm được đánh dấu `async` thường trả về kiểu gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Future"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Widget"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. ListView"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. BuildContext"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 18. `await` có tác dụng gì trong hàm async?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Hủy Future"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Đóng băng toàn app"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Khởi động lại app"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Tạm dừng hàm đến khi Future hoàn tất"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 19. Widget nào dựng UI theo trạng thái của một Future?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Row"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Form"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. FutureBuilder"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Hero"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 20. Cách phổ biến để mở một route mới là gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Screen.run"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. MaterialApp.next"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Widget.open"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Navigator.push"
+  },
+  {
+    "type": "paragraph",
+    "text": "Phần 3: REST API, JSON và bất đồng bộ (10 câu)"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 21. HTTP method thường dùng để lấy dữ liệu là gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. GET"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. POST"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. DELETE"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. PATCH"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 22. HTTP 200 thường có nghĩa gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Không tìm thấy"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Thành công"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Lỗi server"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Chưa xác thực"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 23. HTTP 401 thường biểu thị điều gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Chưa xác thực hoặc credential không hợp lệ"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Xung đột dữ liệu"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Thành công"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Không tìm thấy"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 24. Chuyển JSON thành Dart object được gọi là gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Compilation"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Navigation"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Deserialization"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Rendering"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 25. Khi API đang tải, UI phù hợp nhất là gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Màn hình trắng"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Loading indicator rõ ràng"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Đóng app"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Gửi request liên tục"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 26. Lớp nào thường chịu trách nhiệm phối hợp nguồn dữ liệu API/cache?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Theme"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Repository"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Navigator"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Text widget"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 27. Access token nhạy cảm trên thiết bị nên lưu ở đâu?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Secure storage"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Git repository"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Hard-code"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Text widget"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 28. POST thường được dùng cho mục đích nào?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Đổi theme"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Xóa app"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Chỉ đọc cache"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Tạo tài nguyên hoặc gửi lệnh"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 29. HTTP 404 có nghĩa phổ biến nào?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Thành công"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Không tìm thấy tài nguyên"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Token hết hạn"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Server bảo trì"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 30. HTTP 500 thường cho biết điều gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Không có Internet"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Lỗi phía server"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Đã đăng xuất"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Request luôn đúng"
+  },
+  {
+    "type": "paragraph",
+    "text": "Phần 4: UI/UX, quản lý state và hiệu năng (10 câu)"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 31. Khi dữ liệu đổi nhưng UI không cập nhật trong StatefulWidget, kiểm tra đầu tiên là gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Màu icon"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Phiên bản Git"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Dữ liệu có được đổi trong setState hay cơ chế thông báo không"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Tên package"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 32. Provider/BLoC/Riverpod thường giải quyết vấn đề gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Ký APK"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Thiết kế database server"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Biên dịch Dart"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Quản lý và phân phối state"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 33. Loading, success, empty và error nên được xem là gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Các trạng thái UI riêng biệt"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Cùng một màn hình trắng"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Chỉ lỗi server"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Tên route"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 34. Danh sách không có dữ liệu nên hiển thị gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Exception"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Empty state có hướng dẫn phù hợp"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Đóng app"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Spinner vô hạn"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 35. Nút hành động chính nên có đặc điểm nào?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Ẩn ở mọi màn hình"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Luôn màu giống nền"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Nổi bật và nhãn rõ ràng"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Không có phản hồi"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 36. Để tránh rebuild một vùng lớn, nên làm gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Tăng ảnh"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Xóa const"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Gọi setState ở root liên tục"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Tách widget và chỉ lắng nghe state cần thiết"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 37. Ảnh mạng trong danh sách nên được tối ưu bằng cách nào?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Cache, placeholder và kích thước phù hợp"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Luôn tải ảnh gốc lớn"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Tải lại mỗi frame"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Nhúng mọi ảnh vào code"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 38. Semantics trong Flutter hỗ trợ điều gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Database migration"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Khả năng truy cập cho screen reader"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Build release"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Mã hóa API"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 39. Nhãn lỗi form tốt nên như thế nào?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Chỉ ghi 'Sai'"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Hiển thị sau khi đóng app"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Cụ thể và chỉ cách sửa"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Ẩn hoàn toàn"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 40. Màu sắc có nên là tín hiệu duy nhất cho trạng thái lỗi không?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Chỉ khi offline"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Chỉ trên Android"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Có, luôn đủ"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Không, nên có biểu tượng hoặc văn bản"
+  },
+  {
+    "type": "paragraph",
+    "text": "Phần 5: Tình huống kỹ thuật và môi trường startup (10 câu)"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 41. Người dùng nhấn nút thanh toán nhiều lần làm tạo request trùng. Xử lý phù hợp nhất là gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Vô hiệu hóa nút khi xử lý và dùng idempotency nếu có"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Gửi tất cả"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Đóng app"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Xóa giỏ hàng"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 42. Yêu cầu nghiệp vụ chưa rõ nhưng sắp bắt đầu code. Bạn nên làm gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Bỏ qua"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Xác nhận mục tiêu, trường hợp biên và tiêu chí hoàn thành"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Chỉ đổi màu"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Tự đoán toàn bộ"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 43. Một bug chỉ xảy ra trên thiết bị thật. Bước đầu hợp lý là gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Viết lại app"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Đổ lỗi cho thiết bị"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Thu thập bước tái hiện, log và thông tin môi trường"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Xóa test"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 44. API thay đổi tên field đột ngột. Hành động tốt nhất là gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Xóa model"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Ẩn lỗi"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Force unwrap"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Trao đổi contract, thêm xử lý tương thích và test"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 45. Mentor review và yêu cầu sửa code. Cách phản hồi chuyên nghiệp là gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Hiểu lý do, trao đổi điểm chưa rõ, sửa và kiểm tra lại"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Bỏ qua"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Tranh luận không đọc"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Xóa branch"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 46. Bạn chưa biết một package Flutter. Nên làm gì trước?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Chép code không hiểu"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Đọc tài liệu chính thức, ví dụ và đánh giá bảo trì"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Đưa secret lên mạng"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Cài ngẫu nhiên"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 47. Deadline gần nhưng còn một lỗi nghiêm trọng trong luồng đặt hàng. Nên làm gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Giấu lỗi"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Xóa log"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Báo sớm mức ảnh hưởng và đề xuất phương án"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Đánh dấu xong"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 48. Một tính năng lớn cần triển khai. Cách chia việc tốt là gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Chờ đến cuối mới chạy"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Không tạo tiêu chí"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Code tất cả trong một hàm"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Tách thành các phần nhỏ có thể kiểm thử và tích hợp"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 49. Trước khi merge code gọi API mới, tối thiểu nên kiểm tra gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Success, loading, empty, error và dữ liệu bất thường"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Chỉ màu nút"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Chỉ tên file"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Không cần chạy"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 50. Phát hiện secret đã commit vào Git. Hành động ưu tiên là gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Đăng lên chat"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Thu hồi/rotate secret và báo người phụ trách"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Bỏ qua"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Chỉ xóa dòng ở commit mới"
+  },
+  {
+    "type": "paragraph",
+    "text": "ĐÁP ÁN VÀ GIẢI THÍCH – ĐỀ 1"
+  },
+  {
+    "type": "paragraph",
+    "text": "Bảng đáp án nhanh"
+  },
+  {
+    "type": "table",
+    "rows": [
+      [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10"
+      ],
+      [
+        "1. B",
+        "2. D",
+        "3. D",
+        "4. D",
+        "5. B",
+        "6. B",
+        "7. C",
+        "8. C",
+        "9. C",
+        "10. D"
+      ],
+      [
+        "11. D",
+        "12. C",
+        "13. B",
+        "14. D",
+        "15. A",
+        "16. C",
+        "17. A",
+        "18. D",
+        "19. C",
+        "20. D"
+      ],
+      [
+        "21. A",
+        "22. B",
+        "23. A",
+        "24. C",
+        "25. B",
+        "26. B",
+        "27. A",
+        "28. D",
+        "29. B",
+        "30. B"
+      ],
+      [
+        "31. C",
+        "32. D",
+        "33. A",
+        "34. B",
+        "35. C",
+        "36. D",
+        "37. A",
+        "38. B",
+        "39. C",
+        "40. D"
+      ],
+      [
+        "41. A",
+        "42. B",
+        "43. C",
+        "44. D",
+        "45. A",
+        "46. B",
+        "47. C",
+        "48. D",
+        "49. A",
+        "50. B"
+      ]
+    ]
+  },
+  {
+    "type": "paragraph",
+    "text": "Giải thích"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 1 – B: i nhận các giá trị 0, 1, 2, 3 và 4."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 2 – D: Stack lấy phần tử vào sau ra trước."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 3 – D: Kế thừa cho phép lớp con tái sử dụng và mở rộng lớp cha."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 4 – D: Toán tử ~/ thực hiện phép chia lấy phần nguyên."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 5 – B: Binary search dựa vào thứ tự để loại bỏ một nửa phạm vi."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 6 – B: Mảng/List hỗ trợ truy cập ngẫu nhiên theo chỉ số trong thời gian hằng số."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 7 – C: Biểu thức trong ngoặc là true, nên true && true là true."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 8 – C: Số chẵn có phần dư bằng 0 khi chia cho 2."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 9 – C: Các hàm nhỏ có trách nhiệm rõ ràng và dễ kiểm thử độc lập."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 10 – D: Dấu ? đánh dấu kiểu nullable."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 11 – D: Flutter SDK sử dụng Dart."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 12 – C: StatelessWidget phù hợp với giao diện chỉ phụ thuộc đầu vào bất biến."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 13 – B: setState đánh dấu State cần được build lại."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 14 – D: Column dùng trục chính theo chiều dọc."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 15 – A: ListView.builder tạo item lười khi chúng sắp xuất hiện."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 16 – C: Const giảm cấp phát và giúp Flutter tối ưu cây widget."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 17 – A: Kết quả bất đồng bộ được bao bởi Future."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 18 – D: await chỉ tạm dừng luồng logic của hàm async, không chặn UI isolate theo cách đồng bộ."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 19 – C: FutureBuilder nhận AsyncSnapshot để biểu diễn loading, data và error."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 20 – D: Navigator.push thêm route vào navigation stack."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 21 – A: GET dùng để truy xuất biểu diễn tài nguyên."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 22 – B: 200 OK báo request đã được xử lý thành công."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 23 – A: 401 Unauthorized liên quan đến xác thực."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 24 – C: Deserialization ánh xạ dữ liệu truyền tải sang object."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 25 – B: Phản hồi trạng thái giúp người dùng biết ứng dụng vẫn hoạt động."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 26 – B: Repository che giấu chi tiết nguồn dữ liệu khỏi presentation."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 27 – A: Secure storage dùng vùng lưu trữ được hệ điều hành bảo vệ."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 28 – D: POST gửi representation để tạo hoặc xử lý trên server."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 29 – B: 404 Not Found báo tài nguyên/route không tồn tại."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 30 – B: 500 Internal Server Error là lỗi xử lý phía máy chủ."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 31 – C: Flutter cần tín hiệu thay đổi để build lại phần giao diện liên quan."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 32 – D: Các giải pháp này tách state/business logic khỏi widget."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 33 – A: Mỗi trạng thái cần phản hồi trực quan và hành động phù hợp."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 34 – B: Empty state giải thích tình trạng và có thể gợi ý hành động."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 35 – C: CTA rõ ràng giúp người dùng hiểu hành động tiếp theo."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 36 – D: Phạm vi rebuild nhỏ giúp giảm công việc layout/paint."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 37 – A: Giảm dữ liệu và tái sử dụng cache giúp cuộn mượt hơn."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 38 – B: Semantics cung cấp mô tả và vai trò cho công nghệ hỗ trợ."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 39 – C: Thông báo có thể hành động giúp người dùng sửa nhanh."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 40 – D: Người dùng khiếm khuyết màu sắc cần tín hiệu bổ sung."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 41 – A: Khóa thao tác phía client và idempotency phía server giảm giao dịch trùng."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 42 – B: Làm rõ sớm giảm rework và sai kỳ vọng."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 43 – C: Bằng chứng tái hiện giúp khoanh vùng nguyên nhân."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 44 – D: Schema thay đổi cần phối hợp và bảo vệ khả năng tương thích."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 45 – A: Review là vòng học hỏi và kiểm soát chất lượng."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 46 – B: Nguồn chính thức và tình trạng package giúp lựa chọn an toàn."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 47 – C: Minh bạch giúp nhóm quyết định scope và rủi ro."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 48 – D: Increment nhỏ giúp nhận phản hồi và phát hiện lỗi sớm."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 49 – A: Các trạng thái chính quyết định độ tin cậy của trải nghiệm."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 50 – B: Secret đã vào lịch sử phải được coi là lộ và thay ngay."
+  },
+  {
+    "type": "paragraph",
+    "text": "ĐỀ THI THỬ SỐ 2"
+  },
+  {
+    "type": "paragraph",
+    "text": "Thời gian: 50 phút    Số câu: 50    Điểm tối đa: 50"
+  },
+  {
+    "type": "paragraph",
+    "text": "Họ và tên: ________________________________________"
+  },
+  {
+    "type": "paragraph",
+    "text": "Phần 1: Tư duy logic, OOP và cấu trúc dữ liệu (10 câu)"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 1. Queue thường hoạt động theo nguyên tắc nào?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. FIFO"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Ưu tiên phần tử lớn nhất"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. LIFO"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Ngẫu nhiên"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 2. Độ phức tạp của tìm kiếm tuyến tính trong trường hợp xấu nhất là gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. O(n log n)"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. O(n)"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. O(log n)"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. O(1)"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 3. Tính đóng gói trong OOP chủ yếu nhằm mục đích gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Ẩn chi tiết bên trong và kiểm soát truy cập"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Tạo nhiều bản sao"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Thay thế mọi vòng lặp"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Làm class chạy bất đồng bộ"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 4. Một class có nhiều cách triển khai cùng một phương thức thông qua các kiểu con thể hiện đặc tính nào?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Đóng gói"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Đa hình"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Tuần tự"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Kế thừa đơn"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 5. Điều kiện dừng trong hàm đệ quy có vai trò gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Ngăn đệ quy vô hạn"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Cấp quyền truy cập"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Tăng số lần gọi"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Sắp xếp dữ liệu"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 6. Kết quả của `[1, 2, 3].length` là gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. null"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. 4"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. 3"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. 2"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 7. Cấu trúc nào không lưu phần tử trùng lặp theo ngữ nghĩa tập hợp?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. List"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Queue"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Set"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Stack"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 8. Khi cần ánh xạ khóa người dùng sang thông tin người dùng, cấu trúc phù hợp nhất là gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Queue"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Map"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Tree chỉ có một nút"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Stack"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 9. Kết quả của `5 > 3 && 2 > 4` là gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. false"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Lỗi"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. true"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. 2"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 10. Thuật toán sắp xếp nào dưới đây thường có độ phức tạp trung bình O(n log n)?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Duyệt tuyến tính"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Merge sort"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Insertion sort"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Bubble sort"
+  },
+  {
+    "type": "paragraph",
+    "text": "Phần 2: Dart và Flutter (10 câu)"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 11. `initState()` được gọi khi nào?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Mỗi lần build"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Một lần khi State được gắn vào cây"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Sau dispose"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Chỉ khi nhấn nút"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 12. Nên giải phóng AnimationController hoặc TextEditingController ở đâu?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. dispose"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. build"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. didUpdateWidget luôn luôn"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. initState"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 13. BuildContext đại diện cho điều gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Cơ sở dữ liệu"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. File cấu hình"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Vị trí widget trong cây"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. HTTP response"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 14. Widget nào chồng các widget con lên nhau?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Expanded"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Stack"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. ListView"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Column"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 15. `Expanded` thường được dùng trong Row/Column để làm gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Chiếm phần không gian còn lại"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Gọi API"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Lưu token"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Tạo route"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 16. `pubspec.yaml` thường khai báo nội dung nào?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Mật khẩu production"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Dependencies và assets"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. HTTP response"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Dữ liệu người dùng"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 17. Toán tử `??` trong Dart dùng để làm gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Chọn giá trị bên phải nếu bên trái null"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Nối route"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Chia lấy dư"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Ép kiểu"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 18. `final` khác `const` ở điểm quan trọng nào?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Không có khác biệt"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. const thay đổi được"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. final luôn compile-time"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. final có thể gán một lần lúc runtime"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 19. Named parameter bắt buộc trong Dart thường được đánh dấu bằng từ khóa nào?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. must"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. required"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. final"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. late"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 20. `late` nên được dùng khi nào?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Mọi hằng số"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Giá trị non-null được khởi tạo sau khai báo"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Chỉ cho List"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Mọi biến nullable"
+  },
+  {
+    "type": "paragraph",
+    "text": "Phần 3: REST API, JSON và bất đồng bộ (10 câu)"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 21. Header `Content-Type: application/json` mô tả điều gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Tốc độ mạng"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Tên người dùng"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Định dạng nội dung body"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Kích thước màn hình"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 22. Bearer token thường được gửi trong header nào?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Cache-Control chỉ"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. User-Agent"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Accept-Language"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Authorization"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 23. Timeout khi gọi API giúp ứng dụng làm gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Không chờ vô hạn"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Luôn nhận 200"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Tăng RAM"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Bỏ xác thực"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 24. Khi request GET tạm thời thất bại do mạng, chiến lược retry phù hợp là gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Xóa tài khoản"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Retry vô hạn ngay lập tức"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Bỏ mọi lỗi"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Giới hạn số lần và backoff"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 25. Dữ liệu phân trang giúp ích gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Bỏ cần API"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Tăng kích thước ảnh"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Giảm lượng dữ liệu tải mỗi lần"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Tự mã hóa token"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 26. Query parameter thường phù hợp với dữ liệu nào?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Binary app"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Source code"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Mật khẩu nhạy cảm"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Lọc, tìm kiếm, phân trang"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 27. Path parameter thường dùng để biểu diễn gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Định danh tài nguyên trong URL"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Màu theme"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Bộ nhớ thiết bị"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Widget key"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 28. PUT thường mang ngữ nghĩa nào?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Tải font"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Thay thế/cập nhật tài nguyên tại URI xác định"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Mở màn hình"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Chỉ đọc"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 29. PATCH khác PUT chủ yếu ở điểm nào?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. PATCH chỉ đọc"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Không khác"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. PATCH thường cập nhật một phần"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. PATCH không dùng HTTP"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 30. DELETE thành công nhưng không trả body có thể dùng status nào?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. 500"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. 401"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. 404"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. 204"
+  },
+  {
+    "type": "paragraph",
+    "text": "Phần 4: UI/UX, quản lý state và hiệu năng (10 câu)"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 31. `RepaintBoundary` có thể hữu ích khi nào?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Cô lập vùng vẽ lại đắt đỏ"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Gọi API"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Lưu token"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Parse JSON"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 32. Jank khi cuộn thường liên quan đến điều gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. README thiếu"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Công việc nặng trên UI isolate hoặc build/paint quá nhiều"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Status 204"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Tên biến dài"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 33. Tác vụ CPU nặng như parse JSON rất lớn nên cân nhắc làm gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Chạy trong build"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Bỏ await"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Chuyển sang isolate/compute"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Gọi mỗi frame"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 34. Debounce tìm kiếm có tác dụng gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Tăng font"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Xóa query"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Gọi API mỗi ký tự nhiều lần"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Chờ người dùng ngừng gõ ngắn rồi mới gọi"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 35. Throttle phù hợp với tình huống nào?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Giới hạn tần suất xử lý sự kiện liên tục"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Lưu mật khẩu"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Đổi model"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Tạo route"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 36. Responsive layout nên dựa chủ yếu vào gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Màu logo"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Không gian khả dụng và breakpoint hợp lý"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Token API"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Tên thiết bị cụ thể"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 37. Khi bàn phím che ô nhập liệu, giải pháp thường dùng là gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Khóa bàn phím"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Đổi API"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Cho nội dung cuộn và xử lý viewInsets"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Xóa TextField"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 38. Hero animation phù hợp để làm gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Validate email"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Parse JSON"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Cache token"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Tạo chuyển tiếp phần tử chung giữa hai route"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 39. Skeleton loading hữu ích khi nào?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Muốn gợi hình dạng nội dung sắp xuất hiện"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Token hết hạn"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. App crash"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Build APK"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 40. Optimistic UI nghĩa là gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Bỏ xử lý lỗi"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Cập nhật UI trước khi server xác nhận và hoàn tác nếu lỗi"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Không lưu state"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Luôn chờ server"
+  },
+  {
+    "type": "paragraph",
+    "text": "Phần 5: Tình huống kỹ thuật và môi trường startup (10 câu)"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 41. App crash nhưng catch đang bỏ qua mọi exception. Nên cải thiện thế nào?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Tiếp tục catch rỗng"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Luôn trả thành công"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Log có ngữ cảnh, phân loại lỗi và hiển thị fallback"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Xóa try-catch"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 42. PM yêu cầu thay đổi nhỏ nhưng ảnh hưởng API và database. Bạn nên làm gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Bỏ test"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Tự đổi production"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Chỉ sửa UI"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Nêu rõ tác động và phối hợp các bên trước khi cam kết"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 43. Một widget dài hàng nghìn dòng khó bảo trì. Cách xử lý là gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Tách theo trách nhiệm và thành phần UI có ý nghĩa"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Đổi tên file"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Thêm nhiều biến global"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Xóa const"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 44. Hai lập trình viên cùng sửa một file và có conflict. Nên làm gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Xóa file"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Đọc cả hai thay đổi, trao đổi và resolve có chủ đích"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Force push ngay"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Chọn ngẫu nhiên"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 45. Một package không còn được duy trì và có lỗ hổng. Lựa chọn tốt là gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Giữ mãi"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Đưa thêm secret"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Đánh giá thay thế/nâng cấp và lập kế hoạch migration"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Ẩn cảnh báo"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 46. Người dùng báo app chậm nhưng chưa có số liệu. Bạn nên làm gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Đổi logo"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Xóa animation"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Tối ưu ngẫu nhiên"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Đo startup, frame time, network và tái hiện"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 47. Thiết kế Figma khác hành vi thực tế của API. Nên xử lý thế nào?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Trao đổi designer/backend để thống nhất trạng thái và dữ liệu"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Tự bịa dữ liệu"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Bỏ error state"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Chỉ làm happy path"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 48. Bạn sửa bug nhưng không thêm test vì 'đã chạy được'. Rủi ro chính là gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. API nhanh hơn"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Bug có thể tái xuất hiện mà không được phát hiện"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Không có rủi ro"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. App nhẹ hơn"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 49. Khi nhận task mới trong startup, điều gì nên được ghi lại?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Chỉ tên người giao"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Không cần gì"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Mục tiêu, phạm vi, tiêu chí hoàn thành và phụ thuộc"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Chỉ ngày"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 50. Một thay đổi có thể làm mất dữ liệu local. Trước khi phát hành nên làm gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Chỉ test cài mới"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Không thông báo"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Xóa dữ liệu mọi người"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Thiết kế migration, backup/fallback và test nâng cấp"
+  },
+  {
+    "type": "paragraph",
+    "text": "ĐÁP ÁN VÀ GIẢI THÍCH – ĐỀ 2"
+  },
+  {
+    "type": "paragraph",
+    "text": "Bảng đáp án nhanh"
+  },
+  {
+    "type": "table",
+    "rows": [
+      [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10"
+      ],
+      [
+        "1. A",
+        "2. B",
+        "3. A",
+        "4. B",
+        "5. A",
+        "6. C",
+        "7. C",
+        "8. B",
+        "9. A",
+        "10. B"
+      ],
+      [
+        "11. B",
+        "12. A",
+        "13. C",
+        "14. B",
+        "15. A",
+        "16. B",
+        "17. A",
+        "18. D",
+        "19. B",
+        "20. B"
+      ],
+      [
+        "21. C",
+        "22. D",
+        "23. A",
+        "24. D",
+        "25. C",
+        "26. D",
+        "27. A",
+        "28. B",
+        "29. C",
+        "30. D"
+      ],
+      [
+        "31. A",
+        "32. B",
+        "33. C",
+        "34. D",
+        "35. A",
+        "36. B",
+        "37. C",
+        "38. D",
+        "39. A",
+        "40. B"
+      ],
+      [
+        "41. C",
+        "42. D",
+        "43. A",
+        "44. B",
+        "45. C",
+        "46. D",
+        "47. A",
+        "48. B",
+        "49. C",
+        "50. D"
+      ]
+    ]
+  },
+  {
+    "type": "paragraph",
+    "text": "Giải thích"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 1 – A: Queue thông thường lấy phần tử vào trước ra trước."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 2 – B: Có thể phải duyệt toàn bộ n phần tử."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 3 – A: Encapsulation bảo vệ trạng thái và cung cấp giao diện truy cập rõ ràng."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 4 – B: Polymorphism cho phép cùng giao diện nhưng hành vi khác nhau."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 5 – A: Base case kết thúc chuỗi lời gọi đệ quy."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 6 – C: Danh sách có ba phần tử."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 7 – C: Set chỉ giữ các giá trị duy nhất."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 8 – B: Map lưu dữ liệu theo cặp key-value."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 9 – A: Vế thứ hai sai nên phép AND trả về false."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 10 – B: Merge sort chia để trị và có độ phức tạp O(n log n)."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 11 – B: initState là điểm khởi tạo một lần của State."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 12 – A: dispose giải phóng tài nguyên khi State bị loại khỏi cây."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 13 – C: Context gắn với Element và vị trí trong widget tree."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 14 – B: Stack bố trí các con theo lớp."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 15 – A: Expanded phân bổ không gian còn dư theo flex."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 16 – B: Pubspec mô tả package, dependency, font và asset."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 17 – A: Đây là toán tử if-null."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 18 – D: final gán một lần; const yêu cầu hằng tại compile time."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 19 – B: required buộc caller truyền named argument."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 20 – B: late trì hoãn khởi tạo nhưng lập trình viên phải bảo đảm gán trước khi đọc."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 21 – C: Content-Type mô tả media type của payload."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 22 – D: Mẫu phổ biến là Authorization: Bearer <token>."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 23 – A: Timeout giới hạn thời gian chờ và cho phép báo lỗi/thử lại."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 24 – D: Retry có giới hạn và backoff tránh làm quá tải mạng/server."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 25 – C: Pagination giảm payload, bộ nhớ và thời gian phản hồi ban đầu."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 26 – D: Query string thường mô tả cách truy vấn collection."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 27 – A: Ví dụ /users/42 dùng 42 làm định danh tài nguyên."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 28 – B: PUT thường idempotent và ghi representation vào URI."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 29 – C: PATCH mô tả thay đổi cục bộ thay vì thay toàn bộ representation."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 30 – D: 204 No Content biểu thị thành công và không có nội dung trả về."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 31 – A: Nó có thể ngăn repaint lan sang vùng không đổi."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 32 – B: Khung hình bị trễ khi main isolate vượt ngân sách frame."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 33 – C: Isolate giúp tránh chặn xử lý khung hình của UI."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 34 – D: Debounce giảm request thừa khi input thay đổi liên tục."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 35 – A: Throttle chỉ cho phép xử lý tối đa theo khoảng thời gian."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 36 – B: Thiết kế theo constraints thích nghi tốt hơn danh sách thiết bị."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 37 – C: Layout cần phản ứng với phần không gian bị bàn phím chiếm."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 38 – D: Hero liên kết widget cùng tag qua chuyển cảnh route."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 39 – A: Skeleton tạo cảm giác tiến trình và giảm thay đổi bố cục đột ngột."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 40 – B: Phản hồi tức thì phù hợp thao tác có xác suất thành công cao."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 41 – C: Lỗi cần quan sát được và chuyển thành hành vi an toàn."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 42 – D: Ước lượng phải phản ánh phụ thuộc kỹ thuật thật."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 43 – A: Phân rã hợp lý cải thiện đọc, test và tái sử dụng."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 44 – B: Conflict cần bảo toàn ý định của cả hai phía."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 45 – C: Phụ thuộc bỏ hoang làm tăng rủi ro bảo mật và bảo trì."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 46 – D: Profile trước giúp tập trung vào nút thắt thật."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 47 – A: UI và contract cần thống nhất để triển khai đúng."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 48 – B: Regression test lưu lại điều kiện gây bug."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 49 – C: Thông tin này giúp cả nhóm hiểu cùng một kết quả mong đợi."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 50 – D: Upgrade path phải bảo vệ dữ liệu phiên bản cũ."
+  },
+  {
+    "type": "paragraph",
+    "text": "ĐỀ THI THỬ SỐ 3"
+  },
+  {
+    "type": "paragraph",
+    "text": "Thời gian: 50 phút    Số câu: 50    Điểm tối đa: 50"
+  },
+  {
+    "type": "paragraph",
+    "text": "Họ và tên: ________________________________________"
+  },
+  {
+    "type": "paragraph",
+    "text": "Phần 1: Tư duy logic, OOP và cấu trúc dữ liệu (10 câu)"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 1. Một biến cục bộ được khai báo trong hàm có phạm vi sử dụng thông thường ở đâu?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Toàn bộ ứng dụng"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Trong hàm hoặc block đó"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Mọi class"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Chỉ trên server"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 2. Nguyên tắc Single Responsibility khuyên một class nên có điều gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Không có constructor"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Một lý do chính để thay đổi"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Kế thừa mọi class"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Chỉ một phương thức"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 3. Khi hai vòng lặp lồng nhau đều chạy n lần, độ phức tạp thường là gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. O(n)"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. O(n²)"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. O(1)"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. O(n log n)"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 4. Giá trị ban đầu phù hợp để tìm tổng các số trong danh sách là gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. null"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. 1"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. 0"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. -1"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 5. Biểu thức `!false` cho kết quả gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. true"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. false"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. null"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. 0"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 6. Khi cần xử lý từng phần tử của danh sách mà không thay đổi số lượng phần tử, cấu trúc nào dễ hiểu nhất?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Constructor"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Vòng lặp for"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Exception"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Class trừu tượng"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 7. Exception nên được dùng cho trường hợp nào?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Tình huống lỗi hoặc bất thường"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Trang trí giao diện"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Luồng chạy bình thường"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Đặt tên biến"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 8. Unit test tốt thường kiểm tra điều gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Tốc độ Internet người dùng"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Màu màn hình thủ công"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Toàn bộ hệ thống thật"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Một đơn vị hành vi nhỏ và độc lập"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 9. Refactoring có ý nghĩa nào đúng nhất?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Thay đổi cấu trúc code nhưng giữ hành vi"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Thêm thật nhiều tính năng"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Xóa toàn bộ test"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Đổi ngôn ngữ lập trình"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 10. Một tên biến tốt nên như thế nào?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Luôn gồm số ngẫu nhiên"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Càng ngắn càng tốt"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Giống tên class khác"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Mô tả rõ ý nghĩa dữ liệu"
+  },
+  {
+    "type": "paragraph",
+    "text": "Phần 2: Dart và Flutter (10 câu)"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 11. Widget nào phát hiện thao tác chạm và cử chỉ tổng quát?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Padding"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Theme"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. GestureDetector"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. SafeArea"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 12. `SafeArea` giúp giải quyết vấn đề gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Tạo database"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Cache API"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Mã hóa token"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Tránh notch và vùng hệ thống"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 13. Muốn nhập và kiểm tra nhiều trường dữ liệu, cặp phù hợp là gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Form và TextFormField"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Stack và Hero"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Image và Icon"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Theme và Divider"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 14. GlobalKey<FormState> thường dùng để làm gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Tải ảnh"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Gọi validate/save trên Form"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Đổi package name"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Lưu access token"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 15. Hot reload chủ yếu có lợi ích gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Build file release"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Tự viết test"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Cập nhật code UI nhanh và giữ phần lớn state"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Thay database production"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 16. `MediaQuery.of(context).size` cung cấp gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Token đăng nhập"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Phiên bản Git"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Danh sách API"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Kích thước vùng hiển thị"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 17. Một extension method trong Dart có tác dụng gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Bổ sung API tiện ích cho kiểu có sẵn"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Thay đổi source của SDK"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Tạo database"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Chỉ tạo widget stateful"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 18. `map()` trên Iterable thường tạo ra gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Một exception"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Một Iterable kết quả sau biến đổi"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Một BuildContext"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Một route"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 19. `where()` trên Iterable có mục đích gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Sắp xếp bắt buộc"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Gọi setState"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Lọc phần tử theo điều kiện"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Xóa source list"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 20. Dùng `mounted` trước setState sau await nhằm tránh điều gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Ảnh quá lớn"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Mạng chậm"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. JSON sai"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Gọi setState khi State đã dispose"
+  },
+  {
+    "type": "paragraph",
+    "text": "Phần 3: REST API, JSON và bất đồng bộ (10 câu)"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 21. `try-catch` khi gọi API nhằm mục đích gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Xử lý exception có kiểm soát"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Tăng FPS"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Thay widget"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Tự đăng nhập"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 22. Tại sao không nên log access token trong production?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Không compile"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Có thể rò rỉ thông tin xác thực"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Token không phải chuỗi"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Làm màu UI sai"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 23. Refresh token thường dùng để làm gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Tải ảnh"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Đổi ngôn ngữ"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Lấy access token mới"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Sắp xếp List"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 24. Khi nhận 401 do access token hết hạn, luồng hợp lý là gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Coi là thành công"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Xóa database server"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Retry vô hạn"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Refresh một lần rồi thử lại request"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 25. API idempotent nghĩa là gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Gọi lặp cùng request có hiệu ứng cuối giống nhau"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Luôn không cần token"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Luôn trả JSON"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Chỉ chạy một lần"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 26. DTO trong tầng data thường có vai trò gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Điều hướng"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Biểu diễn dữ liệu trao đổi với API"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Quản lý animation"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Vẽ giao diện"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 27. Tại sao nên kiểm tra status code trước khi parse body thành model thành công?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Để tăng độ sáng"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Không cần lý do"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Body lỗi có thể có schema khác"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Để bỏ timeout"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 28. Cache dữ liệu API hữu ích nhất trong trường hợp nào?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Lệnh thanh toán chưa xác nhận"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. OTP một lần"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Mật khẩu"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Dữ liệu đọc lại thường xuyên và chấp nhận độ trễ cập nhật"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 29. WebSocket phù hợp hơn polling khi nào?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Cần cập nhật hai chiều gần thời gian thực"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Chỉ tải một file tĩnh"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Không có server"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Chỉ đổi màu nút"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 30. Khi parse một trường JSON có thể thiếu, model nên làm gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Xóa toàn response"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Dùng nullable/default hợp lý"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Thoát app"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Luôn force unwrap"
+  },
+  {
+    "type": "paragraph",
+    "text": "Phần 4: UI/UX, quản lý state và hiệu năng (10 câu)"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 31. Khi dùng optimistic update, điều gì là bắt buộc?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Không cần error state"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Retry vô hạn"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Cơ chế rollback hoặc hòa giải khi request thất bại"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Xóa cache"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 32. Key trong Flutter giúp framework làm gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Tạo font"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Gọi backend"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Mã hóa dữ liệu"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Nhận diện widget giữa các lần build"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 33. Khi item danh sách có state riêng và có thể đổi thứ tự, nên dùng gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Key ổn định theo ID"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Random key mỗi build"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Không có ID"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Global setState"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 34. Random key được tạo lại mỗi build có rủi ro gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Sửa API"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Làm widget bị coi là mới và mất state"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Giảm network"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Tăng cache"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 35. ThemeData giúp ích gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Lưu dữ liệu server"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Tạo database"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Giữ màu sắc và typography nhất quán"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Parse token"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 36. Dark mode tốt cần chú ý điều gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Không kiểm tra text"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Chỉ đổi nền đen"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Chỉ đảo màu ảnh"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Độ tương phản và màu semantic ở cả hai theme"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 37. Kích thước vùng chạm quá nhỏ gây vấn đề gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Khó thao tác và giảm accessibility"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. API chậm"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. JSON lỗi"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Tăng RAM"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 38. Infinite scroll nên tải trang tiếp theo khi nào?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Mỗi frame"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Gần cuối danh sách và chưa có request đang chạy"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Sau khi đóng màn hình"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Mỗi lần build"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 39. Pull-to-refresh nên làm gì với request phân trang hiện tại?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Luôn nối vào cuối"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Không thay state"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Đặt lại trang và nạp dữ liệu đầu"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Xóa tài khoản"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 40. Đo hiệu năng Flutter nên ưu tiên chế độ nào?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Chỉ emulator chậm"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Chỉ đọc code"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Debug duy nhất"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Profile trên thiết bị gần thực tế"
+  },
+  {
+    "type": "paragraph",
+    "text": "Phần 5: Tình huống kỹ thuật và môi trường startup (10 câu)"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 41. Bug production ảnh hưởng nhiều người dùng. Ưu tiên đầu tiên là gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Giảm tác động, thu thập bằng chứng và thông báo đúng kênh"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Tìm người chịu lỗi"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Thêm tính năng mới"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Xóa monitoring"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 42. Sau khi hotfix production, việc nào vẫn cần làm?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Xóa lịch sử"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Phân tích nguyên nhân và bổ sung biện pháp ngăn tái diễn"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Bỏ review"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Quên sự cố"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 43. Khi estimate một task chưa rõ kỹ thuật, cách tốt nhất là gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Cam kết số giờ ngẫu nhiên"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Luôn nói một ngày"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Spike ngắn, nêu giả định và khoảng ước lượng"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Không hỏi"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 44. Một teammate đề xuất kiến trúc phức tạp cho tính năng nhỏ. Nên đánh giá theo gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Tên pattern dài"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Độ mới của trend"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Số lượng class"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Nhu cầu hiện tại, khả năng mở rộng thực tế và chi phí bảo trì"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 45. Bạn cần sửa code ngoài phạm vi task để task chạy được. Nên làm gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Xác nhận phạm vi ảnh hưởng và tách thay đổi rõ ràng"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Sửa toàn repo"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Giấu thay đổi"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Force merge"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 46. Khi demo tính năng cho CTO, nội dung hữu ích nhất là gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Chỉ màu sắc"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Luồng người dùng, trạng thái lỗi và giới hạn còn lại"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Không chạy app"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Chỉ source code"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 47. Một yêu cầu tối ưu không có chỉ số thành công. Bạn nên làm gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Tối ưu vô hạn"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Xóa telemetry"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Thống nhất metric và baseline trước"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Đổi framework"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 48. Người dùng từ chối quyền thông báo. App nên làm gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Tự đổi cài đặt hệ thống"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Khóa app"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Hỏi liên tục"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Tôn trọng lựa chọn và giải thích cách bật lại khi cần"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 49. Backend trả dữ liệu cá nhân không cần cho màn hình. Nên làm gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Đề nghị giảm payload và không lưu/log dữ liệu thừa"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Hiển thị hết"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Đưa vào analytics"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Commit vào repo"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 50. Bạn hoàn thành task sớm trong kỳ thực tập. Hành động tốt nhất là gì?"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  A. Merge không review"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  B. Tự kiểm tra, cập nhật tài liệu rồi chủ động hỏi việc ưu tiên tiếp theo"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  C. Xóa branch"
+  },
+  {
+    "type": "paragraph",
+    "text": "○  D. Chờ im lặng"
+  },
+  {
+    "type": "paragraph",
+    "text": "ĐÁP ÁN VÀ GIẢI THÍCH – ĐỀ 3"
+  },
+  {
+    "type": "paragraph",
+    "text": "Bảng đáp án nhanh"
+  },
+  {
+    "type": "table",
+    "rows": [
+      [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10"
+      ],
+      [
+        "1. B",
+        "2. B",
+        "3. B",
+        "4. C",
+        "5. A",
+        "6. B",
+        "7. A",
+        "8. D",
+        "9. A",
+        "10. D"
+      ],
+      [
+        "11. C",
+        "12. D",
+        "13. A",
+        "14. B",
+        "15. C",
+        "16. D",
+        "17. A",
+        "18. B",
+        "19. C",
+        "20. D"
+      ],
+      [
+        "21. A",
+        "22. B",
+        "23. C",
+        "24. D",
+        "25. A",
+        "26. B",
+        "27. C",
+        "28. D",
+        "29. A",
+        "30. B"
+      ],
+      [
+        "31. C",
+        "32. D",
+        "33. A",
+        "34. B",
+        "35. C",
+        "36. D",
+        "37. A",
+        "38. B",
+        "39. C",
+        "40. D"
+      ],
+      [
+        "41. A",
+        "42. B",
+        "43. C",
+        "44. D",
+        "45. A",
+        "46. B",
+        "47. C",
+        "48. D",
+        "49. A",
+        "50. B"
+      ]
+    ]
+  },
+  {
+    "type": "paragraph",
+    "text": "Giải thích"
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 1 – B: Biến cục bộ bị giới hạn bởi lexical scope chứa nó."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 2 – B: Một class nên tập trung vào một trách nhiệm rõ ràng."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 3 – B: Số lượt thực thi xấp xỉ n nhân n."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 4 – C: 0 là phần tử trung hòa của phép cộng."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 5 – A: Toán tử ! đảo giá trị boolean."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 6 – B: Vòng lặp diễn đạt trực tiếp việc duyệt các phần tử."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 7 – A: Exception biểu diễn sự cố cần được truyền hoặc xử lý."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 8 – D: Unit test tập trung vào hàm/class nhỏ với phụ thuộc được kiểm soát."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 9 – A: Refactoring cải thiện cấu trúc nội bộ mà không đổi kết quả quan sát được."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 10 – D: Tên có ý nghĩa giúp code tự giải thích và dễ bảo trì."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 11 – C: GestureDetector cung cấp callback cho tap, drag và nhiều gesture khác."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 12 – D: SafeArea thêm padding để nội dung không bị che bởi system UI."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 13 – A: Form gom trạng thái validation của các TextFormField."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 14 – B: Key cho phép truy cập FormState liên quan."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 15 – C: Hot reload inject code thay đổi vào VM khi phát triển."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 16 – D: MediaQuery chứa thông tin màn hình và padding hệ thống."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 17 – A: Extension thêm phương thức tĩnh theo kiểu mà không sửa class gốc."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 18 – B: map áp dụng hàm chuyển đổi cho từng phần tử."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 19 – C: where giữ các phần tử thỏa predicate."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 20 – D: Sau await, widget có thể đã rời cây; mounted xác nhận State còn hoạt động."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 21 – A: try-catch cho phép chuyển lỗi kỹ thuật thành trạng thái ứng dụng phù hợp."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 22 – B: Log có thể bị thu thập hoặc truy cập ngoài ý muốn."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 23 – C: Refresh token cho phép gia hạn phiên mà không yêu cầu đăng nhập lại ngay."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 24 – D: Client có thể đồng bộ refresh token rồi lặp lại request có kiểm soát."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 25 – A: Tính idempotent giúp retry an toàn hơn với cùng dữ liệu."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 26 – B: DTO bám theo schema truyền tải và có thể chuyển sang domain model."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 27 – C: Response lỗi thường không có cấu trúc giống response thành công."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 28 – D: Cache giảm request và cải thiện khả năng hiển thị nhanh/offline."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 29 – A: Kết nối duy trì cho phép server đẩy sự kiện nhanh."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 30 – B: Schema phòng thủ giúp ứng dụng tương thích dữ liệu không hoàn hảo."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 31 – C: UI phải trở về trạng thái đúng nếu server từ chối."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 32 – D: Key hỗ trợ ghép widget cũ với cấu hình mới, đặc biệt khi sắp xếp danh sách."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 33 – A: Key ổn định giữ state gắn đúng item."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 34 – B: Key không ổn định phá khả năng đối chiếu element."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 35 – C: Theme tập trung các quyết định giao diện dùng chung."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 36 – D: Màu phải được thiết kế theo vai trò và đạt khả năng đọc."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 37 – A: Touch target đủ lớn giúp người dùng chạm chính xác."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 38 – B: Điều kiện này tránh request trùng và giữ trải nghiệm liên tục."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 39 – C: Refresh biểu thị tải lại collection từ điểm bắt đầu."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 40 – D: Profile mode phản ánh hiệu năng gần release và vẫn hỗ trợ công cụ đo."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 41 – A: Incident response ưu tiên khôi phục dịch vụ và hiểu phạm vi."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 42 – B: Post-incident learning giúp cải thiện hệ thống lâu dài."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 43 – C: Khảo sát giới hạn giúp estimate có cơ sở."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 44 – D: Kiến trúc tốt cân bằng giá trị và độ phức tạp."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 45 – A: Thay đổi rõ phạm vi giúp review và rollback an toàn."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 46 – B: Demo nên chứng minh giá trị và minh bạch phần chưa hoàn thiện."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 47 – C: Không có baseline thì không biết thay đổi có hiệu quả hay không."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 48 – D: Permission UX phải tôn trọng quyền kiểm soát của người dùng."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 49 – A: Tối thiểu hóa dữ liệu giảm rủi ro riêng tư và bảo mật."
+  },
+  {
+    "type": "paragraph",
+    "text": "Câu 50 – B: Chủ động nhưng có kiểm soát thể hiện trách nhiệm trong môi trường startup."
+  }
+]

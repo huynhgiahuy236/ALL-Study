@@ -220,6 +220,19 @@
       "slides": "6 Chương",
       "progress": 0,
       "href": "./kho.html"
+    },
+    {
+      "id": 15,
+      "groupId": "mobile-flutter",
+      "title": "Phỏng vấn Flutter Intern",
+      "description": "Bộ đề luyện phỏng vấn Flutter Intern gồm 150 câu trắc nghiệm về Dart, Flutter, REST API, UI/UX và các tình huống startup.",
+      "category": "Flutter · Phỏng vấn",
+      "color": "#1597E5",
+      "badge": "Mới",
+      "badgeType": "new",
+      "slides": "150 câu hỏi",
+      "progress": 0,
+      "href": "./phong%20van/flutter-intern-quiz/index.html"
     }
   ]
 }

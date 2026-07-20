@@ -1,0 +1,14 @@
+<!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Làm bài · Flutter Intern Quiz</title><link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/responsive.css"></head>
+<body class="quiz-page"><a class="skip-link" href="#question-card">Đi đến câu hỏi</a>
+<header class="site-header quiz-header"><a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">F</span><span>Flutter Intern Quiz</span></a><div class="quiz-header-actions"><div id="timer" class="timer" aria-live="polite"></div><button class="icon-button theme-toggle" data-theme-toggle type="button"><span aria-hidden="true"></span></button><a class="button button-ghost button-small" href="index.html">Thoát</a></div></header>
+<div class="progress-track"><span id="progress-bar"></span></div>
+<main class="quiz-layout container-wide">
+  <section class="quiz-main"><div class="quiz-meta"><div><span id="mode-label" class="eyebrow"></span><h1 id="exam-title"></h1></div><span id="answered-count" class="status-pill"></span></div>
+    <article id="question-card" class="question-card" tabindex="-1"><div class="question-top"><span id="category-badge" class="category-badge"></span><button id="mark-button" class="mark-button" type="button" aria-pressed="false">Đánh dấu xem lại</button></div><div id="question-content"></div><div id="practice-feedback" class="feedback hidden" aria-live="polite"></div></article>
+    <div class="quiz-controls"><button id="previous-button" class="button button-secondary" type="button">Câu trước</button><button id="submit-button" class="button button-ghost" type="button">Nộp bài</button><button id="next-button" class="button button-primary" type="button">Câu tiếp theo</button></div>
+  </section>
+  <aside class="question-nav" aria-labelledby="nav-heading"><div class="nav-heading"><h2 id="nav-heading">Danh sách câu</h2><button id="nav-toggle" class="button button-ghost button-small" type="button" aria-expanded="true">Thu gọn</button></div><div id="question-grid" class="question-grid"></div><div class="legend"><span><i class="dot answered"></i>Đã trả lời</span><span><i class="dot marked"></i>Đánh dấu</span><span><i class="dot current"></i>Hiện tại</span></div></aside>
+</main>
+<div class="modal-backdrop hidden" id="submit-modal" role="dialog" aria-modal="true" aria-labelledby="submit-title"><div class="modal"><h2 id="submit-title">Nộp bài?</h2><p id="submit-message"></p><div class="modal-actions"><button class="button button-ghost" data-close-modal>Tiếp tục làm</button><button class="button button-primary" id="confirm-submit">Nộp bài</button></div></div></div>
+<div class="toast-region" aria-live="polite" id="toast-region"></div>
+<script src="js/questions.js"></script><script src="js/storage.js"></script><script src="js/quiz.js"></script></body></html>
