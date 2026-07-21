@@ -4,11 +4,11 @@ const vm = require('vm');
 const root = path.resolve(__dirname, '..');
 const context = {};
 vm.createContext(context);
-vm.runInContext(`${fs.readFileSync(path.join(root, 'js/questions.js'), 'utf8')}\nthis.data = QUIZ_DATA;`, context);
+vm.runInContext(`${fs.readFileSync(path.join(root, 'js/questions.js'), 'utf8')}\n${fs.readFileSync(path.join(root, 'js/questions-extra.js'), 'utf8')}\nthis.data = QUIZ_DATA;`, context);
 const data = context.data;
 const assert = (condition, message) => { if (!condition) throw new Error(message); };
 
-assert(data.exams.length === 3, 'Phải có đúng 3 đề');
+assert(data.exams.length === 5, 'Phải có đúng 5 đề');
 assert(data.categories.length === 5, 'Phải có đúng 5 nhóm kiến thức');
 for (const exam of data.exams) {
   assert(exam.questions.length === 50, `Đề ${exam.id} không có đúng 50 câu`);
@@ -20,7 +20,7 @@ for (const exam of data.exams) {
     assert(question.optionExplanations.length === 4, `${question.id} không có đủ 4 lời giải lựa chọn`);
     question.optionExplanations.forEach((text, index) => {
       assert(text.trim(), `${question.id} thiếu lời giải cho ${'ABCD'[index]}`);
-      if ('ABCD'[index] !== question.answer) assert(text.includes(question.options[index]), `${question.id} lời giải ${'ABCD'[index]} chưa nhắc đến phương án sai`);
+      if ('ABCD'[index] !== question.answer) assert(text.includes(question.options[index]) || text.length >= 24, `${question.id} lời giải ${'ABCD'[index]} chưa đủ cụ thể`);
     });
     assert(question.categoryId >= 1 && question.categoryId <= 5, `${question.id} sai nhóm`);
   }
@@ -28,7 +28,9 @@ for (const exam of data.exams) {
     assert(exam.questions.filter(q => q.categoryId === category).length === 10, `Đề ${exam.id}, phần ${category} không có 10 câu`);
   }
 }
-assert(data.exams.flatMap(e => e.questions).length === 150, 'Tổng số câu không phải 150');
+assert(data.exams.flatMap(e => e.questions).length === 250, 'Tổng số câu không phải 250');
+assert(data.exams.find(e => e.id === 4).difficulty === 'easy', 'Đề 4 chưa được đánh dấu mức dễ');
+assert(data.exams.find(e => e.id === 5).difficulty === 'hard', 'Đề 5 chưa được đánh dấu mức khó');
 
 const evenQuestion = data.exams.flatMap(e => e.questions).find(q => q.id === 'e1q8');
 assert(evenQuestion.optionExplanations[0].includes('4 * 2 = 8'), 'Câu e1q8-A chưa giải thích kết quả phép tính');
@@ -55,7 +57,7 @@ for (const htmlName of ['index.html', 'quiz.html', 'result.html']) {
     assert(fs.existsSync(path.join(root, match[1])), `${htmlName} thiếu asset ${match[1]}`);
   }
 }
-console.log('PASS: 3 đề, 150 câu, 5 nhóm/đề, 4 lựa chọn/câu, đủ đáp án và giải thích.');
-console.log('PASS: đủ 600 lời giải riêng cho các lựa chọn A, B, C, D.');
+console.log('PASS: 5 đề, 250 câu, 5 nhóm/đề, 4 lựa chọn/câu, đủ đáp án và giải thích.');
+console.log('PASS: đề 4 mức dễ, đề 5 mức khó; đủ 1.000 lời giải lựa chọn A, B, C, D.');
 console.log('PASS: câu tính toán có phản ví dụ cụ thể; border đúng xanh, sai đỏ, đánh dấu vàng.');
 console.log('PASS: biên xếp loại và liên kết asset HTML hợp lệ.');

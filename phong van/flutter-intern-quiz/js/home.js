@@ -11,8 +11,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const wrongCount = QuizStorage.getWrongIds(exam.id).length;
     const card = document.createElement('article');
     card.className = 'exam-card';
+    const difficultyLabel = exam.difficulty === 'easy' ? 'Dễ' : exam.difficulty === 'hard' ? 'Khó' : 'Cơ bản–TB';
     card.innerHTML = `
-      <div class="exam-card-top"><span class="exam-number">0${exam.id}</span><span class="status-pill">50 câu · 50 phút</span></div>
+      <div class="exam-card-top"><span class="exam-number">0${exam.id}</span><span class="status-pill">${difficultyLabel} · 50 câu · 50 phút</span></div>
       <h3>${exam.title}</h3><p>5 nhóm kiến thức · 1 đáp án đúng mỗi câu</p>
       <div class="score-strip">
         <div><span>Gần nhất</span><strong>${last ? `${last.correct}/${last.questionIds.length}` : '—'}</strong></div>

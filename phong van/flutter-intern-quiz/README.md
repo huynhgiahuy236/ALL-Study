@@ -1,13 +1,13 @@
 # Flutter Intern Quiz
 
-Website luyện thi Flutter Intern bằng HTML, CSS và JavaScript thuần. Dữ liệu gồm 150 câu được trích xuất nguyên văn từ `De_thi_thu_Flutter_Intern_150_cau.docx`.
+Website luyện thi Flutter Intern bằng HTML, CSS và JavaScript thuần. Dữ liệu gồm 250 câu trong 5 đề; đề 4 ở mức dễ và đề 5 ở mức khó, được bổ sung theo JD Flutter Intern.
 
 ## Chạy website
 
 Có thể mở trực tiếp `index.html`. Để tránh khác biệt bảo mật giữa các trình duyệt, nên chạy local server:
 
 ```powershell
-cd "E:\phong van\flutter-intern-quiz"
+cd "E:\All\phong van\flutter-intern-quiz"
 python -m http.server 4173
 ```
 
