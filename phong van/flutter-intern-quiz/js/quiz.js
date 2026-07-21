@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const selectedText = question.options['ABCD'.indexOf(selected)];
       const correctText = question.options['ABCD'.indexOf(question.answer)];
       feedback.innerHTML = selected === question.answer
-        ? `<strong>Chính xác · ${question.answer}. ${escapeHtml(correctText)}</strong><p><b>Vì sao đúng:</b> ${escapeHtml(question.explanation)}</p>`
+        ? `<strong>Chính xác · ${question.answer}. ${escapeHtml(correctText)}</strong><p><b>Vì sao đúng:</b> ${escapeHtml(question.optionExplanations['ABCD'.indexOf(question.answer)])}</p>`
         : `<strong>Chưa đúng · Bạn chọn ${selected}. ${escapeHtml(selectedText)}</strong>
            <p><b>Vì sao ${selected} sai:</b> ${escapeHtml(question.optionExplanations['ABCD'.indexOf(selected)])}</p>
            <p><b>Đáp án đúng là ${question.answer}. ${escapeHtml(correctText)}:</b> ${escapeHtml(question.optionExplanations['ABCD'.indexOf(question.answer)])}</p>`;
@@ -56,7 +56,17 @@ document.addEventListener('DOMContentLoaded', () => {
     $('#question-card').focus({ preventScroll: true });
   }
   function renderNav() {
-    $('#question-grid').innerHTML = questions.map((q, index) => `<button type="button" data-index="${index}" class="question-nav-button ${state.answers[q.id] ? 'answered' : ''} ${state.marked.includes(q.id) ? 'marked' : ''} ${index === state.currentIndex ? 'current' : ''}" aria-label="Câu ${q.number}${state.answers[q.id] ? ', đã trả lời' : ', chưa trả lời'}${state.marked.includes(q.id) ? ', đã đánh dấu' : ''}">${q.number}</button>`).join('');
+    $('#question-grid').innerHTML = questions.map((q, index) => {
+      const selected = state.answers[q.id];
+      const answerState = !selected
+        ? ''
+        : mode === 'exam'
+          ? 'answered'
+          : selected === q.answer ? 'answer-correct' : 'answer-wrong';
+      const marked = state.marked.includes(q.id);
+      const statusLabel = !selected ? ', chưa trả lời' : mode === 'exam' ? ', đã trả lời' : selected === q.answer ? ', trả lời đúng' : ', trả lời sai';
+      return `<button type="button" data-index="${index}" class="question-nav-button ${answerState} ${marked ? 'marked' : ''} ${index === state.currentIndex ? 'current' : ''}" aria-label="Câu ${q.number}${statusLabel}${marked ? ', đã đánh dấu' : ''}">${q.number}</button>`;
+    }).join('');
   }
   function escapeHtml(value) { const node = document.createElement('div'); node.textContent = value; return node.innerHTML; }
   function finish(auto = false) {

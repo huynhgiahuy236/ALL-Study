@@ -2296,3 +2296,25 @@ QUIZ_DATA.exams.forEach(exam => exam.questions.forEach(question => {
     return `“${option}” không thỏa khái niệm hoặc điều kiện mà câu hỏi yêu cầu. ${question.explanation} Vì vậy “${correctOption}” (${question.answer}) mới là lựa chọn phù hợp.`;
   });
 }));
+
+// Các câu tính toán cần chỉ rõ kết quả phản ví dụ, thay vì chỉ nói chung là sai.
+const OPTION_EXPLANATION_OVERRIDES = {
+  e1q7: [
+    '`false` sai vì `(false || true)` cho kết quả `true`; do đó `true && true` cho kết quả `true`, không phải `false`.',
+    '“Lỗi” sai vì biểu thức dùng các toán tử boolean hợp lệ và xác định được kết quả, nên không phát sinh lỗi.',
+    '`true` đúng vì `(false || true) = true`, sau đó `true && true = true`.',
+    '`null` sai vì toàn bộ toán hạng đều là boolean và biểu thức trả về `true` hoặc `false`, không trả về `null`.'
+  ],
+  e1q8: [
+    '`n * 2 == 0` sai vì nó chỉ đúng khi `n = 0`. Ví dụ `n = 4` là số chẵn nhưng `4 * 2 = 8`, nên `8 == 0` là `false`.',
+    '`n ~/ 2 == 0` sai vì đây là phép chia lấy phần nguyên, không kiểm tra phần dư. Ví dụ `n = 4` thì `4 ~/ 2 = 2`, nên `2 == 0` là `false` dù 4 là số chẵn.',
+    '`n % 2 == 0` đúng vì số chẵn luôn có phần dư bằng 0 khi chia cho 2. Ví dụ `4 % 2 = 0`.',
+    '`n / 2 == 0` sai vì nó kiểm tra kết quả phép chia có bằng 0 hay không. Ví dụ `n = 4` thì `4 / 2 = 2`, nên biểu thức là `false` dù 4 là số chẵn.'
+  ]
+};
+
+QUIZ_DATA.exams.flatMap(exam => exam.questions).forEach(question => {
+  if (OPTION_EXPLANATION_OVERRIDES[question.id]) {
+    question.optionExplanations = OPTION_EXPLANATION_OVERRIDES[question.id];
+  }
+});
