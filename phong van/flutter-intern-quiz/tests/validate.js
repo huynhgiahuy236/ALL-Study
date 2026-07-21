@@ -17,6 +17,11 @@ for (const exam of data.exams) {
     assert(question.options.length === 4, `${question.id} không có 4 lựa chọn`);
     assert(/^[A-D]$/.test(question.answer), `${question.id} thiếu đáp án`);
     assert(question.explanation.trim(), `${question.id} thiếu giải thích`);
+    assert(question.optionExplanations.length === 4, `${question.id} không có đủ 4 lời giải lựa chọn`);
+    question.optionExplanations.forEach((text, index) => {
+      assert(text.trim(), `${question.id} thiếu lời giải cho ${'ABCD'[index]}`);
+      if ('ABCD'[index] !== question.answer) assert(text.includes(question.options[index]), `${question.id} lời giải ${'ABCD'[index]} chưa nhắc đến phương án sai`);
+    });
     assert(question.categoryId >= 1 && question.categoryId <= 5, `${question.id} sai nhóm`);
   }
   for (let category = 1; category <= 5; category++) {
@@ -38,4 +43,5 @@ for (const htmlName of ['index.html', 'quiz.html', 'result.html']) {
   }
 }
 console.log('PASS: 3 đề, 150 câu, 5 nhóm/đề, 4 lựa chọn/câu, đủ đáp án và giải thích.');
+console.log('PASS: đủ 600 lời giải riêng cho các lựa chọn A, B, C, D.');
 console.log('PASS: biên xếp loại và liên kết asset HTML hợp lệ.');

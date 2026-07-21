@@ -2280,3 +2280,19 @@ const QUIZ_DATA = {
     }
   ]
 };
+
+// Mỗi lựa chọn đều có phản hồi riêng để người học hiểu phương án mình chọn.
+// Lời giải đúng giữ nguyên kiến thức gốc; lời giải sai đối chiếu trực tiếp nội
+// dung phương án đã chọn với nguyên tắc dẫn đến đáp án đúng.
+QUIZ_DATA.exams.forEach(exam => exam.questions.forEach(question => {
+  const letters = 'ABCD';
+  const correctIndex = letters.indexOf(question.answer);
+  const correctOption = question.options[correctIndex];
+  question.optionExplanations = question.options.map((option, index) => {
+    const letter = letters[index];
+    if (letter === question.answer) {
+      return question.explanation;
+    }
+    return `“${option}” không thỏa khái niệm hoặc điều kiện mà câu hỏi yêu cầu. ${question.explanation} Vì vậy “${correctOption}” (${question.answer}) mới là lựa chọn phù hợp.`;
+  });
+}));

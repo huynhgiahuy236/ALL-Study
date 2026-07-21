@@ -44,7 +44,13 @@ document.addEventListener('DOMContentLoaded', () => {
     if (mode !== 'exam' && selected) {
       feedback.classList.remove('hidden', 'feedback-correct', 'feedback-wrong');
       feedback.classList.add(selected === question.answer ? 'feedback-correct' : 'feedback-wrong');
-      feedback.innerHTML = `<strong>${selected === question.answer ? 'Chính xác' : `Chưa đúng · Đáp án đúng: ${question.answer}`}</strong><p>${escapeHtml(question.explanation)}</p>`;
+      const selectedText = question.options['ABCD'.indexOf(selected)];
+      const correctText = question.options['ABCD'.indexOf(question.answer)];
+      feedback.innerHTML = selected === question.answer
+        ? `<strong>Chính xác · ${question.answer}. ${escapeHtml(correctText)}</strong><p><b>Vì sao đúng:</b> ${escapeHtml(question.explanation)}</p>`
+        : `<strong>Chưa đúng · Bạn chọn ${selected}. ${escapeHtml(selectedText)}</strong>
+           <p><b>Vì sao ${selected} sai:</b> ${escapeHtml(question.optionExplanations['ABCD'.indexOf(selected)])}</p>
+           <p><b>Đáp án đúng là ${question.answer}. ${escapeHtml(correctText)}:</b> ${escapeHtml(question.optionExplanations['ABCD'.indexOf(question.answer)])}</p>`;
     } else feedback.classList.add('hidden');
     renderNav();
     $('#question-card').focus({ preventScroll: true });

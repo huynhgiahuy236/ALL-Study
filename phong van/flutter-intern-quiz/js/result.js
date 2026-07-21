@@ -35,7 +35,10 @@ document.addEventListener('DOMContentLoaded', () => {
       const detail = detailMap[q.id]; const selectedText = detail.selected ? `${detail.selected}. ${q.options['ABCD'.indexOf(detail.selected)]}` : 'Không chọn';
       const correctText = `${q.answer}. ${q.options['ABCD'.indexOf(q.answer)]}`;
       const labels = { correct: 'Đúng', wrong: 'Sai', blank: 'Bỏ trống' };
-      return `<details class="detail-card ${detail.status}"><summary><span class="detail-index">Câu ${q.number}</span><span class="detail-question">${escapeHtml(q.question)}</span><span class="detail-status">${labels[detail.status]}</span></summary><div class="detail-body"><div class="answer-comparison"><div><span>Bạn chọn</span><strong>${escapeHtml(selectedText)}</strong></div><div><span>Đáp án đúng</span><strong>${escapeHtml(correctText)}</strong></div></div><div class="explanation"><strong>Giải thích</strong><p>${escapeHtml(q.explanation)}</p></div></div></details>`;
+      const explanation = detail.status === 'wrong'
+        ? `<p><b>Vì sao ${detail.selected} sai:</b> ${escapeHtml(q.optionExplanations['ABCD'.indexOf(detail.selected)])}</p><p><b>Vì sao ${q.answer} đúng:</b> ${escapeHtml(q.optionExplanations['ABCD'.indexOf(q.answer)])}</p>`
+        : `<p><b>Vì sao ${q.answer} đúng:</b> ${escapeHtml(q.optionExplanations['ABCD'.indexOf(q.answer)])}</p>`;
+      return `<details class="detail-card ${detail.status}"><summary><span class="detail-index">Câu ${q.number}</span><span class="detail-question">${escapeHtml(q.question)}</span><span class="detail-status">${labels[detail.status]}</span></summary><div class="detail-body"><div class="answer-comparison"><div><span>Bạn chọn</span><strong>${escapeHtml(selectedText)}</strong></div><div><span>Đáp án đúng</span><strong>${escapeHtml(correctText)}</strong></div></div><div class="explanation"><strong>Giải thích từng lựa chọn</strong>${explanation}</div></div></details>`;
     }).join('') : '<div class="empty-state">Không có câu nào trong bộ lọc này.</div>';
   }
   document.querySelector('.filter-group').addEventListener('click', event => { const button = event.target.closest('[data-filter]'); if (!button) return; document.querySelectorAll('.filter').forEach(item => item.classList.toggle('active', item === button)); renderDetails(button.dataset.filter); });
