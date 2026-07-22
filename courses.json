@@ -36,6 +36,12 @@
       "title": "Cuối kỳ Mobile",
       "order": 7,
       "accent": "#D4541A"
+    },
+    {
+      "id": "capstonebook",
+      "title": "CapstoneBook",
+      "order": 8,
+      "accent": "#2563EB"
     }
   ],
   "courses": [
@@ -233,6 +239,32 @@
       "slides": "150 câu hỏi",
       "progress": 0,
       "href": "./phong%20van/flutter-intern-quiz/index.html"
+    },
+    {
+      "id": 16,
+      "groupId": "capstonebook",
+      "title": "Cẩm nang triển khai CapstoneBook",
+      "description": "Hướng dẫn triển khai Next.js lên Vercel, NestJS lên AWS, cấu hình MongoDB Atlas, PM2, Nginx, API Gateway và PayOS.",
+      "category": "CapstoneBook · Deployment",
+      "color": "#2563EB",
+      "badge": "Mới",
+      "badgeType": "new",
+      "slides": "Cẩm nang triển khai",
+      "progress": 0,
+      "href": "./capstonebook-deployment-guide/index.html"
+    },
+    {
+      "id": 17,
+      "groupId": "capstonebook",
+      "title": "CapstoneBook ENV Handbook",
+      "description": "Cẩm nang chuẩn bị, quản lý và kiểm tra biến môi trường cho toàn bộ hệ thống CapstoneBook, kèm bản đồ luồng nghiệp vụ.",
+      "category": "CapstoneBook · Environment",
+      "color": "#0F766E",
+      "badge": "Mới",
+      "badgeType": "new",
+      "slides": "ENV & System Flows",
+      "progress": 0,
+      "href": "./env-handbook/index.html"
     }
   ]
 }

@@ -660,14 +660,22 @@
                 return groups;
             }, {});
 
-            const declaredGroups = [...courseGroups].sort((a, b) => (a.order ?? 999) - (b.order ?? 999));
+            const newestCourseId = groupId => Math.max(
+                ...((groupedCourses[groupId] || []).map(course => Number(course.id) || 0)),
+                0
+            );
+            const declaredGroups = [...courseGroups].sort((a, b) =>
+                newestCourseId(b.id) - newestCourseId(a.id)
+                || (a.order ?? 999) - (b.order ?? 999)
+            );
             const declaredIds = new Set(declaredGroups.map(group => group.id));
             const undeclaredGroups = Object.keys(groupedCourses)
                 .filter(groupId => !declaredIds.has(groupId))
                 .map(groupId => ({ id: groupId, title: groupId, order: 999 }));
 
             return [...declaredGroups, ...undeclaredGroups].map(group => {
-                const categoryCourses = groupedCourses[group.id] || [];
+                const categoryCourses = [...(groupedCourses[group.id] || [])]
+                    .sort((a, b) => (Number(b.id) || 0) - (Number(a.id) || 0));
                 return `
                     <section class="course-group" style="--group-accent:${escapeHtml(group.accent || '#2D6BE4')}">
                         <div class="section-header">

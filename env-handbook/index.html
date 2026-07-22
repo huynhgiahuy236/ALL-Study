@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Sổ tay cấu hình ENV cho CapstoneBook">
+  <title>CapstoneBook — ENV Handbook</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Bỏ qua điều hướng</a>
+  <header class="topbar">
+    <a class="brand" href="#overview" aria-label="Về đầu trang">
+      <span class="brand-mark">CB</span><span>ENV Handbook</span>
+    </a>
+    <div class="top-actions">
+      <a class="page-switch" href="flows.html">System Flow Atlas →</a>
+      <span class="version">CapstoneBook · v1.0</span>
+      <button class="icon-button" id="themeToggle" type="button" aria-label="Đổi giao diện sáng tối" title="Đổi giao diện">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9c0-.5-.04-1-.12-1.48A7 7 0 0 1 12 3Z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="shell">
+    <aside class="sidebar" aria-label="Mục lục">
+      <p class="eyebrow">Mục lục</p>
+      <nav id="nav"></nav>
+      <div class="sidebar-note">
+        <strong>Quy tắc vàng</strong>
+        <p>Không commit file <code>.env</code>. Chỉ commit <code>.env.example</code> không có giá trị thật.</p>
+      </div>
+    </aside>
+
+    <main id="main">
+      <section class="hero" id="overview">
+        <div>
+          <p class="eyebrow">Tài liệu cấu hình dự án</p>
+          <h1>Hiểu và chuẩn bị ENV,<br>không chỉ copy rồi chạy.</h1>
+          <p class="lead">Tra cứu nguồn gốc, tác dụng, cách xử lý trong code và luồng chạy của từng biến cho Next.js, NestJS, MongoDB, PayOS, MinIO, SMTP và AI.</p>
+        </div>
+        <div class="hero-stat">
+          <span id="envCount">0</span>
+          <small>biến được giải thích</small>
+        </div>
+      </section>
+
+      <section class="search-panel" aria-label="Tìm kiếm biến môi trường">
+        <label for="search">Tìm theo tên biến, dịch vụ hoặc tác dụng</label>
+        <div class="search-row">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input id="search" type="search" placeholder="Ví dụ: PAYOS_CHECKSUM_KEY, webhook, gửi email..." autocomplete="off">
+          <kbd>/</kbd>
+        </div>
+        <div class="filters" id="filters" aria-label="Lọc theo nhóm"></div>
+        <p class="result-count" id="resultCount" aria-live="polite"></p>
+      </section>
+
+      <section class="content-section" id="concepts">
+        <div class="section-heading"><span>01</span><div><p class="eyebrow">Nền tảng</p><h2>ENV là gì?</h2></div></div>
+        <div class="prose-grid">
+          <article class="explain-card">
+            <h3>Khái niệm</h3>
+            <p>Environment variable là cặp <code>TÊN=GIÁ_TRỊ</code> được đưa vào tiến trình khi ứng dụng khởi động. Code giữ nguyên giữa local, test và production; chỉ cấu hình thay đổi.</p>
+          </article>
+          <article class="explain-card">
+            <h3>Vì sao dùng?</h3>
+            <p>Tách secret khỏi source code, thay endpoint theo môi trường, bật/tắt tính năng và triển khai cùng một bản build ở nhiều nơi.</p>
+          </article>
+          <article class="explain-card">
+            <h3>ENV không phải database</h3>
+            <p>ENV phù hợp với cấu hình ít thay đổi khi chạy. Giá sách, nội dung, trạng thái đơn hàng và quyền người dùng phải nằm trong database.</p>
+          </article>
+        </div>
+        <div class="classification">
+          <div><span class="dot public"></span><strong>Public</strong><p>Có thể xuất hiện trong browser, ví dụ URL API.</p></div>
+          <div><span class="dot internal"></span><strong>Internal</strong><p>Chỉ backend dùng nhưng không phải mật khẩu.</p></div>
+          <div><span class="dot secret"></span><strong>Secret</strong><p>Credential/chữ ký; lộ là phải thu hồi và tạo lại.</p></div>
+          <div><span class="dot generated"></span><strong>Generated</strong><p>Secret do mình tự sinh ngẫu nhiên.</p></div>
+        </div>
+      </section>
+
+      <section class="content-section" id="runtime">
+        <div class="section-heading"><span>02</span><div><p class="eyebrow">Luồng tổng quát</p><h2>ENV đi vào code như thế nào?</h2></div></div>
+        <div class="flow" aria-label="Luồng nạp biến môi trường">
+          <div><b>1</b><strong>.env</strong><small>Lưu cấu hình local</small></div><i></i>
+          <div><b>2</b><strong>ConfigModule</strong><small>Nạp khi NestJS start</small></div><i></i>
+          <div><b>3</b><strong>Validate</strong><small>Thiếu/sai thì dừng sớm</small></div><i></i>
+          <div><b>4</b><strong>Service</strong><small>Inject đúng cấu hình</small></div><i></i>
+          <div><b>5</b><strong>Provider</strong><small>MongoDB, PayOS, MinIO…</small></div>
+        </div>
+        <div class="code-pair">
+          <div><div class="code-head"><span>NestJS — đọc có kiểm soát</span><button data-copy="#configCode">Sao chép</button></div><pre id="configCode"><code>ConfigModule.forRoot({
+  isGlobal: true,
+  cache: true,
+  validate: validateEnvironment,
+});
+
+const apiKey = config.getOrThrow&lt;string&gt;('PAYOS_API_KEY');</code></pre></div>
+          <div><div class="code-head"><span>Không nên</span></div><pre><code>// Sai: secret nằm cứng trong repository
+const apiKey = '5f1...secret';
+
+// Yếu: thiếu biến vẫn chạy đến lúc phát sinh lỗi
+const apiKey = process.env.PAYOS_API_KEY;</code></pre></div>
+        </div>
+      </section>
+
+      <section class="content-section" id="catalog">
+        <div class="section-heading"><span>03</span><div><p class="eyebrow">Danh mục chi tiết</p><h2>Từng nhóm biến</h2></div></div>
+        <div id="envGroups"></div>
+        <div class="empty-state" id="emptyState" hidden>Không tìm thấy biến phù hợp. Thử từ khóa ngắn hơn.</div>
+      </section>
+
+      <section class="content-section" id="payos-flow">
+        <div class="section-heading"><span>04</span><div><p class="eyebrow">Deep dive</p><h2>PayOS xử lý thanh toán ra sao?</h2></div></div>
+        <div class="callout warning"><strong>Điểm quan trọng:</strong> <code>returnUrl</code> chỉ giúp giao diện điều hướng. Backend chỉ cấp Ebook/Premium sau khi webhook hợp lệ hoặc đã chủ động đối soát trạng thái với PayOS.</div>
+        <ol class="timeline">
+          <li><b>01</b><div><h3>Tạo đơn nội bộ</h3><p>Backend tự tính tổng tiền từ database, tạo Order và Payment trạng thái <code>PENDING</code>. Không tin giá tiền từ frontend.</p></div></li>
+          <li><b>02</b><div><h3>Tạo payment link</h3><p><code>PayOSService</code> dùng Client ID + API Key để gọi PayOS; Checksum Key ký dữ liệu gồm amount, orderCode, description, returnUrl và cancelUrl.</p></div></li>
+          <li><b>03</b><div><h3>Khách quét VietQR</h3><p>Backend trả <code>checkoutUrl</code>; frontend chuyển khách sang trang PayOS. Secret không bao giờ đi xuống browser.</p></div></li>
+          <li><b>04</b><div><h3>Hai tín hiệu quay về</h3><p>Browser về <code>returnUrl</code> để hiển thị kết quả. Đồng thời PayOS gọi <code>PAYOS_WEBHOOK_URL</code> trực tiếp tới backend.</p></div></li>
+          <li><b>05</b><div><h3>Xác minh và đối chiếu</h3><p>Backend verify signature bằng Checksum Key, rồi kiểm tra <code>orderCode</code>, amount, paymentLinkId và trạng thái hiện tại.</p></div></li>
+          <li><b>06</b><div><h3>Hoàn tất idempotent</h3><p>Trong transaction: đổi Payment sang <code>PAID</code>, đổi Order sang <code>PAID</code>, cấp ReadingRight/Premium đúng một lần và trả HTTP 2xx.</p></div></li>
+        </ol>
+        <div class="code-pair">
+          <div><div class="code-head"><span>Khởi tạo PayOS ở backend</span><button data-copy="#payosInit">Sao chép</button></div><pre id="payosInit"><code>const payOS = new PayOS({
+  clientId: config.getOrThrow('PAYOS_CLIENT_ID'),
+  apiKey: config.getOrThrow('PAYOS_API_KEY'),
+  checksumKey: config.getOrThrow('PAYOS_CHECKSUM_KEY'),
+});</code></pre></div>
+          <div><div class="code-head"><span>Xử lý webhook — pseudo code</span><button data-copy="#webhookCode">Sao chép</button></div><pre id="webhookCode"><code>const data = payOS.webhooks.verify(payload);
+const payment = await findByOrderCode(data.orderCode);
+
+assert(payment.amount === data.amount);
+if (payment.status === 'PAID') return { ok: true };
+
+await completePaymentInTransaction(payment, data);</code></pre></div>
+        </div>
+      </section>
+
+      <section class="content-section" id="files">
+        <div class="section-heading"><span>05</span><div><p class="eyebrow">Tổ chức file</p><h2>Đặt biến ở đâu?</h2></div></div>
+        <div class="file-table" role="table" aria-label="Các file môi trường">
+          <div class="table-row table-head" role="row"><span>File</span><span>Mục đích</span><span>Được commit?</span></div>
+          <div class="table-row" role="row"><code>backend/.env</code><span>Secret và cấu hình local của NestJS</span><b class="no">Không</b></div>
+          <div class="table-row" role="row"><code>frontend/.env.local</code><span>Biến public của Next.js local</span><b class="no">Không</b></div>
+          <div class="table-row" role="row"><code>.env.docker</code><span>Credential container local</span><b class="no">Không</b></div>
+          <div class="table-row" role="row"><code>.env.example</code><span>Danh sách tên biến và giá trị mẫu vô hại</span><b class="yes">Có</b></div>
+          <div class="table-row" role="row"><span>Secret manager</span><span>Secret production trên nền tảng deploy</span><b class="yes">Nên dùng</b></div>
+        </div>
+        <div class="code-pair">
+          <div><div class="code-head"><span>.gitignore bắt buộc</span><button data-copy="#gitignore">Sao chép</button></div><pre id="gitignore"><code>.env
+.env.*
+!.env.example
+!.env.test.example</code></pre></div>
+          <div><div class="code-head"><span>Kiểm tra trước commit</span></div><pre><code>git status
+git diff --cached
+
+# Nếu từng commit secret: rotate key trước,
+# rồi mới xóa khỏi lịch sử repository.</code></pre></div>
+        </div>
+      </section>
+
+      <section class="content-section" id="checklist">
+        <div class="section-heading"><span>06</span><div><p class="eyebrow">Thực hành</p><h2>Checklist chuẩn bị</h2></div></div>
+        <div class="checklist" id="checklistItems"></div>
+        <button class="reset-button" id="resetChecklist" type="button">Đặt lại checklist</button>
+      </section>
+
+      <section class="content-section" id="sources">
+        <div class="section-heading"><span>07</span><div><p class="eyebrow">Nguồn chính thức</p><h2>Đọc thêm và kiểm chứng</h2></div></div>
+        <div class="sources">
+          <a href="https://payos.vn/docs/huong-dan-su-dung/tao-kenh-thanh-toan/" target="_blank" rel="noreferrer"><strong>PayOS</strong><span>Tạo kênh và lấy key ↗</span></a>
+          <a href="https://payos.vn/docs/api/" target="_blank" rel="noreferrer"><strong>PayOS API</strong><span>Payment request & webhook ↗</span></a>
+          <a href="https://www.mongodb.com/docs/atlas/" target="_blank" rel="noreferrer"><strong>MongoDB Atlas</strong><span>Cluster, user, network ↗</span></a>
+          <a href="https://min.io/docs/minio/linux/index.html" target="_blank" rel="noreferrer"><strong>MinIO</strong><span>Server và credential ↗</span></a>
+          <a href="https://support.google.com/accounts/answer/185833" target="_blank" rel="noreferrer"><strong>Google</strong><span>Tạo App Password ↗</span></a>
+          <a href="https://platform.openai.com/api-keys" target="_blank" rel="noreferrer"><strong>OpenAI</strong><span>Quản lý API keys ↗</span></a>
+          <a href="https://ai.google.dev/gemini-api/docs/api-key" target="_blank" rel="noreferrer"><strong>Gemini</strong><span>Tạo và bảo vệ API key ↗</span></a>
+          <a href="https://developers.cloudflare.com/tunnel/setup/" target="_blank" rel="noreferrer"><strong>Cloudflare Tunnel</strong><span>Public localhost cho webhook ↗</span></a>
+        </div>
+      </section>
+    </main>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite">Đã sao chép</div>
+  <script src="app.js"></script>
+</body>
+</html>

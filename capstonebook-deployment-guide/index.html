@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="vi" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Cẩm nang triển khai CapstoneBook: Next.js trên Vercel, NestJS trên AWS EC2, MongoDB Atlas, Nginx, PM2, API Gateway và PayOS.">
+  <title>CapstoneBook — Cẩm nang Deploy AWS & Vercel</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Bỏ qua menu</a>
+
+  <header class="topbar">
+    <button class="icon-button mobile-only" id="menuButton" type="button" aria-label="Mở mục lục">☰</button>
+    <a class="brand" href="#overview" aria-label="CapstoneBook Deployment Guide">
+      <span class="brand-mark">CB</span>
+      <span><strong>CapstoneBook</strong><small>Deployment Guide</small></span>
+    </a>
+    <label class="search-box">
+      <span aria-hidden="true">⌕</span>
+      <input id="searchInput" type="search" placeholder="Tìm EC2, Vercel, lỗi SSH…" autocomplete="off">
+      <kbd>Ctrl K</kbd>
+    </label>
+    <button class="icon-button" id="themeButton" type="button" aria-label="Đổi giao diện sáng tối">◐</button>
+  </header>
+
+  <aside class="sidebar" id="sidebar">
+    <nav aria-label="Mục lục">
+      <p class="nav-label">Bắt đầu</p>
+      <a href="#overview">Tổng quan</a>
+      <a href="#costs">Chi phí & Free Plan</a>
+      <a href="#aws-account">Tài khoản AWS</a>
+      <p class="nav-label">Triển khai</p>
+      <a href="#atlas">MongoDB Atlas</a>
+      <a href="#ec2">Tạo EC2</a>
+      <a href="#elastic-ip">Elastic IP</a>
+      <a href="#ssh">SSH từ Windows</a>
+      <a href="#server">Cài server</a>
+      <a href="#backend-env">Biến môi trường</a>
+      <a href="#pm2-nginx">PM2 & Nginx</a>
+      <a href="#api-gateway">API Gateway HTTPS</a>
+      <a href="#vercel">Deploy Vercel</a>
+      <p class="nav-label">Vận hành</p>
+      <a href="#payos">PayOS</a>
+      <a href="#maintenance">Bảo trì</a>
+      <a href="#troubleshooting">Lỗi thường gặp</a>
+      <a href="#security">Checklist bảo mật</a>
+      <a href="#commands">Lệnh nhanh</a>
+    </nav>
+    <div class="sidebar-progress">
+      <div><span>Tiến độ đọc</span><strong id="progressText">0%</strong></div>
+      <div class="progress-track"><span id="progressBar"></span></div>
+    </div>
+  </aside>
+
+  <main id="main">
+    <section class="hero searchable" id="overview" data-search="tổng quan kiến trúc aws vercel atlas nextjs nestjs">
+      <div class="eyebrow">CẨM NANG THỰC HÀNH • CẬP NHẬT 22/07/2026</div>
+      <h1>Deploy Next.js lên Vercel,<br><em>NestJS lên AWS.</em></h1>
+      <p class="lead">Tài liệu tái hiện trọn quy trình đã làm với dự án CapstoneBook: từ tài khoản AWS mới, EC2 Ubuntu, MongoDB Atlas, API HTTPS đến Vercel và cách vận hành sau deploy.</p>
+      <div class="hero-actions">
+        <a class="button primary" href="#aws-account">Bắt đầu từng bước</a>
+        <a class="button secondary" href="#troubleshooting">Tra lỗi nhanh</a>
+      </div>
+      <div class="status-grid">
+        <div><span>Frontend</span><strong>Vercel · Next.js 16</strong></div>
+        <div><span>Backend</span><strong>AWS EC2 · NestJS 11</strong></div>
+        <div><span>Database</span><strong>MongoDB Atlas</strong></div>
+        <div><span>HTTPS API</span><strong>API Gateway</strong></div>
+      </div>
+    </section>
+
+    <section class="section searchable" data-search="architecture kiến trúc luồng request" aria-labelledby="architecture-title">
+      <div class="section-heading">
+        <span>Kiến trúc cuối cùng</span>
+        <h2 id="architecture-title">Một request đi qua những đâu?</h2>
+      </div>
+      <div class="architecture" role="img" aria-label="Vercel gọi API Gateway, API Gateway gọi Nginx trên EC2, Nginx gọi NestJS, NestJS kết nối MongoDB Atlas và PayOS">
+        <div class="arch-node"><small>Trình duyệt</small><strong>Next.js · Vercel</strong></div>
+        <span class="arch-arrow">→</span>
+        <div class="arch-node accent"><small>HTTPS</small><strong>API Gateway</strong></div>
+        <span class="arch-arrow">→</span>
+        <div class="arch-node"><small>Port 80</small><strong>Nginx · EC2</strong></div>
+        <span class="arch-arrow">→</span>
+        <div class="arch-node"><small>Port 4000</small><strong>NestJS · PM2</strong></div>
+        <span class="arch-arrow">→</span>
+        <div class="arch-node dark"><small>Dữ liệu</small><strong>MongoDB Atlas</strong></div>
+      </div>
+      <div class="callout success"><strong>Kết quả đã kiểm chứng:</strong> endpoint <code>/api/v1/books</code> trả dữ liệu sách thật qua HTTPS của API Gateway.</div>
+    </section>
+
+    <section class="section searchable" id="costs" data-search="chi phí free plan credit 6 tháng elastic ip domain route53 budget">
+      <div class="section-heading"><span>01 · Trước khi tạo tài nguyên</span><h2>Hiểu đúng Free Plan và chi phí</h2></div>
+      <div class="cards three">
+        <article class="card"><span class="card-index">01</span><h3>Free Plan</h3><p>Kết thúc sau 6 tháng hoặc khi hết credit, tùy điều kiện nào đến trước. AWS đóng tài khoản Free Plan thay vì cho chạy âm tiền.</p></article>
+        <article class="card"><span class="card-index">02</span><h3>AWS Credit</h3><p>Credit có hạn riêng. EC2, IPv4 và dịch vụ đủ điều kiện sẽ tiêu thụ credit. Theo dõi mục <strong>Billing → Credits</strong>.</p></article>
+        <article class="card"><span class="card-index">03</span><h3>Domain</h3><p>Đăng ký domain Route 53 không dùng được promotional credit; tiền domain tính vào phương thức thanh toán. Test thì chưa cần mua.</p></article>
+      </div>
+      <div class="callout warning"><strong>Ước tính:</strong> EC2 t3.micro + một Public IPv4 + 8 GiB EBS có thể tiêu thụ khoảng 16–17 USD/tháng tùy vùng và lưu lượng. Luôn xem Billing thực tế.</div>
+      <figure class="shot compact"><img src="assets/images/14fe5824-4fd9-4049-8b93-24b66616f362.png" alt="Ngày bắt đầu và ngày hết hạn AWS credit" loading="lazy"><figcaption>Credit có ngày bắt đầu/hết hạn riêng; không đồng nghĩa Free Plan kéo dài 12 tháng.</figcaption></figure>
+    </section>
+
+    <section class="section searchable" id="aws-account" data-search="tạo aws account budget mfa singapore cost explorer">
+      <div class="section-heading"><span>02 · Nền tảng AWS</span><h2>Tài khoản, Budget, MFA và Region</h2></div>
+      <ol class="steps">
+        <li><strong>Tạo AWS account</strong><p>Chọn Free Plan, xác minh email/điện thoại và phương thức thanh toán. Không gửi OTP hay thông tin thẻ cho người khác.</p></li>
+        <li><strong>Chuyển Region</strong><p>Chọn <code>Asia Pacific (Singapore) · ap-southeast-1</code>. Billing hiển thị Global là bình thường.</p></li>
+        <li><strong>Tạo Budget</strong><p>Cost budget 1 USD/tháng; cảnh báo Actual 80% và Forecasted 100%. Budget có thể báo dù credit đang bù chi phí.</p></li>
+        <li><strong>Bật MFA</strong><p>Security credentials → Assign MFA device → Authenticator app. Không chụp QR MFA.</p></li>
+      </ol>
+      <div class="gallery two">
+        <figure class="shot"><img src="assets/images/84f45fe9-e36f-457e-b52f-bd35b1b27d89.png" alt="AWS Console Home" loading="lazy"><figcaption>AWS Console Home sau khi tạo tài khoản.</figcaption></figure>
+        <figure class="shot"><img src="assets/images/3ecd0e53-f73b-4701-b507-5bfd5b1dc115.png" alt="Màn hình tạo AWS Budget" loading="lazy"><figcaption>Tạo Cost budget; lỗi Data unavailable là bình thường với tài khoản mới.</figcaption></figure>
+        <figure class="shot"><img src="assets/images/3ccd1bf7-a391-43f1-a005-13d3b83bf3ee.png" alt="Review AWS Budget" loading="lazy"><figcaption>Budget 1 USD với hai mức cảnh báo 80% và 100%.</figcaption></figure>
+      </div>
+    </section>
+
+    <section class="section searchable" id="atlas" data-search="mongodb atlas bookstore database collection books database access network access uri bad auth">
+      <div class="section-heading"><span>03 · Database</span><h2>Tạo database <code>bookstore</code> trên Atlas</h2></div>
+      <div class="split">
+        <div>
+          <ol class="steps compact-steps">
+            <li><strong>Không xóa database cũ</strong><p>Database <code>booking</code> thuộc dự án khác. Tạo database mới <code>bookstore</code>.</p></li>
+            <li><strong>Collection đầu tiên</strong><p>Data Explorer → Create Database → database <code>bookstore</code>, collection <code>books</code>.</p></li>
+            <li><strong>Database User</strong><p>Dùng user trong Security → Database Access, không dùng email/mật khẩu đăng nhập trang Atlas.</p></li>
+            <li><strong>Network Access</strong><p>Thêm Elastic IP của EC2 theo dạng <code>IP_THẬT/32</code>.</p></li>
+          </ol>
+        </div>
+        <figure class="shot"><img src="assets/images/8a25d852-07ab-4410-8bab-4e509fb3b37c.png" alt="MongoDB Atlas Data Explorer với database booking cũ" loading="lazy"><figcaption>Ảnh database cũ giúp nhận biết: dự án sách phải dùng <code>bookstore</code>, không dùng <code>booking</code>.</figcaption></figure>
+      </div>
+      <pre><code>DATABASE_URL=mongodb+srv://DB_USERNAME:DB_PASSWORD@cluster0.example.mongodb.net/bookstore?retryWrites=true&amp;w=majority&amp;appName=Cluster0</code></pre>
+      <div class="callout danger"><strong>Không lộ secret:</strong> URI thật chỉ nằm trong <code>.env</code> backend. Nếu mật khẩu chứa <code>@ : / # %</code>, phải URL-encode hoặc đặt mật khẩu chữ/số đủ mạnh.</div>
+    </section>
+
+    <section class="section searchable" id="ec2" data-search="ec2 ubuntu 24 t3 micro security group port 22 80 443 storage gp3">
+      <div class="section-heading"><span>04 · Máy chủ</span><h2>Tạo EC2 Ubuntu đúng cấu hình</h2></div>
+      <div class="spec-table" role="table" aria-label="Cấu hình EC2">
+        <div role="row"><span role="cell">Name</span><strong role="cell">bookstore-nestjs-server</strong></div>
+        <div role="row"><span role="cell">AMI</span><strong role="cell">Ubuntu Server 24.04 LTS · x86</strong></div>
+        <div role="row"><span role="cell">Instance</span><strong role="cell">t3.micro · 1 GiB RAM</strong></div>
+        <div role="row"><span role="cell">Key pair</span><strong role="cell">RSA · .pem</strong></div>
+        <div role="row"><span role="cell">Storage</span><strong role="cell">8 GiB · gp3</strong></div>
+        <div role="row"><span role="cell">SSH 22</span><strong role="cell">My IP</strong></div>
+        <div role="row"><span role="cell">HTTP / HTTPS</span><strong role="cell">80 / 443 · Anywhere IPv4</strong></div>
+      </div>
+      <div class="callout warning"><strong>Lỗi đã tránh:</strong> gõ “Ubuntu Server 24.04” vào ô tìm kiếm chưa đủ; phải bấm tile Ubuntu. Summary phải hiện Canonical Ubuntu và username <code>ubuntu</code>, không phải Amazon Linux / <code>ec2-user</code>.</div>
+      <div class="gallery two">
+        <figure class="shot"><img src="assets/images/e26f37ea-b342-4447-9839-6931feeb15d0.png" alt="EC2 đang chọn nhầm Amazon Linux" loading="lazy"><figcaption>Trạng thái sai: Summary còn Amazon Linux 2023.</figcaption></figure>
+        <figure class="shot"><img src="assets/images/17f68130-9a64-4097-8e2a-4d5932992ff0.png" alt="EC2 chọn đúng Ubuntu Server 24.04" loading="lazy"><figcaption>Trạng thái đúng: Ubuntu 24.04, x86, username <code>ubuntu</code>.</figcaption></figure>
+        <figure class="shot"><img src="assets/images/90b03e6f-b05c-4078-8c77-0ecbd3ea96b7.png" alt="Security group SSH My IP và public IP bật" loading="lazy"><figcaption>SSH chỉ My IP; bật Auto-assign public IP.</figcaption></figure>
+        <figure class="shot"><img src="assets/images/5ce89d82-cde3-4a38-90de-fa65cb9b0fcf.png" alt="HTTP HTTPS và storage EC2" loading="lazy"><figcaption>HTTP 80, HTTPS 443 và ổ gp3 8 GiB.</figcaption></figure>
+        <figure class="shot compact"><img src="assets/images/4ee357ad-8083-4072-89ac-d1c0c96f0a94.png" alt="EC2 đang Running nhưng status check còn Initializing" loading="lazy"><figcaption>Instance đã Running nhưng còn Initializing: chờ Status checks hoàn tất trước khi xử lý tiếp.</figcaption></figure>
+      </div>
+      <p class="note">Chờ Status checks hoàn tất (giao diện có thể hiển thị 2/2 hoặc 3/3). Nếu Initializing dưới 10 phút, tiếp tục chờ; quá 15 phút hãy refresh, xem Status checks rồi mới cân nhắc reboot.</p>
+    </section>
+
+    <section class="section searchable" id="elastic-ip" data-search="elastic ip static ip associate public ipv4 cost atlas">
+      <div class="section-heading"><span>05 · IP cố định</span><h2>Allocate và Associate Elastic IP</h2></div>
+      <ol class="steps compact-steps">
+        <li><strong>Allocate</strong><p>EC2 → Elastic IP addresses → Allocate. Giữ Amazon's pool và border group <code>ap-southeast-1</code>.</p></li>
+        <li><strong>Associate ngay</strong><p>Actions → Associate Elastic IP → chọn instance CapstoneBook. IP chưa gắn vẫn bị tính phí.</p></li>
+        <li><strong>Dùng đúng nơi</strong><p>SSH dùng <code>ubuntu@IP</code>; Atlas Network Access dùng <code>IP/32</code>. Không nhập nguyên chữ <code>ELASTIC_IP</code>.</p></li>
+      </ol>
+      <figure class="shot"><img src="assets/images/5fa114f5-f9e2-44b1-b9b0-cb7a1a423e0b.png" alt="Allocate Elastic IP tại Singapore" loading="lazy"><figcaption>Màn hình Allocate Elastic IP. Sau Allocate phải Associate với EC2.</figcaption></figure>
+    </section>
+
+    <section class="section searchable" id="ssh" data-search="ssh windows pem bad permissions authenticated users hostname public dns elastic ip">
+      <div class="section-heading"><span>06 · Truy cập máy ảo</span><h2>SSH từ Windows</h2></div>
+      <p>Mở Command Prompt trong thư mục có file <code>.pem</code> và dùng IP số thật:</p>
+      <pre><code>ssh -i "E:\bookstore-aws-key.pem" ubuntu@IP_ELASTIC_THẬT</code></pre>
+      <h3>Nếu báo “bad permissions”</h3>
+      <pre><code>icacls "E:\bookstore-aws-key.pem" /inheritance:r
+icacls "E:\bookstore-aws-key.pem" /remove "NT AUTHORITY\Authenticated Users"
+icacls "E:\bookstore-aws-key.pem" /remove "BUILTIN\Users"
+icacls "E:\bookstore-aws-key.pem" /grant:r "%USERNAME%:(R)"</code></pre>
+      <div class="callout danger"><strong>Không nhập placeholder:</strong> lỗi <code>Could not resolve hostname public_dns</code> hoặc <code>elastic_ip</code> xảy ra vì nhập nguyên chữ minh họa. Phải thay bằng DNS/IP thật trong EC2 Details.</div>
+    </section>
+
+    <section class="section searchable" id="server" data-search="clone github nodejs 22 swap npm workspace build nestjs">
+      <div class="section-heading"><span>07 · Chuẩn bị Ubuntu</span><h2>Git, Node.js 22, swap và build backend</h2></div>
+      <div class="gallery two">
+        <figure class="shot"><img src="assets/images/d1a4509d-5cde-4e79-9ec9-17b32655d263.png" alt="GitHub monorepo book" loading="lazy"><figcaption>Repo public gồm <code>frontend/</code> và <code>backend/</code>.</figcaption></figure>
+        <figure class="shot"><img src="assets/images/f3b79c06-c477-45b9-a8b9-4edc93d840c6.png" alt="Source CapstoneBook trên VS Code" loading="lazy"><figcaption>Source local; EC2 vẫn phải clone từ GitHub.</figcaption></figure>
+      </div>
+      <h3>Cài công cụ nền</h3>
+      <pre><code>sudo apt update
+sudo apt upgrade -y
+sudo apt install -y git curl nginx
+
+curl -fsSL https://deb.nodesource.com/setup_22.x -o nodesource_setup.sh
+sudo -E bash nodesource_setup.sh
+sudo apt install -y nodejs
+node -v
+npm -v</code></pre>
+      <h3>Clone và tạo swap 2 GiB</h3>
+      <pre><code>cd ~
+git clone https://github.com/USER/REPOSITORY.git
+cd ~/book
+
+sudo fallocate -l 2G /swapfile
+sudo chmod 600 /swapfile
+sudo mkswap /swapfile
+sudo swapon /swapfile
+echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
+free -h</code></pre>
+      <h3>Chỉ cài và build backend workspace</h3>
+      <pre><code>npm ci --workspace=@capstonebook/backend
+npm run build --workspace=@capstonebook/backend
+ls backend/dist</code></pre>
+    </section>
+
+    <section class="section searchable" id="backend-env" data-search="env production database url jwt payos client url backend url secret">
+      <div class="section-heading"><span>08 · Cấu hình backend</span><h2><code>.env</code> production trên EC2</h2></div>
+      <p>Tạo hai JWT secret bằng <code>openssl rand -hex 32</code>, rồi tạo <code>~/book/.env</code>. Giá trị dưới đây chỉ là mẫu:</p>
+      <pre><code>NODE_ENV=production
+PORT=4000
+TZ=Asia/Ho_Chi_Minh
+
+CLIENT_URL=https://TEN-DU-AN.vercel.app
+BACKEND_URL=https://API_ID.execute-api.ap-southeast-1.amazonaws.com
+
+DATABASE_URL=mongodb+srv://DB_USER:DB_PASSWORD@CLUSTER/bookstore?retryWrites=true&amp;w=majority
+
+JWT_ACCESS_SECRET=SECRET_1
+JWT_REFRESH_SECRET=SECRET_2
+JWT_ACCESS_EXPIRES_IN=15m
+JWT_REFRESH_EXPIRES_IN=30d
+
+PAYOS_CLIENT_ID=...
+PAYOS_API_KEY=...
+PAYOS_CHECKSUM_KEY=...
+PAYOS_RETURN_URL=https://TEN-DU-AN.vercel.app/payment/payos/success
+PAYOS_CANCEL_URL=https://TEN-DU-AN.vercel.app/payment/payos/cancel
+PAYOS_WEBHOOK_URL=
+PAYOS_PAYMENT_EXPIRES_MINUTES=15</code></pre>
+      <pre><code>chmod 600 .env
+ln -s ../.env backend/.env
+npm run start:prod --workspace=@capstonebook/backend</code></pre>
+      <div class="callout info"><strong>Hai base URL khác nhau:</strong> <code>BACKEND_URL</code> chỉ là root API Gateway; <code>NEXT_PUBLIC_API_URL</code> của frontend phải thêm <code>/api/v1</code>.</div>
+    </section>
+
+    <section class="section searchable" id="pm2-nginx" data-search="pm2 nginx reverse proxy port 80 4000 404 502 listen directive">
+      <div class="section-heading"><span>09 · Chạy ổn định</span><h2>PM2 giữ tiến trình, Nginx nhận port 80</h2></div>
+      <h3>PM2</h3>
+      <pre><code>sudo npm install -g pm2
+cd ~/book
+pm2 start npm --name capstonebook-api -- run start:prod --workspace=@capstonebook/backend
+pm2 startup
+# Chạy chính xác lệnh sudo mà PM2 in ra
+pm2 save
+pm2 status</code></pre>
+      <h3><code>/etc/nginx/sites-available/default</code></h3>
+      <pre><code>server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+    server_name _;
+    client_max_body_size 25M;
+
+    location / {
+        proxy_pass http://127.0.0.1:4000;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_read_timeout 60s;
+    }
+}</code></pre>
+      <pre><code>sudo nginx -t
+sudo systemctl restart nginx
+sudo systemctl enable nginx
+curl -i http://127.0.0.1</code></pre>
+      <div class="callout success"><strong>HTTP 404 từ Express là tín hiệu tốt</strong> nếu root <code>/</code> không có route: header có <code>Server: nginx</code>, <code>X-Powered-By: Express</code> nghĩa là proxy đã chạy xuyên suốt.</div>
+    </section>
+
+    <section class="section searchable" id="api-gateway" data-search="api gateway http api https default endpoint route stage invoke url public dns fully qualified">
+      <div class="section-heading"><span>10 · HTTPS miễn phí theo lượt dùng</span><h2>API Gateway proxy đến EC2</h2></div>
+      <ol class="steps">
+        <li><strong>Create API → HTTP API</strong><p>Không chọn REST API hay WebSocket API. Region Singapore.</p></li>
+        <li><strong>Integration HTTP</strong><p>Dùng <code>http://PUBLIC_IPV4_DNS</code> của EC2, không dùng private DNS, không thêm <code>/api/v1</code> hoặc <code>:4000</code>.</p></li>
+        <li><strong>Route và Stage</strong><p>Route <code>$default</code>, method ANY; Stage <code>$default</code>, Auto-deploy Enabled; Default endpoint Enabled.</p></li>
+        <li><strong>Test</strong><p><code>https://INVOKE_URL/api/v1/books</code> phải trả JSON.</p></li>
+      </ol>
+      <div class="gallery two">
+        <figure class="shot"><img src="assets/images/0209de49-f16b-48c2-965f-59b486526918.png" alt="Tìm API Gateway từ AWS Search" loading="lazy"><figcaption>API Gateway là dịch vụ riêng; tìm từ thanh Search, không nằm trong menu EC2.</figcaption></figure>
+        <figure class="shot"><img src="assets/images/b1d8d434-f0f7-4f52-89ad-d645c6c0f4e8.png" alt="Cấu hình HTTP API Gateway" loading="lazy"><figcaption>Configure HTTP API: IPv4 và HTTP integration.</figcaption></figure>
+        <figure class="shot wide"><img src="assets/images/2bba6681-2ab4-48d5-81e9-0e075151be82.png" alt="API Gateway trả danh sách sách JSON" loading="lazy"><figcaption>Mốc hoàn tất: Invoke URL HTTPS trả dữ liệu <code>/api/v1/books</code>.</figcaption></figure>
+      </div>
+    </section>
+
+    <section class="section searchable" id="vercel" data-search="vercel nextjs frontend root directory environment production preview lightningcss turbopack">
+      <div class="section-heading"><span>11 · Frontend production</span><h2>Deploy Next.js lên Vercel</h2></div>
+      <ol class="steps">
+        <li><strong>Import GitHub repository</strong><p>Add New → Project → repo <code>book</code>.</p></li>
+        <li><strong>Root Directory</strong><p>Chọn <code>frontend</code>; Framework Preset Next.js; Build/Install/Output để mặc định.</p></li>
+        <li><strong>Environment Variable</strong><p><code>NEXT_PUBLIC_API_URL=https://INVOKE_URL/api/v1</code>. Chọn Production + Preview; local dùng <code>frontend/.env.local</code>.</p></li>
+        <li><strong>Sau khi có domain</strong><p>Cập nhật <code>CLIENT_URL</code>, PayOS return/cancel trong EC2 rồi <code>pm2 restart capstonebook-api --update-env</code>.</p></li>
+      </ol>
+      <figure class="shot"><img src="assets/images/d5ec75cb-d295-4ed2-a24a-d8f22ddedc76.png" alt="CapstoneBook chạy trên localhost" loading="lazy"><figcaption>Frontend chạy local và gọi API AWS trước khi deploy Vercel.</figcaption></figure>
+      <h3>Lỗi Lightning CSS trên Vercel</h3>
+      <figure class="shot compact"><img src="assets/images/bca31304-7efd-47b3-b771-f863f2fd6f7f.png" alt="Vercel deployment failed" loading="lazy"><figcaption>Deployment fail: cần mở cuối Build Logs để lấy nguyên nhân thật.</figcaption></figure>
+      <p>Lỗi <code>Cannot find module '../lightningcss.linux-x64-gnu.node'</code> là lockfile Windows thiếu optional binary Linux; không phải lỗi <code>globals.css</code>.</p>
+      <pre><code>:: Chạy tại E:\CapstoneBook bằng Command Prompt
+rmdir /s /q node_modules
+rmdir /s /q frontend\.next
+del package-lock.json
+npm install
+findstr /C:"lightningcss-linux-x64-gnu" package-lock.json
+npm run build --workspace=@capstonebook/frontend
+git add package-lock.json
+git commit -m "fix: regenerate lockfile for Linux deployment"
+git push origin main</code></pre>
+    </section>
+
+    <section class="section searchable" id="payos" data-search="payos checksum webhook payment return cancel url">
+      <div class="section-heading"><span>12 · Thanh toán</span><h2>PayOS: phần đã có và phần còn lại</h2></div>
+      <div class="cards two">
+        <article class="card"><h3>Ba khóa bí mật</h3><p>my.payOS.vn → Kênh thanh toán → chọn kênh → Client ID, API Key, Checksum Key. Chỉ đặt trong backend EC2.</p></article>
+        <article class="card"><h3>Webhook</h3><p><code>PAYOS_WEBHOOK_URL</code> phải là endpoint HTTPS công khai và trả HTTP 2xx. Cần xác định route thật trong controller trước khi điền.</p></article>
+      </div>
+      <pre><code>grep -Rni "webhook" backend/src
+grep -Rni "setGlobalPrefix" backend/src</code></pre>
+      <div class="callout warning"><strong>Chưa hoàn tất PayOS</strong> nếu webhook còn trống. Frontend/backend có thể chạy, nhưng trạng thái thanh toán chưa được xác nhận tự động.</div>
+    </section>
+
+    <section class="section searchable" id="maintenance" data-search="bảo trì kiểm tra máy ảo update git pull pm2 logs nginx status billing backup">
+      <div class="section-heading"><span>13 · Sau deploy</span><h2>Mở lại, kiểm tra và cập nhật server</h2></div>
+      <div class="cards three">
+        <article class="card"><h3>Kiểm tra nhanh</h3><pre><code>pm2 status
+sudo systemctl status nginx --no-pager
+curl -i http://127.0.0.1/api/v1/books
+free -h
+df -h</code></pre></article>
+        <article class="card"><h3>Xem log</h3><pre><code>pm2 logs capstonebook-api --lines 100
+sudo tail -n 100 /var/log/nginx/error.log</code></pre><p><code>Ctrl+C</code> chỉ thoát màn hình log, không dừng PM2.</p></article>
+        <article class="card"><h3>Đăng nhập lại</h3><pre><code>ssh -i "E:\bookstore-aws-key.pem" ubuntu@IP_ELASTIC_THẬT</code></pre><p>Tắt laptop không làm EC2 dừng. Đóng SSH cũng không dừng app.</p></article>
+      </div>
+      <h3>Cập nhật backend từ GitHub</h3>
+      <pre><code>cd ~/book
+git pull origin main
+npm ci --workspace=@capstonebook/backend
+npm run build --workspace=@capstonebook/backend
+pm2 restart capstonebook-api --update-env
+pm2 save
+pm2 status</code></pre>
+      <h3>Các màn hình nên kiểm tra hàng tuần</h3>
+      <ul class="checklist">
+        <li>EC2: Running và Status checks đạt đủ.</li>
+        <li>Billing: Cost Explorer, Credits và Budget alert.</li>
+        <li>PM2: process online, restart count không tăng bất thường.</li>
+        <li>Atlas: cluster healthy, dung lượng và connection ổn.</li>
+        <li>Vercel: Production deployment Ready, không có build lỗi.</li>
+        <li>API Gateway: endpoint <code>/api/v1/books</code> trả dữ liệu.</li>
+      </ul>
+    </section>
+
+    <section class="section searchable" id="troubleshooting" data-search="lỗi thường gặp initializing bad auth 404 502 cors mixed content module not found listen directive hostname">
+      <div class="section-heading"><span>14 · Tra cứu</span><h2>Lỗi thường gặp và cách xử lý</h2></div>
+      <div class="trouble-list">
+        <details open><summary><code>Could not resolve hostname public_dns / elastic_ip</code></summary><p>Bạn đã nhập nguyên placeholder. Thay bằng Public IPv4 DNS hoặc Elastic IP thật. Không thêm dấu &lt;&gt;.</p></details>
+        <details><summary><code>WARNING: UNPROTECTED PRIVATE KEY FILE / bad permissions</code></summary><p>Dùng các lệnh <code>icacls</code> trong mục SSH để bỏ quyền Authenticated Users và chỉ cấp quyền Read cho user Windows hiện tại.</p></details>
+        <details><summary>EC2 Running nhưng Status check Initializing</summary><p>Chờ 5–10 phút và refresh. Quá 15 phút: xem System/Instance status check, Ctrl+F5; reboot trước khi nghĩ đến Stop/Start. Không Terminate.</p></details>
+        <details><summary><code>MongoServerError: bad auth</code></summary><p>Network đã tới Atlas nhưng Database User/password sai. Reset user trong Database Access, không dùng tài khoản đăng nhập Atlas; kiểm tra URL encoding.</p></details>
+        <details><summary><code>listen directive is not allowed here</code></summary><p>Bạn dán block <code>server</code> mới vào trong cấu hình cũ. Xóa toàn bộ file default và giữ đúng một block server rồi chạy <code>sudo nginx -t</code>.</p></details>
+        <details><summary><code>502 Bad Gateway</code></summary><p>Nginx không gọi được NestJS. Kiểm tra <code>pm2 status</code>, <code>pm2 logs</code>, port 4000 và <code>proxy_pass http://127.0.0.1:4000</code>.</p></details>
+        <details><summary><code>404 Not Found</code> tại IP gốc</summary><p>Nếu response là JSON, có Express/CORS headers thì proxy đã đúng; backend chỉ không có route <code>/</code>. Test <code>/api/v1/books</code>.</p></details>
+        <details><summary>API Gateway báo URL must be fully-qualified</summary><p>Dùng <code>http://PUBLIC_IPV4_DNS</code> của EC2 thay vì private DNS hoặc placeholder. Không thêm port 4000.</p></details>
+        <details><summary>Vercel HTTPS gọi EC2 HTTP bị chặn</summary><p>Đây là mixed content. Frontend Vercel phải dùng URL HTTPS của API Gateway trong <code>NEXT_PUBLIC_API_URL</code>.</p></details>
+        <details><summary>CORS chỉ cho <code>localhost:3000</code></summary><p>Đổi <code>CLIENT_URL</code> sang domain production Vercel rồi restart PM2 với <code>--update-env</code>.</p></details>
+        <details><summary>Vercel chạy <code>npm install</code> như Build Command</summary><p>Tắt Build Command Override hoặc đặt <code>npm run build</code>. Install Command để mặc định.</p></details>
+        <details><summary>Lightning CSS thiếu binary Linux</summary><p>Regenerate sạch root <code>package-lock.json</code> như mục Vercel, kiểm tra lock có <code>lightningcss-linux-x64-gnu</code>, commit rồi push.</p></details>
+      </div>
+    </section>
+
+    <section class="section searchable" id="security" data-search="bảo mật secret mfa pem env firewall gitignore atlas ip">
+      <div class="section-heading"><span>15 · Bảo mật</span><h2>Checklist trước khi nộp đồ án</h2></div>
+      <ul class="checklist interactive" id="securityChecklist">
+        <li><label><input type="checkbox"> MFA đã bật cho AWS root user.</label></li>
+        <li><label><input type="checkbox"> <code>.env</code>, <code>.env.local</code>, <code>*.pem</code>, <code>node_modules</code>, <code>.next</code> nằm trong <code>.gitignore</code>.</label></li>
+        <li><label><input type="checkbox"> Không có MongoDB URI, JWT secret, PayOS keys trên GitHub/Vercel frontend.</label></li>
+        <li><label><input type="checkbox"> SSH port 22 chỉ cho My IP.</label></li>
+        <li><label><input type="checkbox"> Atlas Network Access chỉ cho Elastic IP <code>/32</code> khi có thể.</label></li>
+        <li><label><input type="checkbox"> Budget alert và email cảnh báo hoạt động.</label></li>
+        <li><label><input type="checkbox"> Ảnh chia sẻ công khai đã che Account ID, IP, QR MFA và secret.</label></li>
+        <li><label><input type="checkbox"> PayOS webhook đã kiểm tra signature và trả 2xx.</label></li>
+      </ul>
+      <button class="button secondary small" id="resetChecklist" type="button">Đặt lại checklist</button>
+    </section>
+
+    <section class="section searchable" id="commands" data-search="lệnh nhanh cheat sheet commands">
+      <div class="section-heading"><span>16 · Cheat sheet</span><h2>Lệnh cần nhớ</h2></div>
+      <div class="command-grid">
+        <article><h3>Kết nối</h3><pre><code>ssh -i "E:\bookstore-aws-key.pem" ubuntu@IP_THẬT</code></pre></article>
+        <article><h3>Trạng thái app</h3><pre><code>pm2 status
+pm2 logs capstonebook-api --lines 50</code></pre></article>
+        <article><h3>Restart sau đổi env</h3><pre><code>pm2 restart capstonebook-api --update-env
+pm2 save</code></pre></article>
+        <article><h3>Nginx</h3><pre><code>sudo nginx -t
+sudo systemctl restart nginx</code></pre></article>
+        <article><h3>API nội bộ</h3><pre><code>curl -i http://127.0.0.1/api/v1/books</code></pre></article>
+        <article><h3>Tài nguyên</h3><pre><code>free -h
+df -h
+swapon --show</code></pre></article>
+      </div>
+    </section>
+
+    <section class="section appendix">
+      <div class="callout info"><strong>Lưu ý về ảnh:</strong> bộ tài liệu giữ nguyên ảnh đã gửi trong phiên để đối chiếu. Trước khi chia sẻ công khai, nên che AWS Account ID, IP, Invoke URL và mọi dữ liệu định danh không cần thiết.</div>
+      <p class="footnote">Tài liệu này là runbook cho môi trường test/đồ án. Giá AWS, giao diện dashboard và chính sách Free Plan có thể thay đổi; luôn kiểm tra trang chính thức trước quyết định tài chính.</p>
+    </section>
+  </main>
+
+  <button class="back-to-top" id="backToTop" type="button" aria-label="Lên đầu trang">↑</button>
+
+  <dialog id="imageDialog">
+    <button class="dialog-close" type="button" aria-label="Đóng ảnh">×</button>
+    <img src="" alt="">
+    <p></p>
+  </dialog>
+
+  <script src="script.js"></script>
+</body>
+</html>
